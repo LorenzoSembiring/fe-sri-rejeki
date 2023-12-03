@@ -7,24 +7,149 @@
       <title>Registrasi</title>
     </head>
     <body>
-      <div class="container">
-        <div class="logo"></div>
-        <div class="form">
-          <form action="#">
-            <input type="email" placeholder="Email" /><br />
-            <input type="text" placeholder="Nama Depan" /><br />
-            <input type="text" placeholder="Nama Belakang" /><br />
-            <input type="password" placeholder="Password" /><br />
-            <input type="password" placeholder="Ulangi Password" /><br />
-            <input type="button" class="button" value="Daftar" />
-          </form>
+      <div class="container d-flex justify-content-center">
+        <div class="mt-5 row">
+          <div class="logo my-4 mx-auto d-block"></div>
+          <div class="form-container border border-2 shadow-sm col-10 mx-auto d-block rounded">
+            <div class="text text-center mt-4 mb-2">Daftar dulu, yuk!</div>
+            <div class="form text-center pt-3">
+              <form action="#" @submit.prevent="handleSubmit">
+                <input
+                  class="input mb-3 p-2"
+                  v-model="formData.email"
+                  type="email"
+                  placeholder="Email"
+                /><br />
+                <input
+                  class="input mb-3 p-2"
+                  v-model="formData.nama_depan"
+                  type="text"
+                  placeholder="Nama Depan"
+                /><br />
+                <input
+                  class="input mb-3 p-2"
+                  v-model="formData.nama_belakang"
+                  type="text"
+                  placeholder="Nama Belakang"
+                /><br />
+                <input
+                  class="input mb-3 p-2"
+                  v-model="formData.password"
+                  type="password"
+                  placeholder="Password"
+                /><br />
+                <input
+                  class="input mb-3 p-2"
+                  type="password"
+                  placeholder="Ulangi Password"
+                /><br />
+                <button class="button px-4 mb-4" type="submit">Daftar</button>
+              </form>
+            </div>
+          </div>
         </div>
       </div>
     </body>
   </html>
 </template>
 
-<script setup lang="ts"></script>
+<script lang="ts">
+import { defineComponent, reactive, onMounted } from "vue";
+import axios from "axios";
+
+export default defineComponent({
+  setup() {
+    const formData = reactive({
+      email: "",
+      nama_depan: "",
+      nama_belakang: "",
+      password: "",
+    });
+
+    const handleSubmit = async () => {
+      try {
+        const response = await axios.post(
+          "http://localhost:7890/api/register",
+          {
+            email: formData.email,
+            first_name: formData.nama_depan,
+            last_name: formData.nama_belakang,
+            password: formData.password,
+            username: formData.nama_depan + formData.nama_belakang,
+          }
+        );
+
+        console.log(response);
+      } catch (error) {
+        console.error(error);
+      }
+    };
+
+    onMounted(() => {
+      window.document.title = "Sri Rejeki - Register";
+    });
+    return { formData, handleSubmit };
+  },
+});
+</script>
 
 <style>
+.logo {
+  width: 35vh;
+  height: 7vh;
+  background-image: url("@/assets/logo-cropped.png");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+
+.text {
+  font-family: 'Roboto', sans-serif;
+  font-size: 1.8rem;
+  font-weight: bold;
+  color: #555;
+}
+
+.input {
+  border-radius: 5px;
+  width: 56vh;
+  box-sizing: border-box;
+  border: 1px solid #dddddd;
+  -webkit-transition: 0.5s;
+  transition: 0.5s;
+  outline: none;
+}
+
+.input::placeholder {
+  color: #b4b4b4;
+  font: 13px sans-serif;
+}
+
+.input:focus {
+  border: 1px solid #c6a28a;
+}
+
+.button {
+  align-items: center;
+  background-image: linear-gradient(135deg, #c6a28a 40%, #aa7d61);
+  border: 0;
+  border-radius: 10px;
+  box-sizing: border-box;
+  color: #fff;
+  cursor: pointer;
+  font-family: "Codec cold", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  height: 8vh;
+  letter-spacing: 0.4px;
+  line-height: 1;
+  max-width: 100%;
+  padding-top: 3px;
+  transition: background-image 0.5s;
+}
+
+.button:hover {
+  transform: scale(0.98);
+  background-image: linear-gradient(-135deg, #c6a28a 40%, #aa7d61);
+  opacity: 0.9;
+}
 </style>
