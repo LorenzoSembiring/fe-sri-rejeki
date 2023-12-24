@@ -16,6 +16,7 @@
     "vue-router": "^4.2.5"
   },
   "devDependencies": {
+    "@iconify/vue": "^4.1.1",
     "@tsconfig/node18": "^18.2.2",
     "@types/node": "^18.17.17",
     "@types/three": "^0.156.0",

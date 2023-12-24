@@ -4,37 +4,32 @@
     <head>
       <meta charset="UTF-8" />
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-      <title>Registrasi</title>
+      <title>Login</title>
     </head>
     <body>
-      <div class="container d-flex justify-content-center pb-5">
+      <div v-if="loading" class="load">
+        <Icon icon="line-md:loading-twotone-loop" />
+      </div>
+      <div
+        :class="{ blur: loading }"
+        class="container d-flex justify-content-center"
+      >
         <div class="mt-5 row">
           <div class="logo my-4 mx-auto d-block"></div>
           <div
             class="form-container border border-2 shadow-sm col-10 mx-auto d-block rounded"
           >
-            <div class="text text-center mt-4 mb-2">Daftar dulu, yuk!</div>
+            <div class="text text-center mt-4 mb-2">Masuk dulu, yuk!</div>
             <div class="form text-center pt-3">
               <form action="#" @submit.prevent="handleSubmit">
                 <input
+                  required
                   class="form-control"
                   v-model="formData.email"
                   type="email"
                   placeholder="Email"
                 /><br />
-                <input
-                  class="form-control"
-                  v-model="formData.nama_depan"
-                  type="text"
-                  placeholder="Nama Depan"
-                /><br />
-                <input
-                  class="form-control"
-                  v-model="formData.nama_belakang"
-                  type="text"
-                  placeholder="Nama Belakang"
-                /><br />
-                <div class="input-group mb-3">
+                <div class="input-group mb-3 eye-icon">
                   <input
                     required
                     class="form-control border-right-0"
@@ -50,15 +45,14 @@
                       :icon="password_visible ? 'el:eye-close' : 'mdi:eye'"
                   /></span>
                 </div>
-                <input
-                  class="form-control"
-                  type="password"
-                  placeholder="Ulangi Password"
-                /><br />
-                <button class="button px-4 mb-4" type="submit">Daftar</button>
-                <div class="text-login -px-4 mb-4">
-                  Sudah punya akun?
-                  <a class="link" href="/login">Masuk</a>
+                <br />
+                <div class="alert alert-danger" v-if="error_auth">
+                  {{ error_auth }}
+                </div>
+                <button class="button px-4 mb-4" type="submit">Masuk</button>
+                <div class="text-register -px-4 mb-4">
+                  Belum punya akun?
+                  <a class="link" href="/register">Daftar</a>
                 </div>
               </form>
             </div>
@@ -70,8 +64,9 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { ref, defineComponent, reactive, onMounted } from "vue";
 import axios from "axios";
+import router from "../router/index.js";
 import { Icon } from "@iconify/vue";
 
 export default defineComponent({
@@ -81,39 +76,72 @@ export default defineComponent({
   setup() {
     const formData = reactive({
       email: "",
-      nama_depan: "",
-      nama_belakang: "",
       password: "",
     });
 
-    const handleSubmit = async () => {
-      try {
-        const response = await axios.post(
-          "http://localhost:7890/api/register",
-          {
-            email: formData.email,
-            first_name: formData.nama_depan,
-            last_name: formData.nama_belakang,
-            password: formData.password,
-            username: formData.nama_depan + formData.nama_belakang,
-          }
-        );
+    const error_auth = ref("");
+    const password_visible = ref(false);
+    const loading = ref(false);
 
-        console.log(response);
-      } catch (error) {
-        console.error(error);
+    let code;
+
+    const handleSubmit = async () => {
+      loading.value = true;
+      try {
+        const response = await axios.post("http://localhost:7890/api/login", {
+          email: formData.email,
+          password: formData.password,
+        });
+
+        code = response.data.code;
+        loading.value = false;
+        console.log(code)
+        if (code == 200) {
+          localStorage.setItem("token", JSON.stringify(response.data.data.token))
+          router.push("/dashboard");
+        }
+      } catch (error: any) {
+        if (error.response?.status == 401) {
+          error_auth.value = "Email atau Password salah!";
+        } else {
+          error_auth.value = "Ada kesalahan sistem, coba lagi nanti!";
+        }
+        loading.value = false;
       }
     };
 
     onMounted(() => {
-      window.document.title = "Sri Rejeki - Register";
+      window.document.title = "Sri Rejeki - Login";
     });
-    return { formData, handleSubmit };
+    return {
+      formData,
+      handleSubmit,
+      code,
+      password_visible,
+      error_auth,
+      loading,
+    };
   },
 });
 </script>
 
 <style>
+.blur {
+  filter: blur(2px);
+  transition: filter 0.5s;
+}
+
+.load {
+  position: absolute;
+  left: calc(50% - 50px);
+  top: calc(50vh - 50px);
+  z-index: 1;
+  padding: 20px;
+  border-radius: 10px;
+  text-align: center;
+  font-size: 100px;
+}
+
 .logo {
   width: 35vh;
   height: 7vh;
@@ -148,6 +176,15 @@ export default defineComponent({
   border: 1px solid #c6a28a;
 }
 
+.form-control:focus,
+.form-control:focus + .input-group-text {
+  box-shadow: none;
+  border-color: #c6a28a;
+}
+
+.eye-icon {
+  cursor: pointer;
+}
 .button {
   align-items: center;
   background-image: linear-gradient(135deg, #c6a28a 40%, #aa7d61);
@@ -173,8 +210,17 @@ export default defineComponent({
   opacity: 0.9;
 }
 
-.text-login {
+.text-register {
   font-family: "Roboto", sans-serif;
   color: #555;
+}
+
+.link {
+  text-decoration: none;
+  font-weight: 700;
+}
+
+.border-right-0 {
+  border-right: 0;
 }
 </style>
