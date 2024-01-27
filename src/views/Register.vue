@@ -113,7 +113,7 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .logo {
   width: 35vh;
   height: 7vh;

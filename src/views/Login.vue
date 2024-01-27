@@ -88,7 +88,7 @@ export default defineComponent({
     const handleSubmit = async () => {
       loading.value = true;
       try {
-        const response = await axios.post("http://localhost:7890/api/login", {
+        const response = await axios.post("http://localhost:7890" + "/api/login", {
           email: formData.email,
           password: formData.password,
         });
@@ -97,11 +97,15 @@ export default defineComponent({
         loading.value = false;
         console.log(code)
         if (code == 200) {
-          localStorage.setItem("token", JSON.stringify(response.data.data.token))
-          router.push("/dashboard");
+          const token = JSON.stringify(response.data.data.token.token);
+          const strippedToken = token.slice(1, -1);
+
+          localStorage.setItem("token", strippedToken);
+          router.push("/");
         }
       } catch (error: any) {
         if (error.response?.status == 401) {
+          console.log("A")
           error_auth.value = "Email atau Password salah!";
         } else {
           error_auth.value = "Ada kesalahan sistem, coba lagi nanti!";
