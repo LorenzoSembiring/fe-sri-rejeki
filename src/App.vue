@@ -12,7 +12,6 @@ onMounted(async () => {
 
 async function validateToken() {
   // Get the token from your authentication state (adjust this based on your app's state management)
-  // const token = localStorage.getItem('token');
   const token = localStorage.getItem("token");
 
   if (token) {

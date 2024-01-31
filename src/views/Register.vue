@@ -89,7 +89,7 @@ export default defineComponent({
     const handleSubmit = async () => {
       try {
         const response = await axios.post(
-          "http://localhost:7890/api/register",
+          import.meta.env.VITE_API_URL + "/api/register",
           {
             email: formData.email,
             first_name: formData.nama_depan,
