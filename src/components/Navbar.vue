@@ -57,15 +57,16 @@
             Cari
           </button>
         </form>
-        <CartPopover/>
-        <div class="me-5 p-1 rounded cart-background">
-          <Icon style="font-size: 3.75vh; color: gray;" icon="mdi:cart" />
-        </div>
-        <div v-if="token">
-          <div
-            class="border rounded-pill"
-            style="height: 40px; width: 150px"
-          ></div>
+        <CartPopover class="cart-margin" />
+        <div class="border-start ps-4" v-if="token">
+          <div class="border rounded-pill" style="height: 40px; width: 150px">
+            <div
+              :class="{
+                'default-pic': !isPorfilePicExist,
+                'profile-pic': isPorfilePicExist,
+              }"
+            ></div>
+          </div>
         </div>
 
         <div class="border-start ps-3 py-1" v-else>
@@ -77,22 +78,11 @@
   </nav>
 </template>
 
-<script>
-import router from "../router/index.js";
-import CartPopover from '@/components/CartPopover.vue';
-import { defineComponent, reactive, onMounted } from "vue";
-import { Icon } from "@iconify/vue";
-
-export default defineComponent({
-  components: {
-    Icon,
-    CartPopover,
-  },
-  setup() {},
-});
+<script setup>
+import CartPopover from "@/components/CartPopover.vue";
 
 const token = localStorage.token ?? null;
-// return { token }
+const isPorfilePicExist = false;
 </script>
 
 <style>
@@ -124,5 +114,10 @@ const token = localStorage.token ?? null;
 .cart-background:hover {
   background-color: rgb(235, 235, 235);
   cursor: pointer;
-  }
+}
+.cart-margin {
+  margin-right: 15vw;
+}
+.profil-pic {
+}
 </style>
