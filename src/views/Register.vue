@@ -106,9 +106,11 @@ export default defineComponent({
     let password_not_match = ref(false)
 
     const handleSubmit = async () => {
-      try {
+      if (formData.password === formData.ulangi_password) {
+        // masuk ke logic post register
+        try {
         const response = await axios.post(
-          import.meta.env.VITE_API_URL + "/api/register",
+          import.meta.env.VITE_API_URL + "/api/user/register",
           {
             email: formData.email,
             first_name: formData.nama_depan,
@@ -117,17 +119,20 @@ export default defineComponent({
             username: formData.nama_depan + formData.nama_belakang,
           }
         );
-
         console.log(response);
       } catch (error) {
         console.error(error);
       }
-    };
+      } else {
+        // raise flag password tidak sama
+        password_not_match.value = true
+      }
+    }
 
     onMounted(() => {
       window.document.title = "Sri Rejeki - Register";
     });
-    return { formData, handleSubmit, password_visible, ulangi_password_visible };
+    return { formData, handleSubmit, password_visible, ulangi_password_visible, password_not_match };
   },
 });
 </script>
