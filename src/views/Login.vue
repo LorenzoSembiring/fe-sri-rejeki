@@ -88,7 +88,7 @@ export default defineComponent({
     const handleSubmit = async () => {
       loading.value = true;
       try {
-        const response = await axios.post( import.meta.env.VITE_API_URL + "/api/login", {
+        const response = await axios.post( import.meta.env.VITE_API_URL + "/api/user/login", {
           email: formData.email,
           password: formData.password,
         });
