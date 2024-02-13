@@ -50,11 +50,25 @@
                       :icon="password_visible ? 'el:eye-close' : 'mdi:eye'"
                   /></span>
                 </div>
-                <input
-                  class="form-control"
-                  type="password"
-                  placeholder="Ulangi Password"
-                /><br />
+                <div class="input-group mb-3">
+                  <input
+                    required
+                    class="form-control border-right-0"
+                    v-model="formData.ulangi_password"
+                    :type="ulangi_password_visible ? 'text' : 'password'"
+                    placeholder="Ulangi Password"
+                  />
+                  <span
+                    @click="ulangi_password_visible = !ulangi_password_visible"
+                    class="input-group-text bg-transparent"
+                    id="basic-addon2"
+                    ><Icon
+                      :icon="ulangi_password_visible ? 'el:eye-close' : 'mdi:eye'"
+                  /></span>
+                </div>
+                <div v-if="password_not_match" class="my-2 text-danger">
+                  Password tidak cocok!
+                </div>
                 <button class="button px-4 mb-4" type="submit">Daftar</button>
                 <div class="text-login -px-4 mb-4">
                   Sudah punya akun?
@@ -70,7 +84,7 @@
 </template>
 
 <script lang="ts">
-import { defineComponent, reactive, onMounted } from "vue";
+import { ref, defineComponent, reactive, onMounted } from "vue";
 import axios from "axios";
 import { Icon } from "@iconify/vue";
 
@@ -84,7 +98,12 @@ export default defineComponent({
       nama_depan: "",
       nama_belakang: "",
       password: "",
+      ulangi_password: ""
     });
+
+    const password_visible = ref(false);
+    const ulangi_password_visible = ref(false)
+    let password_not_match = ref(false)
 
     const handleSubmit = async () => {
       try {
@@ -108,7 +127,7 @@ export default defineComponent({
     onMounted(() => {
       window.document.title = "Sri Rejeki - Register";
     });
-    return { formData, handleSubmit };
+    return { formData, handleSubmit, password_visible, ulangi_password_visible };
   },
 });
 </script>
