@@ -9,25 +9,30 @@
                 />
             </div>
         </div>
-        <div class="mx-3 kategori ">Blangkon Jogja</div>
-        <div class="mx-3 nama fs-5">Blangkon Putih Jogja</div>
-        <div class="mx-3 mb-3 harga fw-bold">50000</div>
+        <div class="mx-3 kategori">{{ category }}</div>
+        <div class="mx-3 nama fs-5">{{ name }}</div>
+        <div class="mx-3 mb-3 harga fw-bold">{{ formatToIDR(price) }}</div>
     </div>
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup>
+defineProps({
+    category: String,
+    name: String,
+    price: Number,
+});
 
-export default {
-  // `setup` is a special hook dedicated for the Composition API.
-  setup() {
-    const count = ref(0)
+function formatToIDR(str) {
+    const number = parseFloat(str.replace(/[^\d.-]/g, ""));
 
-    // expose the ref to the template
-    return {
-      count
+    if (isNaN(number)) {
+        return "Invalid input";
     }
-  }
+
+    return number.toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+    });
 }
 </script>
 
