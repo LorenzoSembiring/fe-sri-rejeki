@@ -64,6 +64,9 @@
               :class="{
                 'default-pic': !isPorfilePicExist,
                 'profile-pic': isPorfilePicExist,
+                'rounded-circle': true,
+                'mt-1': true,
+                'ms-1': true
               }"
             ></div>
           </div>
@@ -119,5 +122,13 @@ const isPorfilePicExist = false;
   margin-right: 15vw;
 }
 .profil-pic {
+  background-image: url("@/assets/default_profile_picture.jpg");
+}
+.default-pic{
+  background-image: url("@/assets/default_profile_picture.jpg");
+  background-size: cover;
+  background-position: center;
+  height: 30px;
+  width: 30px;
 }
 </style>
