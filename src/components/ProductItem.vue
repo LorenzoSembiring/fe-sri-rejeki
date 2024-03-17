@@ -1,5 +1,5 @@
 <template>
-    <div class="rounded col-2 content border">
+    <div class="rounded col-2 d-inline-block content border">
         <div class="d-inline">
             <div class="img-fluid my-2" style="text-align: center">
                 <img
