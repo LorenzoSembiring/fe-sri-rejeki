@@ -66,9 +66,13 @@
                 'profile-pic': isPorfilePicExist,
                 'rounded-circle': true,
                 'mt-1': true,
-                'ms-1': true
+                'ms-1': true,
               }"
-            ></div>
+            >
+              <div class="pill-name text-nowrap ms-4 pt-1 ps-3 d-flex align-items-center">
+                Malika Malik
+              </div>
+            </div>
           </div>
         </div>
 
@@ -130,5 +134,11 @@ const isPorfilePicExist = false;
   background-position: center;
   height: 30px;
   width: 30px;
+}
+.pill-name {
+  font-size: 1rem;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  user-select: none;
+  color: grey;
 }
 </style>
