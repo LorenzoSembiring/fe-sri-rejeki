@@ -2,7 +2,7 @@
     <body>
         <Navbar />
 
-        <div class="text-container px-5 py-4">
+        <div class="text-container px-5 py-3">
             <div class="text-tag">Koleksi Kami</div>
         </div>
 
@@ -42,11 +42,12 @@ console.log(products);
 
 <style scoped>
 .text-container {
-    background-color: black;
+    background-color: white;
 }
 .text-tag {
-    color: #aa7d61;
+    color: #c0967b;
     font-size: 2.5rem;
     font-family: "Plus Jakarta Sans", sans-serif;
+    font-weight: 600;
 }
 </style>
