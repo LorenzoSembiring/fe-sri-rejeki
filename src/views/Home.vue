@@ -6,7 +6,7 @@
         <div class="pt-5 px-5 col">
           <div class="text">Warisan Budaya</div>
           <div class="text">Pesona Tradisi</div>
-          <div type="button" class="btn button-belanja p-3 mt-4 mb-5 ">Belanja Sekarang ></div>
+          <a class="btn button-belanja p-3 mt-4 mb-5" href="/shop">Belanja Sekarang ></a>
         </div>
         <div class="image col"></div>
       </div>
