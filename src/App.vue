@@ -18,7 +18,7 @@ async function validateToken() {
     try {
       // Make the API request to validate the token directly in App.vue
       const response = await axios.get(
-        import.meta.env.VITE_API_URL + "/api/token-validation",
+        import.meta.env.VITE_API_URL + "/api/auth/token-validation",
         {
           headers: { Authorization: `Bearer ${token}` }
 
