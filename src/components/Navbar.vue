@@ -58,7 +58,7 @@
           </button>
         </form>
         <CartPopover class="cart-margin" />
-        <!-- <Profile/> -->
+        <Profile/>
       </div>
     </div>
   </nav>
@@ -67,9 +67,6 @@
 <script setup>
 import CartPopover from "@/components/CartPopover.vue";
 import Profile from "@/components/Profile.vue";
-
-const token = localStorage.token ?? null;
-const isPorfilePicExist = false;
 </script>
 
 <style>
