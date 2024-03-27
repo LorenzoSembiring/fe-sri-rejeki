@@ -34,18 +34,9 @@ export default {
   setup() {
     const popover = ref(false);
     // Use ref to get a reference to the button
-    const popoverTrigger = ref(null);
-
-    // Initialize popover in the onMounted lifecycle hook
-    onMounted(() => {
-      // Check if the popoverTrigger is not null before initializing
-      if (popoverTrigger.value) {
-        new bootstrap.Popover(popoverTrigger.value);
-      }
-    });
 
     // Return the popoverTrigger reference
-    return { popoverTrigger, popover };
+    return { popover };
   },
 };
 </script>
