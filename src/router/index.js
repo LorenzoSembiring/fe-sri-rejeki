@@ -5,6 +5,7 @@ import Login from '@/views/Login.vue'
 import Home from '@/views/Home.vue'
 import Shop from '@/views/Shop.vue'
 import Profile from '@/views/Profile.vue'
+import Product from '@/views/Product.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -39,6 +40,11 @@ const router = createRouter({
             path: "/profile", 
             name: "profile",
             component: Profile
+        },
+        {
+            path: "/product",
+            name: "product",
+            component: Product
         }
     ]
 })
