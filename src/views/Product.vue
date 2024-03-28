@@ -95,7 +95,15 @@
         </ul>
       </div>
       <div class="text-success fw-semibold my-1">TERSEDIA</div>
-      <div></div>
+      <div>
+        <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
+        <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
+      </div>
+      <div class="mt-4">
+        <button class="btn btn-primary">
+          <Icon icon="mdi:cart" style="font-size: 20px" /> Tambah Ke Keranjang
+        </button>
+      </div>
     </div>
   </div>
 </template>
