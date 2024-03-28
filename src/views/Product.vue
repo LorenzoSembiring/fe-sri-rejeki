@@ -3,9 +3,9 @@
   <div class="row">
     <div class="col">
       <!-- 360 button -->
-      <div class="z-1 position-absolute ">
-        <button class="btn rounded-circle bg-dark">
-          <Icon icon="iconoir:view-360" style="font-size: 24px;color:white"/>
+      <div class="z-1 position-absolute end-50 pe-4 pt-2">
+        <button class="btn rounded-circle bg-white border border-dark">
+          <Icon icon="iconoir:view-360" class="text-black text-opacity-75" style="font-size: 24px;"/>
         </button>
       </div>
       <!-- carousel -->
