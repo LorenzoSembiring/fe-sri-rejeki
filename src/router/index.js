@@ -6,6 +6,7 @@ import Home from '@/views/Home.vue'
 import Shop from '@/views/Shop.vue'
 import Profile from '@/views/Profile.vue'
 import Product from '@/views/Product.vue'
+import Cart from '@/views/Cart.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -45,6 +46,11 @@ const router = createRouter({
             path: "/product",
             name: "product",
             component: Product
+        },
+        {
+            path: "/cart",
+            name: "cart",
+            component: Cart
         }
     ]
 })
