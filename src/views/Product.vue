@@ -5,7 +5,7 @@
   <div class="container-fluid">
     <div class="row pt-5">
       <!-- left col -->
-      <div class="col left-col" style="height: 100vh; overflow-y: auto">
+      <div class="col left-col" style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto">
         <!-- 360 button -->
         <div class="z-1 position-absolute end-50 pe-4 pt-2">
           <button class="btn rounded-circle bg-white border border-dark">
