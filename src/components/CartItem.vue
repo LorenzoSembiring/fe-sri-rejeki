@@ -23,9 +23,9 @@
         </div>
         <div class="ms-3">Ukuran: 9</div>
         <div class="ms-3 mt-1 border rounded" style="width: fit-content">
-          <button class="button-counter">-</button>
-          <input type="number" class="input-counter" />
-          <button class="button-counter">+</button>
+          <button class="button-counter" @click="decrement()">-</button>
+          <input type="number" class="input-counter" v-model="inputValue" />
+          <button class="button-counter" @click="increment()">+</button>
         </div>
       </div>
 
@@ -33,6 +33,20 @@
     </div>
   </div>
 </template>
+<script setup>
+import {ref} from 'vue';
+
+let inputValue = ref(0)
+
+const increment = () => {
+  inputValue.value = parseInt(inputValue.value) + 1;
+  console.log(count)
+};
+
+const decrement = () => {
+  inputValue.value = parseInt(inputValue.value) - 1;
+};
+</script>
 <style scoped>
 img {
   width: 90px;
