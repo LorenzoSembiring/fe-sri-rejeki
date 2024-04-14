@@ -14,17 +14,13 @@
       <div class="h2 ms-4">Ringkasan Pesanan</div>
       <div class="d-flex row bg-white rounded mx-3 mt-4">
         <div class="col-8 my-3">
-          <div class="summary-text">Total Belanja</div>
-          <div class="summary-text">Biaya pengiriman</div>
-          <div class="border-top mt-3 summary-text fw-bold">Total</div>
+          <div class="summary-text fw-bold">Total Belanja</div>
         </div>
         <div class="col my-3">
-          <div class="summary-text">Rp. 50.000</div>
-          <div class="summary-text">Rp. 50.000</div>
-          <div class="summary-text mt-3 fw-bold">Rp. 100.000</div>
+          <div class="summary-text fw-bold">Rp. 50.000</div>
         </div>
         <div class="justify-content-center d-flex my-4">
-          <button class="button-bayar py-2 px-5">Bayar</button>
+          <button class="button-bayar py-2 px-5">Pilih Pengiriman</button>
         </div>
       </div>
     </div>
@@ -53,7 +49,7 @@ import CartItem from "@/components/CartItem.vue"
   border-radius: 8px;
   border-style:none;
   background-image: linear-gradient(135deg, #c6a28a 40%, #aa7d61);
-  color: aliceblue;
+  color: rgb(255, 255, 255);
   font-weight: 600;
 }
 
