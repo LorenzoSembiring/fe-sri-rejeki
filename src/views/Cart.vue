@@ -6,6 +6,7 @@
       <!-- container item -->
       <div class="ms-5">
         <!-- item -->
+        <CartItem class="me-4 mb-3"/>
         <CartItem class="me-4"/>
       </div>
     </div>
