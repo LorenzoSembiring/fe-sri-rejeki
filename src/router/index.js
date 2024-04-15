@@ -8,6 +8,7 @@ import Profile from '@/views/Profile.vue'
 import Product from '@/views/Product.vue'
 import Cart from '@/views/Cart.vue'
 import Shipping from '@/views/Shipping.vue'
+import AdminDashboard from '@/views/admin/Dashboard.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -57,6 +58,11 @@ const router = createRouter({
             path: "/shipping",
             name: "shipping",
             component: Shipping
+        },
+        {
+            path: "/admin/dashboard",
+            name: "Admin Dashboard",
+            component: AdminDashboard
         }
     ]
 })
