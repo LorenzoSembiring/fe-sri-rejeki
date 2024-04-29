@@ -6,6 +6,7 @@ import Home from '@/views/Home.vue'
 import Shop from '@/views/Shop.vue'
 import Profile from '@/views/Profile.vue'
 import Product from '@/views/Product.vue'
+import View3D from '@/views/View3D.vue'
 import Cart from '@/views/Cart.vue'
 import Shipping from '@/views/Shipping.vue'
 import AdminDashboard from '@/views/admin/Dashboard.vue'
@@ -48,6 +49,11 @@ const router = createRouter({
             path: "/product",
             name: "product",
             component: Product
+        },
+        {
+            path: "/product/3d",
+            name: "3D",
+            component: View3D
         },
         {
             path: "/cart",
