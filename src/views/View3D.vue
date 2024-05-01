@@ -29,6 +29,8 @@ function init() {
     1000
   );
   camera.position.z = 5;
+  camera.position.y = 3;
+
 
   // Renderer setup
   renderer = new THREE.WebGLRenderer();
@@ -38,12 +40,15 @@ function init() {
   // Orbit controls setup
   controls = new OrbitControls(camera, renderer.domElement);
 
+  // Initialize texture
+  const texture = new THREE.TextureLoader().load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIceEv7Ybvt_pN4AcFhwxV3-_EcaMQ14WKkxxDEhor9Q&s')
+
   // Load GLTF model
   const loader = new GLTFLoader();
   loader.load(
-    "http://localhost:7890/uploads/mesh/cone.glb", // Update with correct path
+    "http://localhost:7890/uploads/mesh/coneuv.glb", // Update with correct path
     function (gltf) {
-      const phongMaterial = new THREE.MeshPhongMaterial({ color: 0xff0000 });
+      const phongMaterial = new THREE.MeshBasicMaterial( { map: texture } );
       gltf.scene.traverse((child) => {
         if (child.isMesh) {
           child.material = phongMaterial;
