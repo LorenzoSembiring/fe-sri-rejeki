@@ -28,9 +28,10 @@ function init() {
     0.1,
     1000
   );
-  camera.position.z = 5;
-  camera.position.y = 3;
 
+  camera.position.x = 2.7488196461488967
+  camera.position.y = 1.9438984306648681
+  camera.position.z = 4.76080344523951
 
   // Renderer setup
   renderer = new THREE.WebGLRenderer();
