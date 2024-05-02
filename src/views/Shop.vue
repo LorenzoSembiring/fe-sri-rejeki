@@ -5,13 +5,14 @@
         <div class="text-container px-5 py-3">
             <div class="text-tag">Koleksi Kami</div>
         </div>
-
-        <product-item class="m-2"
-            v-for="product in products"
-            :category="product.category"
-            :name="product.name"
-            :price="product.price"
-        />
+        <router-link :to="'/product/' + product.id"  >
+            <product-item class="m-2"
+                v-for="product in products"
+                :category="product.category"
+                :name="product.name"
+                :price="product.price"
+            />
+        </router-link>
     </body>
 </template>
 
@@ -22,22 +23,24 @@ import ProductItem from "@/components/ProductItem.vue";
 
 const products = ref([
     {
+        id: 1,
         category: "Blangkon Jawa",
         name: "Blangkon Batik Jogja",
         price: "50000",
     },
     {
+        id: 2,
         category: "Blangkon Jawa",
         name: "Blangkon Batik Solo",
         price: "55000",
     },
     {
+        id: 3,
         category: "Blangkon Jawa",
         name: "Blangkon Batik Klaten",
         price: "60000",
     },
 ]);
-console.log(products);
 </script>
 
 <style scoped>
