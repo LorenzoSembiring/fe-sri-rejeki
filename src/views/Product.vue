@@ -7,17 +7,19 @@
       <!-- left col -->
       <div class="col left-col" style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto">
         <!-- 360 button -->
-        <div class="z-1 position-absolute end-50 pe-4 pt-2">
-          <button class="btn rounded-circle bg-white border border-dark">
-            <Icon
-              icon="iconoir:view-360"
-              class="text-black text-opacity-75"
-              style="font-size: 24px"
-            />
-          </button>
-        </div>
         <!-- carousel -->
         <div id="carouselExampleIndicators" class="carousel slide z-0">
+          <div class="row text-end">
+            <div class="z-2 position-absolute  ps-4 pt-4">
+              <button class="btn rounded-circle bg-white border border-dark">
+                <Icon
+                  icon="iconoir:view-360"
+                  class="text-black text-opacity-75"
+                  style="font-size: 24px"
+                />
+              </button>
+            </div>
+          </div>
           <div class="carousel-indicators">
             <button
               type="button"
