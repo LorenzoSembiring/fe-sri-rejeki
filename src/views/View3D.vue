@@ -40,6 +40,8 @@ function init() {
 
   // Orbit controls setup
   controls = new OrbitControls(camera, renderer.domElement);
+  controls.maxDistance = 7
+  controls.minDistance = 2.5
 
   // Initialize texture
   const texture = new THREE.TextureLoader().load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIceEv7Ybvt_pN4AcFhwxV3-_EcaMQ14WKkxxDEhor9Q&s')
