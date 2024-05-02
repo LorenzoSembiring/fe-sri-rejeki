@@ -11,7 +11,7 @@
         <div id="carouselExampleIndicators" class="carousel slide z-0">
           <div class="row text-end">
             <div class="z-2 position-absolute  ps-4 pt-4">
-              <button class="btn rounded-circle bg-white border border-dark">
+              <button @click="routeToView3D" class="btn rounded-circle bg-white border border-dark">
                 <Icon
                   icon="iconoir:view-360"
                   class="text-black text-opacity-75"
@@ -137,6 +137,12 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
+import router from "../router/index.js";
+
+function routeToView3D(){
+  router.push('/product/3d')
+}
+
 </script>
 <style>
 .left-col {
