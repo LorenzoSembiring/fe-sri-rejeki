@@ -1,18 +1,16 @@
 <template>
     <body>
         <Navbar />
-
         <div class="text-container px-5 py-3">
             <div class="text-tag">Koleksi Kami</div>
         </div>
-        <router-link :to="'/product/' + product.id"  >
             <product-item class="m-2"
                 v-for="product in products"
+                :id="product.id"
                 :category="product.category"
                 :name="product.name"
                 :price="product.price"
             />
-        </router-link>
     </body>
 </template>
 
