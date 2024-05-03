@@ -49,7 +49,7 @@ function init() {
   // Load GLTF model
   const loader = new GLTFLoader();
   loader.load(
-    "http://localhost:7890/uploads/mesh/coneuv.glb", // Update with correct path
+    import.meta.env.VITE_API_URL + "/uploads/mesh/coneuv.glb", // Update with correct path
     function (gltf) {
       const phongMaterial = new THREE.MeshBasicMaterial( { map: texture } );
       gltf.scene.traverse((child) => {
