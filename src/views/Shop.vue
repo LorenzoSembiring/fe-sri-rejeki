@@ -11,9 +11,6 @@
                 :name="product.name"
                 :price="product.price"
                 />
-        <div>
-            {{products}}
-        </div>
     </body>
 </template>
 
