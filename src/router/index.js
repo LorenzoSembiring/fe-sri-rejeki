@@ -46,14 +46,16 @@ const router = createRouter({
             component: Profile
         },
         {
-            path: "/product",
+            path: "/product/:id",
             name: "product",
-            component: Product
+            component: Product,
+            props: true
         },
         {
-            path: "/product/3d",
+            path: "/product/:id/3d",
             name: "3D",
-            component: View3D
+            component: View3D,
+            props: true
         },
         {
             path: "/cart",
