@@ -27,7 +27,7 @@ const products = ref([]);
 
 const fetchProduct = async () => {
     try {
-        const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/get");
+        const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/index");
         products.value = response.data.data;
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -38,27 +38,6 @@ const fetchProduct = async () => {
 onMounted(
     fetchProduct
 );
-
-const prod = ref([
-{
-          id: 1,
-          category: "Blangkon Jawa",
-          name: "Blangkon Batik Jogja",
-          price: "50",
-        },
-        {
-          id: 2,
-          category: "Blangkon Jawa",
-          name: "Blangkon Batik Solo",
-          price: "55000",
-        },
-        {
-          id: 3,
-          category: "Blangkon Jawa",
-          name: "Blangkon Batik Klaten",
-          price: "60000",
-        },
-]);
 </script>
 
 <style scoped>
