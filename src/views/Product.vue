@@ -138,9 +138,21 @@
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
 import router from "../router/index.js";
+import { ref, onMounted } from 'vue';
+import { useRoute } from "vue-router";
+
+const route = useRoute();
+
+const id = ref("")
+onMounted(() => {
+  id.value = route.params.id;
+
+  console.log("aaa")
+});
 
 function routeToView3D(){
-  router.push('/product/3d')
+  router.push('/product/' + id.value +'/3d')
+  console.log(route.query.id)
 }
 
 </script>
