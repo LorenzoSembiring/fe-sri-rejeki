@@ -90,20 +90,17 @@
             class="fs-2 fw-semibold mt-5 mb-3"
             style="font-family: 'Plus Jakarta Sans'"
           >
-            Blangkon Jawa Tengah
-          </div>
+          {{ products.name }}
+        </div>
           <div>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Impedit
-            perferendis enim praesentium recusandae obcaecati? Esse aspernatur
-            cupiditate maiores, accusamus minus dignissimos nemo quam, quaerat
-            sit minima sapiente quo quas. Dolore!
+            {{ products.description }}
           </div>
         </div>
       </div>
       <!-- right col -->
       <div class="col" style="overflow-y: unset">
-        <div class="fs-2 fw-semibold mt-5 mb-1">Blangkon Jawa Tengah</div>
-        <div class="fs-3">Rp. 50.000</div>
+        <div class="fs-2 fw-semibold mt-5 mb-1">{{ products.name }}</div>
+        <div class="fs-3">{{ formatToIDR(products.price) }}</div>
         <div class="mt-4 mb-2">Pilih Ukuran</div>
         <div class="dropdown">
           <button
@@ -140,6 +137,7 @@ import { Icon } from "@iconify/vue";
 import router from "../router/index.js";
 import { ref, onMounted } from 'vue';
 import { useRoute } from "vue-router";
+import axios from "axios";
 
 const route = useRoute();
 
@@ -147,16 +145,37 @@ const id = ref("")
 onMounted(() => {
   id.value = route.params.id;
 
-  console.log("aaa")
 });
 
 function routeToView3D(){
   router.push('/product/' + id.value +'/3d')
-  console.log(route.query.id)
 }
 
+function formatToIDR(number) {
+    const numbers = parseInt(number)
+    return numbers.toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+    });
+}
+
+const products = ref([]);
+
+const fetchProduct = async () => {
+    try {
+        const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/get/" + id.value);
+        products.value = response.data.data;
+    } catch (error) {
+        console.error('Error fetching products:', error);
+    }
+    };
+
+// Fetch posts when the component is mounted
+onMounted(
+    fetchProduct
+);
 </script>
-<style>
+<style scoped>
 .left-col {
   overflow-y: scroll;
 
