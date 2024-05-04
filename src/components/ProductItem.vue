@@ -29,13 +29,7 @@ defineProps({
     price: Number,
 });
 
-function formatToIDR(str) {
-    const number = parseFloat(str.replace(/[^\d.-]/g, ""));
-
-    if (isNaN(number)) {
-        return "Invalid input";
-    }
-
+function formatToIDR(number) {
     return number.toLocaleString("id-ID", {
         style: "currency",
         currency: "IDR",
