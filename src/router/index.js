@@ -10,6 +10,7 @@ import View3D from '@/views/View3D.vue'
 import Cart from '@/views/Cart.vue'
 import Shipping from '@/views/Shipping.vue'
 import AdminDashboard from '@/views/admin/Dashboard.vue'
+import AdminProduct from '@/views/admin/Product.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -71,6 +72,11 @@ const router = createRouter({
             path: "/admin/dashboard",
             name: "Admin Dashboard",
             component: AdminDashboard
+        },
+        {
+            path: "/admin/product",
+            name: "Manage Product",
+            component: AdminProduct
         }
     ]
 })
