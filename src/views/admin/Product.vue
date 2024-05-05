@@ -2,8 +2,8 @@
 	<div class="row">
 		<AdminSidebar />
 		<div class="col">
-			<div class="row main">
-				<div class="col h2 text-header">Daftar Produk</div>
+			<div class="row header">
+				<div class="col h2 text-header ms-3">Daftar Produk</div>
 				<div class="col d-flex flex-row-reverse">
 					<button class="btn button-coklat"><Icon style="font-size: 25" icon="iconamoon:category-duotone" /></button>
 				</div>
@@ -13,18 +13,24 @@
 					</div>
 				</div>
 			</div>
+			<div class="row bg-light mt-4">
+				<div class="py-1 my-5 ms-4 rounded border bg-white table">
+					<AdminProductItem/>
+				</div>
+			</div>
 		</div>
 	</div>
 </template>
 
 <script setup>
 import AdminSidebar from "@/components/AdminSidebar.vue";
+import AdminProductItem from "@/components/AdminProductItem.vue";
 import { Icon } from "@iconify/vue";
 
 </script>
 
 <style scoped>
-.main {
+.header {
 	margin-top: 10vh;
 	
 }
