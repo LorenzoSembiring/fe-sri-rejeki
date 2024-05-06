@@ -11,6 +11,7 @@ import Cart from '@/views/Cart.vue'
 import Shipping from '@/views/Shipping.vue'
 import AdminDashboard from '@/views/admin/Dashboard.vue'
 import AdminProduct from '@/views/admin/Product.vue'
+import AdminAddProduct from '@/views/admin/AddProduct.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -77,7 +78,12 @@ const router = createRouter({
             path: "/admin/product",
             name: "Manage Product",
             component: AdminProduct
-        }
+        },
+        {
+            path: "/admin/add-product",
+            name: "Add Product",
+            component: AdminAddProduct
+        },
     ]
 })
 
