@@ -1,10 +1,11 @@
 <template>
+  <AdminSidebar>
   <div class="row">
-    <AdminSidebar/>
     <div class="col pt-5">
       <div class="h2">Halo, Admin</div>
     </div>
   </div>
+  </AdminSidebar>
 </template>
 
 <script setup>
