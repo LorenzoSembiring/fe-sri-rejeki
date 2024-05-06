@@ -1,8 +1,8 @@
 <template>
-    <div class="container-fluid">
-      <div class="row">
-      <div class="col-sm-2 sidebar pt-5">
-        <div class="mx-4 mt-5">
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-2 sidebar pt-5 sticky-top">
+        <div class="mx-4 mt-5 ">
           <div
             class="ms-1 pill-sidebar border rounded-pill row"
             style="height: 48px; width: 100%"
@@ -60,11 +60,11 @@
           </div>
         </div>
       </div>
-      <div class="col-lg-10">
+      <div class="col-10 ">
         <slot></slot>
       </div>
     </div>
-    </div>
+  </div>
 </template>
 <script setup>
 import { Icon } from "@iconify/vue";
