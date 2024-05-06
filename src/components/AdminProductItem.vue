@@ -32,11 +32,11 @@
         </div>
         <div class="col-1 ms-5">
             <label class="toggle" for="myToggle">
-                <input class="toggle__input" name="" type="checkbox" id="myToggle">
+                <input class="toggle__input" name="" type="checkbox" id="myToggle" :checked="status == 'ACTIVE'">
                 <div class="toggle__fill"></div>
             </label>
         </div>
-        <div class="ms-5">
+        <div class="">
             <button class=" btn button-putih border px-3 py-1">Atur</button>
         </div>
     </div>
@@ -50,14 +50,16 @@ defineProps({
     name: String,
     price: Number,
     status: String
-    });
+});
 
-    const isInputFocused = ref(false);
+const boolStatus = ref(false);
+const isInputFocused = ref(false);
 
-    const setFocus = (value) => {
+const setFocus = (value) => {
     isInputFocused.value = value;
 };
 </script>
+
 <style scoped>
 .button-putih {
 	border-radius: 8px;
