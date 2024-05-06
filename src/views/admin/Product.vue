@@ -10,7 +10,7 @@
         </div>
         <div class="col-4">
           <div class="border-start ps-3">
-            <button class="btn button-coklat py-2">+ Tambah Produk</button>
+            <button class="btn button-coklat py-2" @click="routeToAddProductView">+ Tambah Produk</button>
           </div>
         </div>
       </div>
@@ -36,6 +36,7 @@ import AdminProductItem from "@/components/AdminProductItem.vue";
 import { Icon } from "@iconify/vue";
 import { ref, onMounted } from 'vue';
 import axios from "axios";
+import router from "../../router/index.js";
 
 const products = ref([])
 
@@ -47,7 +48,9 @@ const fetchProduct = async () => {
 		console.error('Error fetching products:', error);
 	}
 }
-
+function routeToAddProductView(){
+	router.push('/admin/add-product')
+}
 onMounted(
     fetchProduct
 );
