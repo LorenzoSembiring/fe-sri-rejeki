@@ -25,14 +25,14 @@
                 'bg-light': true,
                 'section-price': true
                 }">Rp</div>
-            <input class="rounded-end input-item input-price" type="number" id="price" v-on:focus="setFocus(true)" v-on:blur="setFocus(false)" style="width: 7rem;">
+            <input class="rounded-end input-item input-price" type="text" id="price" :value="prices.toLocaleString()" v-on:focus="setFocus(true)" v-on:blur="setFocus(false)" style="width: 7rem;">
         </div>
         <div class="col-1 ms-5">
             <input class="rounded input-item" type="number" id="stock" style="width: 4rem;">
         </div>
         <div class="col-1 ms-5">
             <label class="toggle" for="myToggle">
-                <input class="toggle__input" name="" type="checkbox" id="myToggle" :checked="status == 'ACTIVE'">
+                <input class="toggle__input" type="checkbox" id="myToggle" :checked="status == 'ACTIVE'">
                 <div class="toggle__fill"></div>
             </label>
         </div>
@@ -48,7 +48,7 @@ defineProps({
     id: Number,
     stock: Number,
     name: String,
-    price: Number,
+    prices: Number,
     status: String
 });
 
