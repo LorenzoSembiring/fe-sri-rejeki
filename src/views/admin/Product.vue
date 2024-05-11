@@ -1,5 +1,5 @@
 <template>
-  <AdminSidebar>
+  <LayoutDefault>
     <div class="col-lg-10">
       <div class="row header">
         <div class="col h2 text-header ms-3">Daftar Produk</div>
@@ -17,21 +17,21 @@
       <div class="row bg-light mt-4" >
         <div class="py-1 my-5 ms-4 rounded border bg-white table">
           <AdminProductItem 
-		  v-for="product in products"
+              v-for="product in products"
                 :id="product.id"
                 :category="product.description"
                 :name="product.name"
-                :price="product.price"
-				:status="product.status"
-		  />
+                :prices="product.price"
+                :status="product.status"
+              />
         </div>
       </div>
     </div>
-  </AdminSidebar>
+  </LayoutDefault>
 </template>
 
 <script setup>
-import AdminSidebar from "@/components/AdminSidebar.vue";
+import LayoutDefault from "@/components/LayoutDefault.vue";
 import AdminProductItem from "@/components/AdminProductItem.vue";
 import { Icon } from "@iconify/vue";
 import { ref, onMounted } from 'vue';
@@ -42,7 +42,7 @@ const products = ref([])
 
 const fetchProduct = async () => {
 	try{
-		const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/index?page=1&limit=10");
+		const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/admin-index?page=1&limit=10");
         products.value = response.data.data;
 	} catch {
 		console.error('Error fetching products:', error);
