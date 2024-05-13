@@ -70,6 +70,9 @@ function routeToAdd3DView() {
 .header {
   margin-top: 10vh;
 }
+.text-header {
+  color: #402218;
+}
 .button-coklat {
   border-radius: 8px;
   border-style: none;
