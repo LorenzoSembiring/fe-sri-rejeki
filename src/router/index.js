@@ -14,6 +14,7 @@ import AdminProduct from '@/views/admin/Product.vue'
 import AdminAddProduct from '@/views/admin/AddProduct.vue'
 import D3 from '@/views/admin/3D.vue'
 import AdminCategory from '@/views/admin/category.vue'
+import AdminAddCategory from '@/views/admin/AddCategory.vue'
 
 const router = createRouter({
     history: createWebHistory(),
@@ -95,6 +96,11 @@ const router = createRouter({
             path: "/admin/category",
             name: "Manage Category",
             component: AdminCategory
+        },
+        {
+            path: "/admin/add-category",
+            name: "Add Category",
+            component: AdminAddCategory
         },
     ]
 })
