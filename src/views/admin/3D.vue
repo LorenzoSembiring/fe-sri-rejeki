@@ -76,7 +76,7 @@ function routeToAdd3DView() {
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #d7b19d;
+  background-color: #A77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }

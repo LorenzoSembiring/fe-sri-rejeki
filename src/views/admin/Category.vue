@@ -50,7 +50,7 @@ const items = ref([{ id: 1, name: 'Foo' }, { id: 2, name: 'Bar' }])
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #d7b19d;
+  background-color: #A77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
@@ -67,7 +67,7 @@ const items = ref([{ id: 1, name: 'Foo' }, { id: 2, name: 'Bar' }])
 .button-merah {
   border-radius: 8px;
   border-style: none;
-  background-color: #e02727;
+  background-color: #d14747;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }

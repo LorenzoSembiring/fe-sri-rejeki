@@ -12,7 +12,7 @@
           </div>
 				</div>
         <div class="d-flex justify-content-end">
-          <button class="button-putih py-2 px-5 mx-4">Batal</button>
+          <button class="button-putih py-2 px-5 mx-4" @click="back">Batal</button>
           <button class="button-coklat py-2 px-5">Simpan</button>
         </div>
 			</div>
@@ -22,6 +22,11 @@
 
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
+import router from "../../router/index.js";
+
+function back() {
+  router.push("/admin/category");
+}
 </script>
 
 <style scoped>
@@ -31,7 +36,7 @@ import LayoutDefault from "@/components/LayoutDefault.vue";
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #d7b19d;
+  background-color: #A77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
