@@ -1,5 +1,5 @@
 <template>
-  <LayoutDefault>
+  <LayoutDefault route="d3">
     <div class="header">
       <div class="col h2 text-header px-4">3D</div>
     </div>

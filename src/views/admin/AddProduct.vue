@@ -1,5 +1,5 @@
 <template>
-  <LayoutDefault>
+  <LayoutDefault route="product">
     <div class="header">
       <div class="col h2 text-header px-4">Tambah Produk</div>
     </div>

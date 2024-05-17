@@ -1,5 +1,5 @@
 <template>
-  <LayoutDefault>
+  <LayoutDefault route="category">
     <div class="header">
       <div class="col h2 text-header px-4">Tambah Kategori</div>
     </div>

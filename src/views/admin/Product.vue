@@ -1,5 +1,5 @@
 <template>
-  <LayoutDefault>
+  <LayoutDefault route="product">
     <div class="col-lg-10">
       <div class="row header">
         <div class="col h2 text-header ms-3">Daftar Produk</div>

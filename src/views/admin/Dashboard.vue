@@ -1,5 +1,5 @@
 <template>
-  <LayoutDefault>
+  <LayoutDefault route="dashboard">
     <div class="header">
       <div class="col h2 text-header px-4">Halo, Admin</div>
     </div>

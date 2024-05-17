@@ -1,6 +1,6 @@
 <template>
   <div class="grid-container">
-    <AdminSidebar class="sidebar"></AdminSidebar>
+    <AdminSidebar :route="route" class="sidebar"></AdminSidebar>
     <div class="main">
         <slot></slot>
     </div>
@@ -8,6 +8,10 @@
 </template>
 <script setup>
 import AdminSidebar from "@/components/AdminSidebar.vue";
+
+defineProps({
+  route: String
+});
 </script>
 <style scoped>
 .grid-container {
