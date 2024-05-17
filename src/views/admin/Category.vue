@@ -18,7 +18,7 @@
             {{ item.name }}
           </div>
 					<div class="col-3">
-            <button type="button" class="btn button-putih border px-3 py-1 mx-2">Edit</button>
+            <button type="button" class="btn button-putih border px-3 py-1 mx-2" @click="edit">Edit</button>
             <button type="button" class="btn button-merah border px-3 py-1">Hapus</button>
           </div>
 				</div>
@@ -37,6 +37,9 @@ function routeToAddCategoryView() {
   router.push("/admin/add-category");
 }
 
+function edit() {
+  router.push("/admin/edit-category");
+}
 const items = ref([{ id: 1, name: 'Foo' }, { id: 2, name: 'Bar' }])
 </script>
 
