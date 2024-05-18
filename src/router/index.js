@@ -13,7 +13,7 @@ import AdminDashboard from '@/views/admin/Dashboard.vue'
 import AdminProduct from '@/views/admin/Product.vue'
 import AdminAddProduct from '@/views/admin/AddProduct.vue'
 import D3 from '@/views/admin/3D.vue'
-import AdminCategory from '@/views/admin/category.vue'
+import AdminCategory from '@/views/admin/Category.vue'
 import AdminAddCategory from '@/views/admin/AddCategory.vue'
 import AdminEditCategory from '@/views/admin/EditCategory.vue'
 
