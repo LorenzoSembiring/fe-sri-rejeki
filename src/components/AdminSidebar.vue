@@ -1,19 +1,9 @@
 <template>
-  <div class="sidebar pt-5 sticky-top border-end">
-    <div class="mx-4 mt-5">
-      <div
-        class="ms-1 pill-sidebar border rounded-pill row"
-        style="height: 48px; width: 100%"
-      >
-        <div class="picture rounded-circle ms-1">
-          <div
-            class="text-brown fw-semibold ms-5 d-flex align-items-center"
-            style="height: 100%"
-          >
-            Admin
-          </div>
-        </div>
-      </div>
+  <div class="sidebar pt-3 sticky-top border-end d-flex flex-column" style="height: 100vh">
+    <div class="d-flex justify-content-center my-4">
+      <img style="height: 5vh; width: auto" src="@/assets/logo-cropped.png" />
+    </div>
+    <div class="flex-grow-1 mx-4">
       <div class="border-top py-2 my-2" :class="{ 'bg-brown rounded': route == 'dashboard' }">
         <a class="ms-3 text-brown fw-semibold sidebar-button" :class="{ 'text-white': route == 'dashboard' }" href="/admin/dashboard"
           ><Icon class="" style="font-size: 20" icon="teenyicons:home-outline" />
@@ -57,8 +47,19 @@
         </a>
       </div>
     </div>
+    <div class="px-2 pe-3 my-3">
+      <div class="d-flex ms-1 border-profile rounded-pill row mt-auto mb-2" style="height: 9vh; width: 100%;">
+        <div class="col-3 align-items-center p-1">
+          <img class="rounded-circle" style="height: 7vh; width: 7vh;" src="@/assets/default_profile_picture.jpg">
+        </div>
+        <div class="text-brown fw-semibold d-flex align-items-center col" style="height: 100%">
+          Admin Sri Rejeki
+        </div>
+      </div>
+    </div>
   </div>
 </template>
+
 <script setup>
 import { Icon } from "@iconify/vue";
 
@@ -78,5 +79,17 @@ defineProps({
 }
 .text-brown {
   color: #865439
+}
+.picture {
+  width: 20px;
+  height: 20px;
+  background-image: url("@/assets/default_profile_picture.jpg");
+  background-size: contain;
+  background-repeat: no-repeat;
+}
+.border-profile {
+  border-style: solid;
+  border-width: 1px;
+  border-color: #865439
 }
 </style>
