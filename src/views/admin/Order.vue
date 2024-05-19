@@ -29,7 +29,7 @@
           <div class="col">Aksi</div>
         </div>
       </div>
-      <div class="py-2 px-0 rounded-bottom border border-bottom-0">
+      <div class="py-2 px-0 border border-bottom-0">
         <div class="row my-3">
           <div class="col-1 d-flex justify-content-center">
             <input
@@ -49,8 +49,8 @@
           <div class="col">10 Jan 2024</div>
           <div class="col">50.000</div>
           <div class="col">
-						<Icon icon="ph:dots-three-bold" style="font-size: 26px;"/>
-					</div>
+            <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
+          </div>
         </div>
         <div class="row my-3">
           <div class="col-1 d-flex justify-content-center">
@@ -71,8 +71,28 @@
           <div class="col">15 Jan 2024</div>
           <div class="col">50.000</div>
           <div class="col">
-						<Icon icon="ph:dots-three-bold" style="font-size: 26px;"/>
-					</div>
+            <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
+          </div>
+        </div>
+      </div>
+      <div class="pt-3 rounded-bottom border border-top-0 bg-body-secondary">
+        <div class="row mx-3 text-secondary">
+          <div class="col mt-1">Menampilkan 1-10 dari 20 Pesanan</div>
+          <div class="col d-flex justify-content-end align-items-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#">←</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">→</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
@@ -99,25 +119,5 @@ import { ref } from "vue";
   background-color: #a77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
-}
-.button-putih {
-  border-radius: 8px;
-  border-style: none;
-  background-color: #ffffff;
-  color: rgb(53, 53, 53);
-  font-weight: 600;
-}
-.button-putih:hover {
-  background-color: #ececec;
-}
-.button-merah {
-  border-radius: 8px;
-  border-style: none;
-  background-color: #d14747;
-  color: rgb(255, 255, 255);
-  font-weight: 600;
-}
-.button-merah:hover {
-  background-color: #be2020;
 }
 </style>
