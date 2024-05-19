@@ -9,9 +9,7 @@
       </button>
     </div>
     <div class="mt-4 p-4">
-      <div
-        class="py-2 px-0 rounded-top border border-bottom-0 bg-tabel"
-      >
+      <div class="py-2 px-0 rounded-top border border-bottom-0 bg-tabel">
         <div class="row fw-semibold">
           <div class="col-1 d-flex justify-content-center">
             <input
@@ -39,8 +37,16 @@
           <div class="col-1">1</div>
           <div class="col-7">Blangkon Jawa Tengah</div>
           <div class="col">
-            <button type="button" class="btn button-putih border px-3 py-1 me-2" @click="edit">Edit</button>
-            <button type="button" class="btn button-merah border px-3 py-1">Hapus</button>
+            <button
+              type="button"
+              class="btn button-putih border px-3 py-1 me-2"
+              @click="edit"
+            >
+              Edit
+            </button>
+            <button type="button" class="btn button-merah border px-3 py-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
+              Hapus
+            </button>
           </div>
         </div>
         <div class="row my-3">
@@ -55,8 +61,16 @@
           <div class="col-1">2</div>
           <div class="col-7">Blangkon Jogja</div>
           <div class="col">
-            <button type="button" class="btn button-putih border px-3 py-1 me-2" @click="edit">Edit</button>
-            <button type="button" class="btn button-merah border px-3 py-1">Hapus</button>
+            <button
+              type="button"
+              class="btn button-putih border px-3 py-1 me-2"
+              @click="edit"
+            >
+              Edit
+            </button>
+            <button type="button" class="btn button-merah border px-3 py-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
+              Hapus
+            </button>
           </div>
         </div>
       </div>
@@ -81,6 +95,33 @@
         </div>
       </div>
     </div>
+    <!-- Modal -->
+    <div
+      class="modal fade"
+      id="deleteModal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi penghapusan</h1>
+          </div>
+          <div class="modal-body">Anda yakin ingin menghapus kategori ...?</div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn button-putih border"
+              data-bs-dismiss="modal"
+            >
+              Tidak
+            </button>
+            <button type="button" class="btn button-merah">Ya, Hapus</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </LayoutDefault>
 </template>
 
@@ -96,7 +137,10 @@ function routeToAddCategoryView() {
 function edit() {
   router.push("/admin/edit-category");
 }
-const items = ref([{ id: 1, name: 'Foo' }, { id: 2, name: 'Bar' }])
+const items = ref([
+  { id: 1, name: "Foo" },
+  { id: 2, name: "Bar" },
+]);
 </script>
 
 <style scoped>
@@ -109,7 +153,7 @@ const items = ref([{ id: 1, name: 'Foo' }, { id: 2, name: 'Bar' }])
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #A77155;
+  background-color: #a77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
