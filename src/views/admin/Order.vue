@@ -32,7 +32,7 @@
       </div>
     </div>
       <div
-        class="py-2 px-0 rounded-top border border-bottom-0 bg-body-secondary"
+        class="py-2 px-0 rounded-top border border-bottom-0 bg-tabel"
       >
         <div class="row fw-semibold">
           <div class="col-1 d-flex justify-content-center">
@@ -97,7 +97,7 @@
           </div>
         </div>
       </div>
-      <div class="pt-3 rounded-bottom border border-top-0 bg-body-secondary">
+      <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
         <div class="row mx-3 text-secondary">
           <div class="col mt-1">Menampilkan 1-10 dari 20 Pesanan</div>
           <div class="col d-flex justify-content-end align-items-center">
@@ -144,5 +144,8 @@ import { ref } from "vue";
 }
 .form-select:focus {
   box-shadow: none;
+}
+.bg-tabel {
+  background-color: #f0eae8;
 }
 </style>
