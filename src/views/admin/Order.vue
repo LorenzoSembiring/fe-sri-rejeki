@@ -3,12 +3,34 @@
     <div class="header">
       <div class="col h2 text-header px-4">Pesanan</div>
     </div>
-    <div class="col justify-content-end d-flex px-5">
-      <button class="btn button-coklat py-2" @click="routeToAddCategoryView">
-        + Tambah Kategori
-      </button>
+    <div class="p-4">
+      <div class="row col-5 pb-4">
+      <span class="col-2 me-1 fw-semibold align-items-center d-flex">Periode</span>
+      <div class="col-4 pe-0">
+        <select class="form-select me-1" aria-label="Default select example">
+          <option value="Jan">Januari</option>
+          <option value="Feb">Februari</option>
+          <option value="Mar">Maret</option>
+          <option value="Apr">April</option>
+          <option value="May" selected>Mei</option>
+          <option value="Jun">Juni</option>
+          <option value="Jul">Juli</option>
+          <option value="Aug">Agustus</option>
+          <option value="Sep">September</option>
+          <option value="Oct">Oktober</option>
+          <option value="Nov">November</option>
+          <option value="Dec">Desember</option>
+        </select>
+      </div>
+      <div class="col-3">
+        <select class="col form-select" aria-label="Default select example">
+          <option value="2021">2021</option>
+          <option value="2022">2022</option>
+          <option value="2023">2023</option>
+          <option value="2024" selected>2024</option>
+        </select>
+      </div>
     </div>
-    <div class="mt-4 p-4">
       <div
         class="py-2 px-0 rounded-top border border-bottom-0 bg-body-secondary"
       >
@@ -119,5 +141,8 @@ import { ref } from "vue";
   background-color: #a77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
+}
+.form-select:focus {
+  box-shadow: none;
 }
 </style>
