@@ -59,7 +59,7 @@ onMounted(
 
 <style scoped>
 .header {
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 .button-coklat {
   border-radius: 8px;

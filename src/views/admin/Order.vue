@@ -130,7 +130,7 @@ import { ref } from "vue";
 
 <style scoped>
 .header {
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 .text-header {
   color: #402218;

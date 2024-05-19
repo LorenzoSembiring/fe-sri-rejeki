@@ -45,7 +45,7 @@ const items = ref([{ id: 1, name: 'Foo' }, { id: 2, name: 'Bar' }])
 
 <style scoped>
 .header {
-  margin-top: 10vh;
+  margin-top: 5vh;
 }
 .text-header {
   color: #402218;
