@@ -8,22 +8,78 @@
         + Tambah Kategori
       </button>
     </div>
-    <div class="bg-light mt-4 p-4">
-      <div class="p-4 mb-2 rounded border bg-white">
-				<div class="d-flex align-items-center row fw-semibold p-2" style="font-size: 1rem;" v-for="(item, index) in items">
-					<div class="col-1">
-            {{ index+1 }}
+    <div class="mt-4 p-4">
+      <div
+        class="py-2 px-0 rounded-top border border-bottom-0 bg-tabel"
+      >
+        <div class="row fw-semibold">
+          <div class="col-1 d-flex justify-content-center">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="checkAll"
+            />
           </div>
-					<div class="col-8">
-            {{ item.name }}
+          <div class="col-1">ID</div>
+          <div class="col-7">Kategori</div>
+          <div class="col">Aksi</div>
+        </div>
+      </div>
+      <div class="py-2 px-0 border border-bottom-0">
+        <div class="row my-3">
+          <div class="col-1 d-flex justify-content-center">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="checkAll"
+            />
           </div>
-					<div class="col-3">
-            <button type="button" class="btn button-putih border px-3 py-1 mx-2" @click="edit">Edit</button>
+          <div class="col-1">1</div>
+          <div class="col-7">Blangkon Jawa Tengah</div>
+          <div class="col">
+            <button type="button" class="btn button-putih border px-3 py-1 me-2" @click="edit">Edit</button>
             <button type="button" class="btn button-merah border px-3 py-1">Hapus</button>
           </div>
-				</div>
-        
-			</div>
+        </div>
+        <div class="row my-3">
+          <div class="col-1 d-flex justify-content-center">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="checkAll"
+            />
+          </div>
+          <div class="col-1">2</div>
+          <div class="col-7">Blangkon Jogja</div>
+          <div class="col">
+            <button type="button" class="btn button-putih border px-3 py-1 me-2" @click="edit">Edit</button>
+            <button type="button" class="btn button-merah border px-3 py-1">Hapus</button>
+          </div>
+        </div>
+      </div>
+      <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
+        <div class="row mx-3 text-secondary">
+          <div class="col mt-1">Menampilkan 1-10 dari 20 Kategori</div>
+          <div class="col d-flex justify-content-end align-items-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#">←</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">→</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
+        </div>
+      </div>
     </div>
   </LayoutDefault>
 </template>
@@ -76,5 +132,8 @@ const items = ref([{ id: 1, name: 'Foo' }, { id: 2, name: 'Bar' }])
 }
 .button-merah:hover {
   background-color: #be2020;
+}
+.bg-tabel {
+  background-color: #f0eae8;
 }
 </style>
