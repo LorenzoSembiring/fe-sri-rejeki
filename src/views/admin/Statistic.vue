@@ -52,14 +52,14 @@
           <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">3</div>
         </div>
       </div>
-      <div class="row">
-        <div class="col-7 mt-5 rounded">
+      <div class="row mt-5">
+        <div class="col-7 rounded">
           <div class="d-flex">
             <div class="flex-grow-1">
               <div class="h6 text-secondary">Pendapatan Bulanan</div>
               <div class="h4">Rp. 5.500.000</div>
             </div>
-            <div class="col-3 me-5">
+            <div class="col-2 me-5">
               <select
                 class="col form-select"
                 aria-label="Default select example"
@@ -77,6 +77,30 @@
             style="height: 250px; width: 95%"
           ></div>
         </div>
+        <div class="col">
+          <div class="d-flex">
+            <div class="flex-grow-1">
+              <div class="h6 text-secondary">Pesanan harian</div>
+              <div class="h4">4</div>
+            </div>
+            <div class="col-3 me-4">
+              <select
+                class="col form-select"
+                aria-label="Default select example"
+              >
+                <option value="2021">2021</option>
+                <option value="2022">2022</option>
+                <option value="2023">2023</option>
+                <option value="2024" selected>2024</option>
+              </select>
+            </div>
+          </div>
+          <div
+            id="weeklyChartContainer"
+            class="col"
+            style="height: 250px; width: 95%"
+          ></div>
+        </div>
       </div>
       <div class="row">
         <div>Penjualan Terbaik</div>
@@ -87,20 +111,21 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
+
 window.onload = function () {
-  var chart = new CanvasJS.Chart("chartContainer", {
+  var monthlyChart = new CanvasJS.Chart("chartContainer", {
     animationEnabled: true,
     axisY: {
       valueFormatString: "#0,,.",
-			gridColor: "rgba(175, 175, 175,.7)",
+      gridColor: "rgba(175, 175, 175,.7)",
     },
     axisX: {
-			gridColor: "orange",
+      gridColor: "orange",
     },
     data: [
       {
         type: "splineArea",
-        color: "rgba(235, 180, 113,.7)",
+        color: "rgba(217, 130, 54,.7)",
         markerSize: 5,
         xValueFormatString: "YYYY",
         yValueFormatString: "$#,##0.##",
@@ -126,8 +151,33 @@ window.onload = function () {
       },
     ],
   });
-  chart.render();
+  monthlyChart.render();
+
+  var weeklyChart = new CanvasJS.Chart("weeklyChartContainer", {
+    animationEnabled: true,
+    theme: "light2", // "light1", "light2", "dark1", "dark2"
+    axisY: {
+      
+    },
+    data: [{        
+      type: "column",  
+      showInLegend: false,
+      color: "rgba(217, 130, 54)", 
+      dataPoints: [      
+        { y: 1, label: "M" },
+        { y: 2,  label: "T" },
+        { y: 3,  label: "W" },
+        { y: 4,  label: "T" },
+        { y: 9,  label: "F" },
+        { y: 2, label: "S" },
+        { y: 3,  label: "S" },
+      ]
+    }]
+  });
+  weeklyChart.render();
 };
+
+
 </script>
 <style scoped>
 .header {
