@@ -1,29 +1,61 @@
 <template>
   <LayoutDefault route="product">
-    <div class="col-lg-10">
-      <div class="row header">
-        <div class="col h2 text-header ms-3">Daftar Produk</div>
-        <div class="col d-flex flex-row-reverse">
-          <button class="btn button-coklat">
-            <Icon style="font-size: 25" icon="iconamoon:category-duotone" />
-          </button>
-        </div>
-        <div class="col-4">
-          <div class="border-start ps-3">
-            <button class="btn button-coklat py-2" @click="routeToAddProductView">+ Tambah Produk</button>
+    <div class="header">
+      <div class="col h2 text-header px-4">Produk</div>
+    </div>
+    <div class="col justify-content-end d-flex px-5">
+      <button class="btn button-coklat py-2" @click="routeToAddProductView">
+        + Tambah Produk
+      </button>
+    </div>
+    <!-------------------------------------------->
+    <div class="mt-4 p-4">
+      <div class="py-2 px-0 rounded-top border border-bottom-0 bg-tabel">
+        <div class="row fw-semibold m-0">
+          <div class="form-check col-1 d-flex align-items-center ms-5">
+            <input
+              class="form-check-input"
+              type="checkbox"
+              value=""
+              id="checkAll"
+            />
           </div>
+          <div class="col-5">Produk</div>
+          <div class="p-0 col-2">Harga</div>
+          <div class="col-1 ms-5 p-0">Aktif</div>
+          <div class="col">Aksi</div>
         </div>
       </div>
-      <div class="row bg-light mt-4" >
-        <div class="py-1 my-5 ms-4 rounded border bg-white table">
-          <AdminProductItem 
-              v-for="product in products"
-                :id="product.id"
-                :category="product.description"
-                :name="product.name"
-                :prices="product.price"
-                :status="product.status"
-              />
+      <div class="py-2 px-0 border border-bottom-0">
+        <div class="row my-3">
+          <AdminProductItem
+          v-for="product in products"
+          :id="product.id"
+          :category="product.description"
+          :name="product.name"
+          :prices="product.price"
+          :status="product.status"
+        />
+        </div>
+      </div>
+      <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
+        <div class="row mx-3 text-secondary">
+          <div class="col mt-1">Menampilkan 1-10 dari 20 Produk</div>
+          <div class="col d-flex justify-content-end align-items-center">
+            <nav aria-label="Page navigation example">
+              <ul class="pagination">
+                <li class="page-item">
+                  <a class="page-link" href="#">←</a>
+                </li>
+                <li class="page-item"><a class="page-link" href="#">1</a></li>
+                <li class="page-item"><a class="page-link" href="#">2</a></li>
+                <li class="page-item"><a class="page-link" href="#">3</a></li>
+                <li class="page-item">
+                  <a class="page-link" href="#">→</a>
+                </li>
+              </ul>
+            </nav>
+          </div>
         </div>
       </div>
     </div>
@@ -34,27 +66,26 @@
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import AdminProductItem from "@/components/AdminProductItem.vue";
 import { Icon } from "@iconify/vue";
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import axios from "axios";
 import router from "../../router/index.js";
 
-const products = ref([])
+const products = ref([]);
 
 const fetchProduct = async () => {
-	try{
-		const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/admin-index?page=1&limit=10");
-        products.value = response.data.data;
-	} catch {
-		console.error('Error fetching products:', error);
-	}
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/product/admin-index?page=1&limit=10"
+    );
+    products.value = response.data.data;
+  } catch {
+    console.error("Error fetching products:", error);
+  }
+};
+function routeToAddProductView() {
+  router.push("/admin/add-product");
 }
-function routeToAddProductView(){
-	router.push('/admin/add-product')
-}
-onMounted(
-    fetchProduct
-);
-
+onMounted(fetchProduct);
 </script>
 
 <style scoped>
@@ -64,11 +95,14 @@ onMounted(
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #A77155;
+  background-color: #a77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
 .text-header {
   color: #402218;
+}
+.bg-tabel {
+  background-color: #f0eae8;
 }
 </style>
