@@ -1,6 +1,6 @@
 <template>
   <div class="d-flex align-items-center">
-    <div class="form-check col-1 d-flex align-items-center ms-3">
+    <div class="form-check col-1 d-flex align-items-center ms-5">
       <input
         class="form-check-input"
         type="checkbox"
@@ -8,18 +8,20 @@
         id="defaultCheck1"
       />
     </div>
-    <div class="d-flex align-items-center">
-      <img
-        class="m-2 rounded"
-        src="@/assets/default_profile_picture.jpg"
-        alt=""
-      />
+    <div class="d-flex d-inline col-5">
+      <div class="d-flex align-items-center">
+        <img
+          class="m-2 rounded"
+          src="@/assets/default_profile_picture.jpg"
+          alt=""
+        />
+      </div>
+      <div class="ms-3 my-2">
+        <div class="p-0 h5 mt-4">{{ name }}</div>
+        <div class="p-0">ID: {{ id }}</div>
+      </div>
     </div>
-    <div class="col-3 my-2">
-      <div class="p-0 h5 mt-4">{{ name }}</div>
-      <div class="p-0">ID: {{ id }}</div>
-    </div>
-    <div class="d-flex">
+    <div class="d-flex col-2">
       <div
         :class="{
           focused: isInputFocused,
@@ -29,6 +31,7 @@
           'border-end-0': true,
           'bg-light': true,
           'section-price': true,
+          'px-2': true
         }"
       >
         Rp
@@ -41,15 +44,6 @@
         v-on:focus="setFocus(true)"
         v-on:blur="setFocus(false)"
         style="width: 7rem"
-      />
-    </div>
-    <div class="col-1 ms-5">
-      <input
-        class="rounded input-item"
-        type="number"
-        id="stock"
-        :value="stock"
-        style="width: 4rem"
       />
     </div>
     <div class="col-1 ms-5">
