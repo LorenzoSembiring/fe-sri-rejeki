@@ -40,12 +40,6 @@
           3D
         </a>
       </div>
-      <div class="py-2 my-2" :class="{ 'bg-brown rounded': route == 'setting' }">
-        <a class="ms-3 text-brown fw-semibold sidebar-button" :class="{ 'text-white': route == 'setting' }" href="/admin/setting"
-          ><Icon style="font-size: 20" icon="lets-icons:setting-line" />
-          Pengaturan
-        </a>
-      </div>
     </div>
     <div class="px-2 pe-3 my-3">
       <div class="d-flex ms-1 border-profile rounded-pill row mt-auto mb-2" style="height: 9vh; width: 100%;">
