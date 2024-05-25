@@ -107,7 +107,7 @@ const router = createRouter({
             component: AdminAddCategory
         },
         {
-            path: "/admin/edit-category",
+            path: "/admin/edit-category/:id",
             name: "Edit Category",
             component: AdminEditCategory
         },
