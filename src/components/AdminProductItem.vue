@@ -47,11 +47,11 @@
       />
     </div>
     <div class="col-1 ms-5">
-      <label class="toggle" for="myToggle">
+      <label class="toggle" :for="toggleID">
         <input
           class="toggle__input"
           type="checkbox"
-          id="myToggle"
+          :id="toggleID"
           :checked="status == 'ACTIVE'"
         />
         <div class="toggle__fill"></div>
@@ -63,9 +63,9 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref } from 'vue';
 
-defineProps({
+const props = defineProps({
   id: Number,
   stock: Number,
   name: String,
@@ -73,6 +73,8 @@ defineProps({
   status: String,
 });
 
+const toggleID = "toggle" + props.id
+console.log(toggleID)
 const boolStatus = ref(false);
 const isInputFocused = ref(false);
 
@@ -165,5 +167,11 @@ input::-webkit-inner-spin-button {
 }
 .focused {
   border: 1px solid #b88e76;
+}
+.form-check-input {
+  border: 2px solid rgb(224, 194, 184);
+}
+.form-check-input:hover {
+  border: 2px solid rgb(179, 152, 143);
 }
 </style>
