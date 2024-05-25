@@ -26,18 +26,22 @@
           <div class="col">Aksi</div>
         </div>
       </div>
-      <div class="py-2 px-0 border border-bottom-0">
-        <div class="row my-3">
-          <AdminProductItem
-          v-for="product in products"
-          :id="product.id"
-          :category="product.description"
-          :name="product.name"
-          :prices="product.price"
-          :status="product.status"
-        />
-        </div>
-      </div>
+      <div v-if="status === 200" class="py-2 px-0 border border-bottom-0">
+    <div class="row my-3">
+      <AdminProductItem 
+        v-for="product in products"
+        :key="product.id"
+        :id="product.id"
+        :category="product.description"
+        :name="product.name"
+        :prices="product.price"
+        :status="product.status"
+      />
+    </div>
+  </div>
+  <div v-else class="justify-content-center d-flex py-2 px-0 border border-bottom-0">
+    Tidak ada data
+  </div>
       <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
         <div class="row mx-3 text-secondary">
           <div class="col mt-1">Menampilkan 1-10 dari 20 Produk</div>
@@ -65,12 +69,12 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import AdminProductItem from "@/components/AdminProductItem.vue";
-import { Icon } from "@iconify/vue";
 import { ref, onMounted } from "vue";
 import axios from "axios";
 import router from "../../router/index.js";
 
 const products = ref([]);
+const status = ref(null);  // Make status reactive
 
 const fetchProduct = async () => {
   try {
@@ -78,13 +82,17 @@ const fetchProduct = async () => {
       import.meta.env.VITE_API_URL + "/api/product/admin-index?page=1&limit=10"
     );
     products.value = response.data.data;
-  } catch {
+    status.value = response.status;  // Update the reactive status
+  } catch (error) {
     console.error("Error fetching products:", error);
+    status.value = error.response ? error.response.status : 500;  // Handle the error and set status
   }
 };
+
 function routeToAddProductView() {
   router.push("/admin/add-product");
 }
+
 onMounted(fetchProduct);
 </script>
 
@@ -104,5 +112,11 @@ onMounted(fetchProduct);
 }
 .bg-tabel {
   background-color: #f0eae8;
+}
+.form-check-input {
+  border: 2px solid rgb(224, 194, 184);
+}
+.form-check-input:hover {
+  border: 2px solid rgb(179, 152, 143);
 }
 </style>
