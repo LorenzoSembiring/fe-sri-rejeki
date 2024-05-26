@@ -6,7 +6,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0" />
       <title>Login</title>
     </head>
-    <body>
+    <body class="body pb-5">
       <div v-if="loading" class="load">
         <Icon icon="line-md:loading-twotone-loop" />
       </div>
@@ -14,7 +14,7 @@
         :class="{ blur: loading }"
         class="container d-flex justify-content-center"
       >
-        <div class="mt-5 row">
+        <div class="mt-5 pb-5 rounded row">
           <div class="logo my-4 mx-auto d-block"></div>
           <div
             class="form-container border border-2 shadow-sm col-10 mx-auto d-block rounded"
@@ -95,7 +95,6 @@ export default defineComponent({
 
         code = response.data.code;
         loading.value = false;
-        console.log(code)
         if (code == 200) {
           const token = JSON.stringify(response.data.data.token.token);
           const strippedToken = token.slice(1, -1);
@@ -105,7 +104,6 @@ export default defineComponent({
         }
       } catch (error: any) {
         if (error.response?.status == 401) {
-          console.log("A")
           error_auth.value = "Email atau Password salah!";
         } else {
           error_auth.value = "Ada kesalahan sistem, coba lagi nanti!";
@@ -129,12 +127,15 @@ export default defineComponent({
 });
 </script>
 
-<style>
+<style scoped>
 .blur {
   filter: blur(2px);
   transition: filter 0.5s;
 }
-
+.body {
+  /* background-image: url("@/assets/bg-icon-sm.png"); */
+  background-color: rgb(255, 255, 255);
+}
 .load {
   position: absolute;
   left: calc(50% - 50px);
