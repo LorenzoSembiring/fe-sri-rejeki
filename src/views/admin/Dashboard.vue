@@ -35,9 +35,7 @@
             <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">372</div>
           </div>
         </div>
-        <div
-          class="col border-coklat d-inline-flex rounded bg-card d-flex"
-        >
+        <div class="col border-coklat d-inline-flex rounded bg-card d-flex">
           <div class="align-self-center flex-grow-1">
             <Icon style="font-size: 7vh" icon="ph:money" />
           </div>
@@ -123,6 +121,37 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
+import { onMounted } from "vue";
+import router from "../../router/index.js";
+import axios from "axios";
+
+const token = localStorage.getItem("token");
+
+// authenticated-user
+async function checkAdmin() {
+  if (token) {
+    try {
+      const response = await axios.get(
+        import.meta.env.VITE_API_URL + "/api/auth/authenticated-user",
+        {
+          headers: { Authorization: `Bearer ${token}` },
+        }
+      );
+      if (response.data.data.role !== "admin") {
+        router.push("/")
+      }
+      console.log(response.data.data.role);
+    } catch (error) {
+      router.push("/login");
+    }
+  } else {
+    router.push("/login");
+  }
+}
+
+onMounted(async () => {
+  await checkAdmin();
+});
 </script>
 
 <style scoped>
