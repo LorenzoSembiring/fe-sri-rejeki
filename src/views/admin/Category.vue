@@ -25,7 +25,7 @@
         </div>
       </div>
       <div class="py-2 px-0 border border-bottom-0">
-        <div class="row my-3">
+        <div class="row my-3" v-for="item in items">
           <div class="col-1 d-flex justify-content-center">
             <input
               class="form-check-input"
@@ -34,37 +34,13 @@
               id="checkAll"
             />
           </div>
-          <div class="col-1">1</div>
-          <div class="col-7">Blangkon Jawa Tengah</div>
+          <div class="col-1">{{ item.id }}</div>
+          <div class="col-7">{{ item.name }}</div>
           <div class="col">
             <button
               type="button"
               class="btn button-putih border px-3 py-1 me-2"
-              @click="edit"
-            >
-              Edit
-            </button>
-            <button type="button" class="btn button-merah border px-3 py-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
-              Hapus
-            </button>
-          </div>
-        </div>
-        <div class="row my-3">
-          <div class="col-1 d-flex justify-content-center">
-            <input
-              class="form-check-input"
-              type="checkbox"
-              value=""
-              id="checkAll"
-            />
-          </div>
-          <div class="col-1">2</div>
-          <div class="col-7">Blangkon Jogja</div>
-          <div class="col">
-            <button
-              type="button"
-              class="btn button-putih border px-3 py-1 me-2"
-              @click="edit"
+              @click="edit(item.id)"
             >
               Edit
             </button>
@@ -128,19 +104,27 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import router from "../../router/index.js";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
+
+const items = ref([]);
+
+onMounted(async () => {
+  try {
+    const response = await axios.get(import.meta.env.VITE_API_URL + "/api/category/get");
+    items.value = response.data.data.data;
+  } catch (error) {
+    console.error("Error fetching categories:", error);
+  }
+});
 
 function routeToAddCategoryView() {
   router.push("/admin/add-category");
 }
 
-function edit() {
-  router.push("/admin/edit-category");
+function edit(id) {
+  router.push("/admin/edit-category/" + id);
 }
-const items = ref([
-  { id: 1, name: "Foo" },
-  { id: 2, name: "Bar" },
-]);
 </script>
 
 <style scoped>
