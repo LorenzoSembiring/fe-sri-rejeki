@@ -44,7 +44,7 @@
             >
               Edit
             </button>
-            <button @click="shareData(item.id)" type="button" class="btn button-merah border px-3 py-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <button @click="shareData(item.id, item.name)" type="button" class="btn button-merah border px-3 py-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
               Hapus
             </button>
           </div>
@@ -85,7 +85,7 @@
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi penghapusan</h1>
           </div>
-          <div class="modal-body">Anda yakin ingin menghapus kategori dengan ID: {{ dataID }}</div>
+          <div class="modal-body">Anda yakin ingin menghapus kategori {{ dataName }}</div>
           <div class="modal-footer">
             <button
               type="button"
@@ -107,11 +107,13 @@ import LayoutDefault from "@/components/LayoutDefault.vue";
 import router from "../../router/index.js";
 import { ref, onMounted } from "vue";
 import axios from "axios";
-import { loadIcon } from "@iconify/vue/dist/iconify.js";
 
 const items = ref([]);
 const token = localStorage.getItem("token");
 const dataID = ref("")
+const dataName = ref("")
+const showModal = ref(false)
+
 onMounted(async () => {
   try {
     const response = await axios.get(import.meta.env.VITE_API_URL + "/api/category/get");
@@ -129,8 +131,9 @@ function edit(id) {
   router.push("/admin/edit-category/" + id);
 }
 
-function shareData(id) {
+function shareData(id, name) {
   dataID.value = id
+  dataName.value = name
 }
 
 async function deleteCategory(id) {
