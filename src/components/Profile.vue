@@ -1,5 +1,5 @@
 <template>
-  <div class="border-start ps-4" v-if="token">
+  <div class="border-start ps-4" v-if="isLoggedIn">
     <div @mouseenter="popover = true" @mouseleave="popover = false">
       <div class="border rounded-pill" style="height: 40px; width: 150px">
         <div
@@ -19,9 +19,24 @@
         </div>
         <div class="bg-white rounded p-2 border mt-2" v-if="popover">
           <div>
-            <a class="text-decoration-none text-black d-block m-2" href="/profile"> <span>Profilku</span><br> </a>
-            <a class="text-decoration-none text-black d-block m-2 pb-2" href="/transaksi"> <span>Daftar Transaksi</span> <br> </a>
-            <a class="text-decoration-none text-black d-block border-top m-2 pt-2" href="/logout"> <span>Keluar</span> </a>
+            <a
+              class="text-decoration-none text-black d-block m-2"
+              href="/profile"
+            >
+              <span>Profilku</span><br />
+            </a>
+            <a
+              class="text-decoration-none text-black d-block m-2 pb-2"
+              href="/transaksi"
+            >
+              <span>Daftar Transaksi</span> <br />
+            </a>
+            <span
+              class="text-decoration-none text-black d-block border-top m-2 pt-2"
+              @click="logout"
+              style="cursor: pointer"
+              >Keluar</span
+            >
           </div>
         </div>
       </div>
@@ -35,12 +50,33 @@
 </template>
 
 <script setup>
+import router from "../router/index.js";
+// import router from "@/router";
+import axios from "axios";
 import { ref } from "vue";
 
 const token = localStorage.token ?? null;
+const isLoggedIn = ref(!!token);
 const isPorfilePicExist = false;
-
 const popover = ref(false);
+
+async function logout() {
+  const response = await axios.get(
+    import.meta.env.VITE_API_URL + "/api/user/logout",
+    {
+      headers: { Authorization: `Bearer ${token}` },
+    }
+  );
+
+  if (response.status == 200) {
+    localStorage.removeItem(token);
+    isLoggedIn.value = false;
+    setTimeout(function () {
+      router.push("/login")
+    }, 1000);
+  } else {
+  }
+}
 </script>
 
 <style></style>
