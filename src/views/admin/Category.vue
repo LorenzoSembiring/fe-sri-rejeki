@@ -44,7 +44,7 @@
             >
               Edit
             </button>
-            <button type="button" class="btn button-merah border px-3 py-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
+            <button @click="shareData(item.id)" type="button" class="btn button-merah border px-3 py-1" data-bs-toggle="modal" data-bs-target="#deleteModal">
               Hapus
             </button>
           </div>
@@ -78,13 +78,14 @@
       tabindex="-1"
       aria-labelledby="exampleModalLabel"
       aria-hidden="true"
+
     >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
             <h1 class="modal-title fs-5" id="exampleModalLabel">Konfirmasi penghapusan</h1>
           </div>
-          <div class="modal-body">Anda yakin ingin menghapus kategori ...?</div>
+          <div class="modal-body">Anda yakin ingin menghapus kategori dengan ID: {{ dataID }}</div>
           <div class="modal-footer">
             <button
               type="button"
@@ -93,7 +94,7 @@
             >
               Tidak
             </button>
-            <button type="button" class="btn button-merah">Ya, Hapus</button>
+            <button type="button" class="btn button-merah" @click="deleteCategory(dataID)">Ya, Hapus</button>
           </div>
         </div>
       </div>
@@ -106,9 +107,11 @@ import LayoutDefault from "@/components/LayoutDefault.vue";
 import router from "../../router/index.js";
 import { ref, onMounted } from "vue";
 import axios from "axios";
+import { loadIcon } from "@iconify/vue/dist/iconify.js";
 
 const items = ref([]);
-
+const token = localStorage.getItem("token");
+const dataID = ref("")
 onMounted(async () => {
   try {
     const response = await axios.get(import.meta.env.VITE_API_URL + "/api/category/get");
@@ -124,6 +127,30 @@ function routeToAddCategoryView() {
 
 function edit(id) {
   router.push("/admin/edit-category/" + id);
+}
+
+function shareData(id) {
+  dataID.value = id
+}
+
+async function deleteCategory(id) {
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/category/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    );
+    if (response.status == 200) {
+      location.reload()
+    } else {
+      
+    }
+  } catch (error) {
+    
+  }
 }
 </script>
 
