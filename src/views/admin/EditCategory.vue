@@ -11,14 +11,21 @@
         >
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Nama Kategori</div>
-            <input type="text" class="form-control" :placeholder="placeholder" />
+            <input
+              type="text"
+              class="form-control"
+              v-model="category"
+              :placeholder="placeholder"
+            />
           </div>
         </div>
         <div class="d-flex justify-content-end">
           <button class="button-putih py-2 px-5 mx-4" @click="back">
             Batal
           </button>
-          <button class="button-coklat py-2 px-5">Simpan</button>
+          <button class="button-coklat py-2 px-5" @click="submit">
+            Simpan
+          </button>
         </div>
       </div>
     </div>
@@ -36,6 +43,9 @@ const router = useRouter();
 
 const id = ref("");
 const placeholder = ref("");
+const category = ref("");
+
+const token = localStorage.getItem("token");
 
 const fetchCategory = async () => {
   try {
@@ -52,12 +62,35 @@ function back() {
   router.push("/admin/category");
 }
 
+async function submit() {
+  try {
+    const formData = new FormData();
+    formData.append("name", category.value);
+
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/category/update/${id.value}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status == 200) {
+      router.push("/admin/category");
+    } else {
+      
+    }
+  } catch (error) {
+    console.error("Error updating category:", error);
+  }
+}
+
 onMounted(() => {
   id.value = route.params.id;
   fetchCategory();
 });
 </script>
-
 
 <style scoped>
 .header {
