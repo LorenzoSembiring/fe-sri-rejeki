@@ -140,7 +140,6 @@ async function checkAdmin() {
       if (response.data.data.role !== "admin") {
         router.push("/")
       }
-      console.log(response.data.data.role);
     } catch (error) {
       router.push("/login");
     }
