@@ -100,6 +100,7 @@ export default defineComponent({
           const strippedToken = token.slice(1, -1);
 
           localStorage.setItem("token", strippedToken);
+          localStorage.setItem("name", response.data.data.user.username);
           router.push("/");
         }
       } catch (error: any) {
