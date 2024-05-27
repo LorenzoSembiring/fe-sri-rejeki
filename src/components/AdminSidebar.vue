@@ -47,7 +47,7 @@
           <img class="rounded-circle" style="height: 7vh; width: 7vh;" src="@/assets/default_profile_picture.jpg">
         </div>
         <div class="text-brown fw-semibold d-flex align-items-center col" style="height: 100%">
-          Admin Sri Rejeki
+          {{ username }}
         </div>
       </div>
     </div>
@@ -60,6 +60,9 @@ import { Icon } from "@iconify/vue";
 defineProps({
   route: String
 });
+
+const username = localStorage.name ?? null;
+
 </script>
 
 <style scoped>
