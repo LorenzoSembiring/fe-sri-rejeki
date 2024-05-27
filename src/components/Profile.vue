@@ -14,7 +14,7 @@
           <div
             class="pill-name text-nowrap ms-4 pt-1 ps-3 d-flex align-items-center"
           >
-            Malika Malik
+            {{ username }}
           </div>
         </div>
         <div class="bg-white rounded p-2 border mt-2" v-if="popover">
@@ -59,6 +59,7 @@ const token = localStorage.token ?? null;
 const isLoggedIn = ref(!!token);
 const isPorfilePicExist = false;
 const popover = ref(false);
+const username = localStorage.name ?? null;
 
 async function logout() {
   const response = await axios.get(
