@@ -31,7 +31,7 @@
           'border-end-0': true,
           'bg-light': true,
           'section-price': true,
-          'px-2': true
+          'px-2': true,
         }"
       >
         Rp
@@ -58,12 +58,26 @@
       </label>
     </div>
     <div class="">
-      <button class="btn button-putih border px-3 py-1">Atur</button>
+      <div class="dropdown">
+        <button
+          class="btn button-putih border dropdown-toggle fw-semibold"
+          type="button"
+          data-bs-toggle="dropdown"
+          aria-expanded="false"
+        >
+          Atur
+        </button>
+        <ul class="dropdown-menu">
+          <li><a class="dropdown-item" href="#"><span class="fw-semibold">Detail</span></a></li>
+          <li><a class="dropdown-item" href="#"><span class="fw-semibold">Edit</span></a></li>
+          <li><a class="dropdown-item" href="#"><span class="fw-semibold text-danger">Hapus</span></a></li>
+        </ul>
+      </div>
     </div>
   </div>
 </template>
 <script setup>
-import { ref } from 'vue';
+import { ref } from "vue";
 
 const props = defineProps({
   id: Number,
@@ -73,8 +87,8 @@ const props = defineProps({
   status: String,
 });
 
-const toggleID = "toggle" + props.id
-console.log(toggleID)
+const toggleID = "toggle" + props.id;
+console.log(toggleID);
 const boolStatus = ref(false);
 const isInputFocused = ref(false);
 
@@ -84,7 +98,7 @@ const setFocus = (value) => {
 </script>
 
 <style scoped>
-.button-putih {
+.bputihutton- {
   border-radius: 8px;
   border-style: none;
   background-color: #ffffff;
