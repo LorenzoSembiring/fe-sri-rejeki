@@ -12,6 +12,7 @@ import Shipping from '@/views/Shipping.vue'
 import AdminDashboard from '@/views/admin/Dashboard.vue'
 import AdminProduct from '@/views/admin/Product.vue'
 import AdminAddProduct from '@/views/admin/AddProduct.vue'
+import AdminEditProduct from '@/views/admin/EditProduct.vue'
 import D3 from '@/views/admin/3D.vue'
 import AdminAdd3D from '@/views/admin/Add3D.vue'
 import AdminCategory from '@/views/admin/Category.vue'
@@ -92,6 +93,12 @@ const router = createRouter({
             component: AdminAddProduct
         },
         {
+            path: "/admin/edit-product",
+            name: "Edit Product",
+            component: AdminEditProduct,
+            props: true
+        },
+        {
             path: "/admin/3d",
             name: "d3",
             component: D3
@@ -109,7 +116,8 @@ const router = createRouter({
         {
             path: "/admin/edit-category/:id",
             name: "Edit Category",
-            component: AdminEditCategory
+            component: AdminEditCategory,
+            props: true
         },
         {
             path: "/admin/order",
