@@ -206,8 +206,8 @@ import { ref } from "vue";
 
 const isPriceInputFocused = ref(false);
 
-const size = ref(0);
-const stock = ref(1);
+const size = ref();
+const stock = ref();
 const sizes = ref([]);
 
 function deleteSize(key) {
@@ -215,12 +215,12 @@ function deleteSize(key) {
 }
 function addSize(size,stock) {
 if (!size || !stock) {
-          alert("Size and stock must be provided");
+          alert("Ukuran dan stok tidak boleh kosong");
           return;
         }
         const sizeExists = this.sizes.some(item => item.size === size);
         if (sizeExists) {
-          alert("Size already exists");
+          alert("Ukuran telah ada");
         } else {
           this.sizes.push({ size: size, stock: stock });
           this.size = '';
