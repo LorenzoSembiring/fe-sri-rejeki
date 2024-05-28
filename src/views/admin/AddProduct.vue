@@ -125,53 +125,66 @@
           <div class="h5 mt-2 border-bottom pb-3">Ukuran</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Ukuran dan Stok</div>
-            <div>
-              <span class="badge rounded-pill m-2 p-2 text-bg-secondary">
-                1
-                <span
-                  class="badge rounded-pill text-bg-light ms-2 p-1 border-light"
-                  >X</span
-                ></span
-              >
-            </div>
-            <div>
+            <div class="col row">
               <div class="d-flex">
-                  <div
-                    :class="[
-                      { focused: isSizeInputFocused },
-                      'd-inline fw-semibold rounded-start border-end-0 bg-light section-price px-2',
-                    ]"
-                  >
-                    Ukuran
-                  </div>
-                  <input
-                    class="rounded-end input-item input-price me-2"
-                    type="text"
-                    id="size"
-                    maxlength="3"
-                    v-on:focus="setSizeFocus(true)"
-                    v-on:blur="setSizeFocus(false)"
-                    style="width: 3rem"
-                  />
-                  <div
-                    :class="[
-                      { focused: isStockInputFocused },
-                      'd-inline fw-semibold rounded-start border-end-0 bg-light section-price px-2',
-                    ]"
-                  >
-                    Stok
-                  </div>
-                  <input
-                    class="rounded-end input-item input-price"
-                    type="text"
-                    id="price"
-                    maxlength="4"
-                    v-on:focus="setStockFocus(true)"
-                    v-on:blur="setStockFocus(false)"
-                    style="width: 4rem"
-                  />
-                  <button class="button-coklat py-2 px-4 mx-2">Tambah</button>
+                <div
+                  :class="[
+                    { focused: isSizeInputFocused },
+                    'd-inline fw-semibold rounded-start border-end-0 bg-light section-price px-2',
+                  ]"
+                >
+                  Ukuran
+                </div>
+                <input
+                  class="rounded-end input-item input-price me-2"
+                  type="text"
+                  id="size"
+                  maxlength="3"
+                  v-model="size"
+                  v-on:focus="setSizeFocus(true)"
+                  v-on:blur="setSizeFocus(false)"
+                  style="width: 3rem"
+                />
+                <div
+                  :class="[
+                    { focused: isStockInputFocused },
+                    'd-inline fw-semibold rounded-start border-end-0 bg-light section-price px-2',
+                  ]"
+                >
+                  Stok
+                </div>
+                <input
+                  class="rounded-end input-item input-price"
+                  type="text"
+                  id="price"
+                  maxlength="4"
+                  v-model="stock"
+                  v-on:focus="setStockFocus(true)"
+                  v-on:blur="setStockFocus(false)"
+                  style="width: 4rem"
+                />
+                <button
+                  class="button-coklat py-2 px-4 mx-2"
+                  @click="addSize(size, stock)"
+                >
+                  Tambah
+                </button>
               </div>
+              <div class="row">
+                  <div v-for="(size, key) in sizes" class="my-1 fs-5 col-3">
+                    <div class="d-inline-flex badge rounded border text-bg-light mt-2">
+                      <div class="d-block fw-semibold">
+                        <div class="d-flex justify-content-start my-1">Ukuran: {{ size.size }}</div>
+                        <div class="d-flex justify-content-start my-1">Stok: {{ size.stock }}</div>
+                      </div>
+                      <div
+                        class="cross d-inline-flex badge rounded-circle text-bg-light p-2 ms-2 my-1 border-light d-inline align-items-center fs-5 fw-semibold"
+                        @click="deleteSize(key)"
+                        >x</div
+                      ></div
+                    >
+                  </div>
+                </div>
             </div>
           </div>
         </div>
@@ -193,6 +206,27 @@ import { ref } from "vue";
 
 const isPriceInputFocused = ref(false);
 
+const size = ref(0);
+const stock = ref(1);
+const sizes = ref([]);
+
+function deleteSize(key) {
+  sizes.value.splice(key, 1)
+}
+function addSize(size,stock) {
+if (!size || !stock) {
+          alert("Size and stock must be provided");
+          return;
+        }
+        const sizeExists = this.sizes.some(item => item.size === size);
+        if (sizeExists) {
+          alert("Size already exists");
+        } else {
+          this.sizes.push({ size: size, stock: stock });
+          this.size = '';
+          this.stock = '';
+        }
+      }
 const setPriceFocus = (value) => {
   isPriceInputFocused.value = value;
 };
@@ -215,7 +249,7 @@ const setStockFocus = (value) => {
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #A77155;
+  background-color: #a77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
@@ -299,5 +333,10 @@ input:focus {
 }
 .input-price:focus {
   border-left: none;
+}
+.cross{
+  width: 20px;
+  cursor: pointer;
+  aspect-ratio: 1;
 }
 </style>
