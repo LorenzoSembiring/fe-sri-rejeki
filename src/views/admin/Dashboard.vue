@@ -2,7 +2,7 @@
   <div class="bg-main">
     <LayoutDefault route="dashboard">
       <div class="header">
-        <div class="col h2 text-header px-4">Halo, Admin Sri Rejeki</div>
+        <div class="col h2 text-header px-4">Halo, {{ username }}</div>
       </div>
       <div class="row m-0 p-4">
         <div
@@ -126,6 +126,7 @@ import router from "../../router/index.js";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
+const username = localStorage.name ?? null;
 
 // authenticated-user
 async function checkAdmin() {
