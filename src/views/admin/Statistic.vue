@@ -1,7 +1,7 @@
 <template>
   <LayoutDefault route="statistic">
     <div class="header">
-      <div class="col h2 text-header px-4">Kategori</div>
+      <div class="col h2 text-header px-4">Statistik</div>
     </div>
     <div class="row m-0 p-4">
       <div
@@ -102,8 +102,36 @@
           ></div>
         </div>
       </div>
-      <div class="row">
-        <div>Penjualan Terbaik</div>
+      <div class="row mt-5">
+        <div class="h4">Produk Terlaris</div>
+        <div class="mt-2">
+          <div class="py-2 px-0 rounded-top border border-bottom-0 bg-tabel">
+            <div class="row fw-semibold ps-5">
+              <div class="col-5">Nama Produk</div>
+              <div class="col-2">Harga</div>
+              <div class="col-3">Penjualan</div>
+              <div class="col"><Icon icon="ph:dots-three-bold" style="font-size: 26px" /></div>
+            </div>
+          </div>
+          <div class="py-2 px-0 border border-bottom-0 fw-semibold">
+            <div class="row my-3 ps-5 d-flex align-items-center">
+              <div class="col-5 d-flex align-items-center">
+                <div class="d-flex justify-content-center d-inline-flex">
+                  <img style="height: 7vh; width: 7vh;" src="@/assets/default_profile_picture.jpg">
+                </div>
+                <span class="ms-2">Nama Produk</span>
+              </div>
+              <div class="col-2">Rp. 50.000</div>
+              <div class="col-3">120</div>
+              <div class="col"><Icon icon="ph:dots-three-bold" style="font-size: 26px" /></div>
+            </div>
+          </div>
+          <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
+            <div class="row mx-3 text-secondary">
+              <div class="col mb-3"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
   </LayoutDefault>
@@ -156,28 +184,26 @@ window.onload = function () {
   var weeklyChart = new CanvasJS.Chart("weeklyChartContainer", {
     animationEnabled: true,
     theme: "light2", // "light1", "light2", "dark1", "dark2"
-    axisY: {
-      
-    },
-    data: [{        
-      type: "column",  
-      showInLegend: false,
-      color: "rgba(217, 130, 54)", 
-      dataPoints: [      
-        { y: 1, label: "M" },
-        { y: 2,  label: "T" },
-        { y: 3,  label: "W" },
-        { y: 4,  label: "T" },
-        { y: 9,  label: "F" },
-        { y: 2, label: "S" },
-        { y: 3,  label: "S" },
-      ]
-    }]
+    axisY: {},
+    data: [
+      {
+        type: "column",
+        showInLegend: false,
+        color: "rgba(217, 130, 54)",
+        dataPoints: [
+          { y: 1, label: "M" },
+          { y: 2, label: "T" },
+          { y: 3, label: "W" },
+          { y: 4, label: "T" },
+          { y: 9, label: "F" },
+          { y: 2, label: "S" },
+          { y: 3, label: "S" },
+        ],
+      },
+    ],
   });
   weeklyChart.render();
 };
-
-
 </script>
 <style scoped>
 .header {
@@ -189,5 +215,8 @@ window.onload = function () {
 .border-coklat {
   border: 1px solid #dbcdc5;
   /* box-shadow: 1px 1px 4px rgb(248, 217, 206);  */
+}
+.bg-tabel {
+  background-color: #f0eae8;
 }
 </style>
