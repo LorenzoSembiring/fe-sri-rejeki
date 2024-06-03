@@ -1,64 +1,53 @@
 <template>
   <nav class="navbar navbar-expand-lg bg-body-tertiary">
-    <div class="container-fluid">
-      <div class="mx-3 my-2">
-        <a href="/">
+    <div class="container-fluid d-flex">
+      <div class="my-2 justify-content-start col-1">
+        <a class="ms-5" href="/">
           <img
             style="height: 5vh; width: auto"
-            src="@/assets/logo-cropped.png"
+            src="@/assets/logo-textonly.png"
           />
         </a>
       </div>
-      <button
-        class="navbar-toggler"
-        type="button"
-        data-bs-toggle="collapse"
-        data-bs-target="#navbarSupportedContent"
-        aria-controls="navbarSupportedContent"
-        aria-expanded="false"
-        aria-label="Toggle navigation"
-      >
-        <span class="navbar-toggler-icon"></span>
-      </button>
-      <div class="collapse navbar-collapse" id="navbarSupportedContent">
-        <ul class="navbar-nav mb-2 mb-lg-0">
-          <li class="nav-item">
-            <a class="nav-link active" aria-current="page" href="#">Home</a>
-          </li>
-          <li class="nav-item">
-            <a class="nav-link" href="#">Link</a>
-          </li>
-          <li class="nav-item dropdown">
-            <a
-              class="nav-link dropdown-toggle"
-              href="#"
-              role="button"
-              data-bs-toggle="dropdown"
-              aria-expanded="false"
-            >
-              Dropdown
-            </a>
-            <ul class="dropdown-menu">
-              <li><a class="dropdown-item" href="#">Action</a></li>
-              <li><a class="dropdown-item" href="#">Another action</a></li>
-              <li><hr class="dropdown-divider" /></li>
-              <li><a class="dropdown-item" href="#">Something else here</a></li>
-            </ul>
-          </li>
-        </ul>
-        <form class="d-flex ms-auto me-5" role="search">
-          <input
-            class="form-control me-2"
-            type="text"
-            placeholder="Cari"
-            aria-label="Search"
-          />
-          <button class="btn button-search text-white" type="submit">
-            Cari
-          </button>
-        </form>
-        <CartPopover class="cart-margin" />
-        <Profile/>
+      <div>
+        <button
+          class="navbar-toggler"
+          type="button"
+          data-bs-toggle="collapse"
+          data-bs-target="#navbarSupportedContent"
+          aria-controls="navbarSupportedContent"
+          aria-expanded="false"
+          aria-label="Toggle navigation"
+        >
+          <span class="navbar-toggler-icon"></span>
+        </button>
+      </div>
+      <div class="collapse navbar-collapse row" id="navbarSupportedContent">
+        <div class="justify-content-center col-10 d-inline-flex">
+          <ul class="navbar-nav mb-2 mb-lg-0 row">
+            <li class="nav-item col">
+              <a class="nav-link" href="/">Home</a>
+            </li>
+            <li class="nav-item col">
+              <a class="nav-link" href="/shop">Shop</a>
+            </li>
+            <li class="nav-item col">
+              <a class="nav-link" href="/about">About</a>
+            </li>
+            
+          </ul>
+        </div>
+        <div class="d-flex justify-content-end col row m-0">
+          <div class="d-inline-flex col"><Icon icon="mdi:magnify" style="font-size: 24px;"/></div>
+          <div class="d-inline-flex col"><Icon icon="mdi:account-outline"  style="font-size: 24px;"/></div>
+          <div class="d-inline-flex col"><Icon icon="mdi:cart-outline"  style="font-size: 24px;"/></div>
+          <!-- <div class="d-inline-flex"><CartPopover/></div> -->
+          <!-- <div class="d-inline-flex"><Profile/></div> -->
+        </div>
+        <!-- <div class="d-inline-flex col">
+          <div class="d-inline-flex"><CartPopover class="cart-margin" /></div>
+          <div class="d-inline-flex"><Profile/></div>
+        </div> -->
       </div>
     </div>
   </nav>
@@ -67,9 +56,10 @@
 <script setup>
 import CartPopover from "@/components/CartPopover.vue";
 import Profile from "@/components/Profile.vue";
+import { Icon } from "@iconify/vue";
 </script>
 
-<style>
+<style scoped>
 .logo {
   width: 25vh;
   background-image: url("@/assets/logo-cropped.png");
@@ -78,6 +68,10 @@ import Profile from "@/components/Profile.vue";
   cursor: pointer;
 }
 
+.nav-link {
+  font-family: "Plus Jakarta Sans", sans-serif;
+  color: #402218;
+}
 .login-register {
   text-decoration: none;
   font-weight: 600;
@@ -117,5 +111,12 @@ import Profile from "@/components/Profile.vue";
   font-family: "Plus Jakarta Sans", sans-serif;
   user-select: none;
   color: grey;
+}
+.button-coklat {
+  border-radius: 8px;
+  border-style: none;
+  background-color: #A77155;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
 }
 </style>
