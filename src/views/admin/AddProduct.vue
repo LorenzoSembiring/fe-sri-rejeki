@@ -13,11 +13,18 @@
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Kategori</div>
-            <select class="form-select" aria-label="Default select example">
+            <!-- <div>{{ categories }}</div> -->
+            <select class="form-select" aria-label="Default select example" id="category">
               <option selected disabled hidden>Pilih Kategori</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
+              
+              <option
+                v-for="category in categories"
+                :id="category.id"
+                :value="category.id"
+                :key="category.id"
+              >
+              {{ category.name }}
+              </option>
             </select>
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
@@ -52,6 +59,15 @@
           <div class="h5 mt-2 border-bottom pb-3 px-3">Gambar Produk</div>
           <div class="ms-4 my-4">
             <div class="row">
+              <div class="upload-button" @click="handleFileClick">
+                Upload File
+              </div>
+              <input
+                type="file"
+                id="file-input"
+                ref="fileInput"
+                @change="handleFileChange"
+              />
               <div class="col-lg-2 col-md-3 col-sm-4">
                 <div class="rounded product-picture p-3 pt-4">
                   <div class="d-flex justify-content-center">
@@ -171,20 +187,27 @@
                 </button>
               </div>
               <div class="row">
-                  <div v-for="(size, key) in sizes" class="my-1 fs-5 col-3">
-                    <div class="d-inline-flex badge rounded border text-bg-light mt-2">
-                      <div class="d-block fw-semibold">
-                        <div class="d-flex justify-content-start my-1">Ukuran: {{ size.size }}</div>
-                        <div class="d-flex justify-content-start my-1">Stok: {{ size.stock }}</div>
+                <div v-for="(size, key) in sizes" class="my-1 fs-5 col-3">
+                  <div
+                    class="d-inline-flex badge rounded border text-bg-light mt-2"
+                  >
+                    <div class="d-block fw-semibold">
+                      <div class="d-flex justify-content-start my-1">
+                        Ukuran: {{ size.size }}
                       </div>
-                      <div
-                        class="cross d-inline-flex badge rounded-circle text-bg-light p-2 ms-2 my-1 border-light d-inline align-items-center fs-5 fw-semibold"
-                        @click="deleteSize(key)"
-                        >x</div
-                      ></div
+                      <div class="d-flex justify-content-start my-1">
+                        Stok: {{ size.stock }}
+                      </div>
+                    </div>
+                    <div
+                      class="cross d-inline-flex badge rounded-circle text-bg-light p-2 ms-2 my-1 border-light d-inline align-items-center fs-5 fw-semibold"
+                      @click="deleteSize(key)"
                     >
+                      x
+                    </div>
                   </div>
                 </div>
+              </div>
             </div>
           </div>
         </div>
@@ -202,31 +225,46 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
-import { ref } from "vue";
+import { ref, onMounted } from "vue";
+import axios from "axios";
 
 const isPriceInputFocused = ref(false);
 
 const size = ref();
 const stock = ref();
 const sizes = ref([]);
+const categories = ref([]);
 
-function deleteSize(key) {
-  sizes.value.splice(key, 1)
+async function fetchCategory() {
+  console.log("fetchcategory")
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/category/get"
+    );
+    console.log(response.data.data.data)
+    categories.value = response.data.data.data;
+  } catch (error) {
+    console.log("Error fetching categories:", error);
+    console.log("error")
+  }
 }
-function addSize(size,stock) {
-if (!size || !stock) {
-          alert("Ukuran dan stok tidak boleh kosong");
-          return;
-        }
-        const sizeExists = this.sizes.some(item => item.size === size);
-        if (sizeExists) {
-          alert("Ukuran telah ada");
-        } else {
-          this.sizes.push({ size: size, stock: stock });
-          this.size = '';
-          this.stock = '';
-        }
-      }
+function deleteSize(key) {
+  sizes.value.splice(key, 1);
+}
+function addSize(size, stock) {
+  if (!size || !stock) {
+    alert("Ukuran dan stok tidak boleh kosong");
+    return;
+  }
+  const sizeExists = this.sizes.some((item) => item.size === size);
+  if (sizeExists) {
+    alert("Ukuran telah ada");
+  } else {
+    this.sizes.push({ size: size, stock: stock });
+    this.size = "";
+    this.stock = "";
+  }
+}
 const setPriceFocus = (value) => {
   isPriceInputFocused.value = value;
 };
@@ -240,6 +278,8 @@ const isStockInputFocused = ref(false);
 const setStockFocus = (value) => {
   isStockInputFocused.value = value;
 };
+// onMounted(fetchCategory());
+fetchCategory()
 </script>
 
 <style scoped>
@@ -334,7 +374,7 @@ input:focus {
 .input-price:focus {
   border-left: none;
 }
-.cross{
+.cross {
   width: 20px;
   cursor: pointer;
   aspect-ratio: 1;
