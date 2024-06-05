@@ -68,10 +68,59 @@
           Atur
         </button>
         <ul class="dropdown-menu">
-          <li><a class="dropdown-item" href="#"><span class="fw-semibold">Detail</span></a></li>
-          <li><a class="dropdown-item" href="#"><span class="fw-semibold">Edit</span></a></li>
-          <li><a class="dropdown-item" href="#"><span class="fw-semibold text-danger">Hapus</span></a></li>
+          <li>
+            <a class="dropdown-item" href="#"
+              ><span class="fw-semibold">Detail</span></a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#"
+              ><span class="fw-semibold">Edit</span></a
+            >
+          </li>
+          <li>
+            <a class="dropdown-item" href="#"
+              ><span class="fw-semibold text-danger">Hapus</span></a
+            >
+          </li>
         </ul>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="deleteModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Konfirmasi penghapusan
+          </h1>
+        </div>
+        <div class="modal-body">
+          Anda yakin ingin menghapus kategori {{ dataName }}
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn button-putih border"
+            data-bs-dismiss="modal"
+          >
+            Tidak
+          </button>
+          <button
+            type="button"
+            class="btn button-merah"
+            @click="deleteCategory(dataID)"
+          >
+            Ya, Hapus
+          </button>
+        </div>
       </div>
     </div>
   </div>
