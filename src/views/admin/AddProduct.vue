@@ -14,16 +14,20 @@
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Kategori</div>
             <!-- <div>{{ categories }}</div> -->
-            <select class="form-select" aria-label="Default select example" id="category">
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              id="category"
+            >
               <option selected disabled hidden>Pilih Kategori</option>
-              
+
               <option
                 v-for="category in categories"
                 :id="category.id"
                 :value="category.id"
                 :key="category.id"
               >
-              {{ category.name }}
+                {{ category.name }}
               </option>
             </select>
           </div>
@@ -59,17 +63,14 @@
           <div class="h5 mt-2 border-bottom pb-3 px-3">Gambar Produk</div>
           <div class="ms-4 my-4">
             <div class="row">
-              <div class="upload-button" @click="handleFileClick">
-                Upload File
-              </div>
-              <input
-                type="file"
-                id="file-input"
-                ref="fileInput"
-                @change="handleFileChange"
-              />
-              <div class="col-lg-2 col-md-3 col-sm-4">
-                <div class="rounded product-picture p-3 pt-4">
+              <div class="col-lg-2 col-md-3 col-sm-4" v-for="i in 5" :key="index">
+                <input
+                  type="file"
+                  :ref="el => pictureInputs[index] = el"
+                  @change="handleFileChange(index)"
+                  style="display: none"
+                />
+                <div class="rounded product-picture p-3 pt-4" @click="triggerPictureInput(index)">
                   <div class="d-flex justify-content-center">
                     <Icon
                       class="text-secondary d-flex justify-contents-center"
@@ -80,23 +81,7 @@
                   <div
                     class="d-flex justify-content-center text-secondary fw-semibold mt-1"
                   >
-                    Foto 1
-                  </div>
-                </div>
-              </div>
-              <div class="col-lg-2 col-md-3 col-sm-4">
-                <div class="rounded product-picture p-3 pt-4">
-                  <div class="d-flex justify-content-center">
-                    <Icon
-                      class="text-secondary d-flex justify-content-center"
-                      icon="icon-park-outline:picture"
-                      style="font-size: 10vh"
-                    />
-                  </div>
-                  <div
-                    class="d-flex justify-content-center text-secondary fw-semibold mt-1"
-                  >
-                    Foto 2
+                    Foto {{ i }}
                   </div>
                 </div>
               </div>
@@ -225,7 +210,7 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
-import { ref, onMounted } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 
 const isPriceInputFocused = ref(false);
@@ -234,20 +219,43 @@ const size = ref();
 const stock = ref();
 const sizes = ref([]);
 const categories = ref([]);
+const pictureInputs = ref([]);
+const uploads = ref([
+  { file: null },
+  { file: null },
+  { file: null },
+  { file: null },
+  { file: null }
+]);
 
 async function fetchCategory() {
-  console.log("fetchcategory")
+  console.log("fetchcategory");
   try {
     const response = await axios.get(
       import.meta.env.VITE_API_URL + "/api/category/get"
     );
-    console.log(response.data.data.data)
+    console.log(response.data.data.data);
     categories.value = response.data.data.data;
   } catch (error) {
     console.log("Error fetching categories:", error);
-    console.log("error")
+    console.log("error");
   }
 }
+
+const triggerPictureInput = (index) => {
+  pictureInputs.value[index].click();
+};
+
+// Function to handle file selection
+const handleFileChange = (index, event) => {
+  const files = fileInputs.value[index].files;
+  if (files.length) {
+    uploads.value[index].file = files[0];
+    console.log(`Selected file for upload ${index}:`, files[0]);
+    // Handle the selected file here
+  }
+};
+
 function deleteSize(key) {
   sizes.value.splice(key, 1);
 }
@@ -279,7 +287,7 @@ const setStockFocus = (value) => {
   isStockInputFocused.value = value;
 };
 // onMounted(fetchCategory());
-fetchCategory()
+fetchCategory();
 </script>
 
 <style scoped>
