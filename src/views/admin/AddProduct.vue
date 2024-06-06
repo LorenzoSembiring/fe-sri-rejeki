@@ -63,14 +63,21 @@
           <div class="h5 mt-2 border-bottom pb-3 px-3">Gambar Produk</div>
           <div class="ms-4 my-4">
             <div class="row">
-              <div class="col-lg-2 col-md-3 col-sm-4" v-for="i in 5" :key="index">
+              <div
+                class="col-lg-2 col-md-3 col-sm-4"
+                v-for="i in 5"
+                :key="index"
+              >
                 <input
                   type="file"
-                  :ref="el => pictureInputs[index] = el"
+                  :ref="(el) => (pictureInputs[index] = el)"
                   @change="handleFileChange(index)"
                   style="display: none"
                 />
-                <div class="rounded product-picture p-3 pt-4" @click="triggerPictureInput(index)">
+                <div
+                  class="rounded product-picture p-3 pt-4"
+                  @click="triggerPictureInput(index)"
+                >
                   <div class="d-flex justify-content-center">
                     <Icon
                       class="text-secondary d-flex justify-contents-center"
@@ -94,7 +101,13 @@
           <div class="h5 mt-2 border-bottom pb-3">3D</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Objek 3D</div>
-            <button class="button-putih py-2 px-3">Pilih objek 3D</button>
+            <button
+              class="button-putih py-2 px-3"
+              data-bs-toggle="modal"
+              data-bs-target="#D3Modal"
+            >
+              Pilih objek 3D
+            </button>
           </div>
           <div class="my-4 d-flex fw-semibold text-grey">
             <div class="col-4 p-0">Tekstur</div>
@@ -199,11 +212,34 @@
         </div>
       </div>
     </div>
+    <!-- modal 3D -->
+    <div class="modal fade" id="D3Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h1 class="modal-title fs-5" id="exampleModalLabel">Pilih objek 3D</h1>
+          </div>
+          <div class="modal-body">
+            <div class="d-inline-block border rounded">
+              <div class="m-2 justify-content-center d-flex">
+                <ModalView3D :width="200" :height="200"></ModalView3D>
+              </div>
+              <div class="my-2 text-center fw-semibold">3D Model Blangkon</div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button type="button" class="btn button-putih border" data-bs-dismiss="modal">Batal</button>
+            <button type="button" class="btn button-coklat" @click="">Pilih</button>
+          </div>
+        </div>
+      </div>
+    </div>
   </LayoutDefault>
 </template>
 
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
+import ModalView3D from "@/components/ModalView3D.vue";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import axios from "axios";
