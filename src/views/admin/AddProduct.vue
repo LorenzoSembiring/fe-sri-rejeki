@@ -94,12 +94,7 @@
           <div class="h5 mt-2 border-bottom pb-3">3D</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Objek 3D</div>
-            <select class="form-select" aria-label="Default select example">
-              <option selected disabled hidden>Pilih Objek 3D</option>
-              <option value="1">One</option>
-              <option value="2">Two</option>
-              <option value="3">Three</option>
-            </select>
+            <button class="button-putih py-2 px-3">Pilih objek 3D</button>
           </div>
           <div class="my-4 d-flex fw-semibold text-grey">
             <div class="col-4 p-0">Tekstur</div>
