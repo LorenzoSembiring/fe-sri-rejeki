@@ -13,14 +13,12 @@
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Kategori</div>
-            <!-- <div>{{ categories }}</div> -->
             <select
               class="form-select"
               aria-label="Default select example"
               id="category"
             >
               <option selected disabled hidden>Pilih Kategori</option>
-
               <option
                 v-for="category in categories"
                 :id="category.id"
@@ -111,8 +109,16 @@
           </div>
           <div class="my-4 d-flex fw-semibold text-grey">
             <div class="col-4 p-0">Tekstur</div>
+            <input 
+              type="file"
+              ref="textureInput"
+              @change="handleTextureChange"
+              style="display: none"
+              accept=".png,.jpg,.jpeg"
+            />
             <div
               class="rounded p-3"
+              @click="triggerTextureInput"
               style="border: 3px dashed #6e6c6b; cursor: pointer"
             >
               <div class="d-flex justify-content-center">
@@ -213,11 +219,19 @@
       </div>
     </div>
     <!-- modal 3D -->
-    <div class="modal fade" id="D3Modal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
+    <div
+      class="modal fade"
+      id="D3Modal"
+      tabindex="-1"
+      aria-labelledby="exampleModalLabel"
+      aria-hidden="true"
+    >
       <div class="modal-dialog">
         <div class="modal-content">
           <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">Pilih objek 3D</h1>
+            <h1 class="modal-title fs-5" id="exampleModalLabel">
+              Pilih objek 3D
+            </h1>
           </div>
           <div class="modal-body">
             <div class="d-inline-block border rounded">
@@ -228,8 +242,16 @@
             </div>
           </div>
           <div class="modal-footer">
-            <button type="button" class="btn button-putih border" data-bs-dismiss="modal">Batal</button>
-            <button type="button" class="btn button-coklat" @click="">Pilih</button>
+            <button
+              type="button"
+              class="btn button-putih border"
+              data-bs-dismiss="modal"
+            >
+              Batal
+            </button>
+            <button type="button" class="btn button-coklat" @click="">
+              Pilih
+            </button>
           </div>
         </div>
       </div>
@@ -258,6 +280,7 @@ const uploads = ref([
   { file: null },
   { file: null }
 ]);
+const textureInput = ref(null);
 
 async function fetchCategory() {
   console.log("fetchcategory");
@@ -277,6 +300,10 @@ const triggerPictureInput = (index) => {
   pictureInputs.value[index].click();
 };
 
+const triggerTextureInput = () => {
+      textureInput.value.click();
+};
+
 // Function to handle file selection
 const handleFileChange = (index, event) => {
   const files = fileInputs.value[index].files;
@@ -286,6 +313,10 @@ const handleFileChange = (index, event) => {
     // Handle the selected file here
   }
 };
+
+const handleTextureChange = () => {
+      // Your handle change logic
+    };
 
 function deleteSize(key) {
   sizes.value.splice(key, 1);
