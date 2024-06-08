@@ -234,7 +234,14 @@
             </h1>
           </div>
           <div class="modal-body">
-            <div class="d-inline-block border rounded">
+            <!-- <div class="d-inline-block border rounded" id="1" @click="select3D(id)"> -->
+              <div 
+                v-for="item in D3items" 
+                :key="item.id" 
+                class="d-inline-block border rounded mx-1"
+                :class="{ 'glow': selected3D === item.id }"
+                :id="item.id" 
+                @click="select3D(item.id)">
               <div class="m-2 justify-content-center d-flex">
                 <ModalView3D :width="200" :height="200"></ModalView3D>
               </div>
@@ -246,6 +253,7 @@
               type="button"
               class="btn button-putih border"
               data-bs-dismiss="modal"
+              @click="selected3D = null"
             >
               Batal
             </button>
@@ -281,7 +289,12 @@ const uploads = ref([
   { file: null }
 ]);
 const textureInput = ref(null);
-
+const selected3D = ref(null);
+const D3items = ref([
+      { id: 1, title: 'Item 1' },
+      { id: 2, title: 'Item 2' },
+      { id: 3, title: 'Item 3' },
+    ]);
 async function fetchCategory() {
   console.log("fetchcategory");
   try {
@@ -348,7 +361,15 @@ const isStockInputFocused = ref(false);
 const setStockFocus = (value) => {
   isStockInputFocused.value = value;
 };
-// onMounted(fetchCategory());
+
+function select3D(id) {
+      if (selected3D.value === id) {
+        selected3D.value = null;
+      } else {
+        selected3D.value = id;
+      }
+      console.log(selected3D.value);
+    }
 fetchCategory();
 </script>
 
@@ -448,5 +469,9 @@ input:focus {
   width: 20px;
   cursor: pointer;
   aspect-ratio: 1;
+}
+.glow {
+  box-shadow: 0 0 10px rgba(48, 62, 255, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.8);
 }
 </style>
