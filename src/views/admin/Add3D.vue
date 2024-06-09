@@ -15,9 +15,17 @@
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Mesh 3D</div>
+            <input
+              type="file"
+              ref="meshInput"
+              @change="handleMeshChange"
+              style="display: none"
+              accept=".glTF,.obj,.fbx,.glb"
+            />
             <div
               class="rounded p-4"
               style="border: 3px dashed #6e6c6b; cursor: pointer"
+              @click="triggerMeshInput"
             >
               <div class="d-flex justify-content-center">
                 <Icon
@@ -26,7 +34,8 @@
                   style="font-size: 7vh"
                 />
               </div>
-              <div class="d-flex justify-content-center mt-1">Pilih Mesh</div>
+              <div v-if="meshUrl" class="d-flex justify-content-center mt-1">{{ meshName }}</div>
+              <div v-else class="d-flex justify-content-center mt-1">Pilih Mesh</div>
             </div>
           </div>
         </div>
@@ -44,6 +53,25 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
+import { ref } from "vue";
+
+const meshInput = ref(null);
+const meshUrl = ref(null);
+const meshName = ref('');
+
+// Function to trigger file input click
+const triggerMeshInput = () => {
+  meshInput.value.click();
+};
+
+// Function to handle mesh file change
+const handleMeshChange = () => {
+  const selectedMesh = meshInput.value.files[0];
+  if (selectedMesh) {
+    meshName.value = selectedMesh.name; // Store the mesh file name
+    meshUrl.value = URL.createObjectURL(selectedMesh); // Create object URL for the selected file
+  }
+};
 </script>
 
 <style scoped>
@@ -53,7 +81,7 @@ import { Icon } from "@iconify/vue";
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #A77155;
+  background-color: #a77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
@@ -70,7 +98,6 @@ import { Icon } from "@iconify/vue";
   color: rgb(53, 53, 53);
   font-weight: 600;
 }
-
 .form-control:focus {
   box-shadow: none;
 }
