@@ -213,8 +213,8 @@
       </div>
       <div class="col">
         <div class="d-flex justify-content-end my-5">
-          <button class="button-putih py-2 px-5 mx-4">Batal</button>
           <button class="button-coklat py-2 px-5">Simpan</button>
+          <button class="button-putih py-2 px-5 mx-4" @click="back">Batal</button>
         </div>
       </div>
     </div>
@@ -270,6 +270,7 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import ModalView3D from "@/components/ModalView3D.vue";
+import router from "../../router/index.js";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import axios from "axios";
@@ -295,6 +296,11 @@ const D3items = ref([
       { id: 2, title: 'Item 2' },
       { id: 3, title: 'Item 3' },
     ]);
+
+function back() {
+  router.push("/admin/product");
+}
+
 async function fetchCategory() {
   console.log("fetchcategory");
   try {
