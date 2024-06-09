@@ -11,7 +11,12 @@
         >
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Nama Mesh 3D</div>
-            <input type="text" class="form-control" id="name" />
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              v-model="nameMesh"
+            />
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Mesh 3D</div>
@@ -34,8 +39,12 @@
                   style="font-size: 7vh"
                 />
               </div>
-              <div v-if="meshUrl" class="d-flex justify-content-center mt-1">{{ meshName }}</div>
-              <div v-else class="d-flex justify-content-center mt-1">Pilih Mesh</div>
+              <div v-if="meshUrl" class="d-flex justify-content-center mt-1">
+                {{ meshName }}
+              </div>
+              <div v-else class="d-flex justify-content-center mt-1">
+                Pilih Mesh
+              </div>
             </div>
           </div>
         </div>
@@ -43,7 +52,9 @@
           <button class="button-putih py-2 px-5 mx-4" @click="back">
             Batal
           </button>
-          <button class="button-coklat py-2 px-5">Simpan</button>
+          <button class="button-coklat py-2 px-5" @click="submit">
+            Simpan
+          </button>
         </div>
       </div>
     </div>
@@ -54,10 +65,15 @@
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
+import axios from "axios";
+import router from "../../router/index.js";
 
+// Declare reactive variables
 const meshInput = ref(null);
 const meshUrl = ref(null);
-const meshName = ref('');
+const meshName = ref("");
+const nameMesh = ref("");
+const token = localStorage.getItem("token");
 
 // Function to trigger file input click
 const triggerMeshInput = () => {
@@ -65,13 +81,45 @@ const triggerMeshInput = () => {
 };
 
 // Function to handle mesh file change
-const handleMeshChange = () => {
+function handleMeshChange() {
   const selectedMesh = meshInput.value.files[0];
   if (selectedMesh) {
-    meshName.value = selectedMesh.name; // Store the mesh file name
-    meshUrl.value = URL.createObjectURL(selectedMesh); // Create object URL for the selected file
+    meshName.value = selectedMesh.name;
+    meshUrl.value = URL.createObjectURL(selectedMesh); 
   }
-};
+}
+
+// Function to submit the form
+async function submit() {
+  if (!nameMesh.value || !meshInput.value.files.length) {
+    console.error("Name or file not provided");
+    return;
+  }
+
+  try {
+    const formData = new FormData();
+    formData.append("name", nameMesh.value);
+    formData.append("file", meshInput.value.files[0]);
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/mesh/store`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.status)
+    if (response.status == 201) {
+      router.push("/admin/3D");
+    } else {
+      // show modal
+    }
+  } catch (error) {
+    console.log("Error storing file:", error);
+  }
+}
 </script>
 
 <style scoped>
