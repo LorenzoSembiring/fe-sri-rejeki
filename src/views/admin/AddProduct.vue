@@ -63,7 +63,7 @@
             <div class="row">
               <div
                 class="col-lg-2 col-md-3 col-sm-4"
-                v-for="i in 5"
+                v-for="(item, index) in 5"
                 :key="index"
               >
                 <input
@@ -86,7 +86,7 @@
                   <div
                     class="d-flex justify-content-center text-secondary fw-semibold mt-1"
                   >
-                    Foto {{ i }}
+                    Foto {{ index + 1 }}
                   </div>
                 </div>
               </div>
@@ -109,14 +109,15 @@
           </div>
           <div class="my-4 d-flex fw-semibold text-grey">
             <div class="col-4 p-0">Tekstur</div>
-            <input 
-              type="file"
-              ref="textureInput"
-              @change="handleTextureChange"
-              style="display: none"
-              accept=".png,.jpg,.jpeg"
-            />
+            <div v-if="textureUrl" @click="triggerTextureInput">
+              <img
+                :src="textureUrl"
+                alt="Selected Image"
+                style="max-width: 300px; max-height: 300px"
+              />
+            </div>
             <div
+              v-else
               class="rounded p-3"
               @click="triggerTextureInput"
               style="border: 3px dashed #6e6c6b; cursor: pointer"
@@ -132,6 +133,13 @@
                 Pilih Tekstur
               </div>
             </div>
+            <input
+              type="file"
+              ref="textureInput"
+              @change="handleTextureChange"
+              style="display: none"
+              accept=".png,.jpg,.jpeg"
+            />
           </div>
         </div>
       </div>
@@ -213,8 +221,12 @@
       </div>
       <div class="col">
         <div class="d-flex justify-content-end my-5">
-          <button class="button-coklat py-2 px-5">Simpan</button>
-          <button class="button-putih py-2 px-5 mx-4" @click="back">Batal</button>
+          <button class="button-putih py-2 px-5 mx-4" @click="back">
+            Batal
+          </button>
+          <button class="button-coklat py-2 px-5" @click="submit">
+            Simpan
+          </button>
         </div>
       </div>
     </div>
@@ -234,14 +246,14 @@
             </h1>
           </div>
           <div class="modal-body">
-            <!-- <div class="d-inline-block border rounded" id="1" @click="select3D(id)"> -->
-              <div 
-                v-for="item in D3items" 
-                :key="item.id" 
-                class="d-inline-block border rounded mx-1"
-                :class="{ 'glow': selected3D === item.id }"
-                :id="item.id" 
-                @click="select3D(item.id)">
+            <div
+              v-for="item in D3items"
+              :key="item.id"
+              class="d-inline-block border rounded mx-1"
+              :class="{ glow: selected3D === item.id }"
+              :id="item.id"
+              @click="select3D(item.id)"
+            >
               <div class="m-2 justify-content-center d-flex">
                 <ModalView3D :width="200" :height="200"></ModalView3D>
               </div>
@@ -290,12 +302,13 @@ const uploads = ref([
   { file: null }
 ]);
 const textureInput = ref(null);
+const textureUrl = ref(null);
 const selected3D = ref(null);
 const D3items = ref([
-      { id: 1, title: 'Item 1' },
-      { id: 2, title: 'Item 2' },
-      { id: 3, title: 'Item 3' },
-    ]);
+  { id: 1, title: "Item 1" },
+  { id: 2, title: "Item 2" },
+  { id: 3, title: "Item 3" },
+]);
 
 function back() {
   router.push("/admin/product");
@@ -320,40 +333,44 @@ const triggerPictureInput = (index) => {
 };
 
 const triggerTextureInput = () => {
-      textureInput.value.click();
+  textureInput.value.click();
 };
 
 // Function to handle file selection
 const handleFileChange = (index, event) => {
-  const files = fileInputs.value[index].files;
+  const files = pictureInputs.value[index].files;
   if (files.length) {
     uploads.value[index].file = files[0];
-    console.log(`Selected file for upload ${index}:`, files[0]);
     // Handle the selected file here
   }
 };
 
 const handleTextureChange = () => {
-      // Your handle change logic
-    };
+  const selectedTexture = textureInput.value.files[0];
+  if (selectedTexture) {
+    textureUrl.value = URL.createObjectURL(selectedTexture);
+  }
+};
 
 function deleteSize(key) {
   sizes.value.splice(key, 1);
 }
+
 function addSize(size, stock) {
   if (!size || !stock) {
     alert("Ukuran dan stok tidak boleh kosong");
     return;
   }
-  const sizeExists = this.sizes.some((item) => item.size === size);
+  const sizeExists = sizes.value.some((item) => item.size === size);
   if (sizeExists) {
     alert("Ukuran telah ada");
   } else {
-    this.sizes.push({ size: size, stock: stock });
-    this.size = "";
-    this.stock = "";
+    sizes.value.push({ size: size, stock: stock });
+    size.value = "";
+    stock.value = "";
   }
 }
+
 const setPriceFocus = (value) => {
   isPriceInputFocused.value = value;
 };
@@ -369,13 +386,13 @@ const setStockFocus = (value) => {
 };
 
 function select3D(id) {
-      if (selected3D.value === id) {
-        selected3D.value = null;
-      } else {
-        selected3D.value = id;
-      }
-      console.log(selected3D.value);
-    }
+  if (selected3D.value === id) {
+    selected3D.value = null;
+  } else {
+    selected3D.value = id;
+  }
+}
+
 fetchCategory();
 </script>
 
