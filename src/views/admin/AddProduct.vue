@@ -111,9 +111,9 @@
             <div class="col-4 p-0">Tekstur</div>
             <div v-if="textureUrl" @click="triggerTextureInput">
               <img
+                class="texture"
                 :src="textureUrl"
                 alt="Selected Image"
-                style="max-width: 300px; max-height: 300px"
               />
             </div>
             <div
@@ -496,5 +496,10 @@ input:focus {
 .glow {
   box-shadow: 0 0 10px rgba(48, 62, 255, 0.8);
   border: 1px solid rgba(255, 255, 255, 0.8);
+}
+.texture {
+  width: 25vh;
+  height: 25vh;
+  object-fit: cover;
 }
 </style>
