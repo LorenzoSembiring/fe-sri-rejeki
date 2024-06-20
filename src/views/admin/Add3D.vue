@@ -120,6 +120,9 @@ async function submit() {
     console.log("Error storing file:", error);
   }
 }
+function back() {
+  router.back()
+}
 </script>
 
 <style scoped>
