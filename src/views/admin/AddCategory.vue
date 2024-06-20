@@ -30,7 +30,7 @@ const category = ref("")
 const token = localStorage.getItem("token");
 
 function back() {
-  router.push("/admin/category");
+  router.back();
 }
 
 async function submit() {
