@@ -100,6 +100,15 @@
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Objek 3D</div>
             <button
+              v-if="selected3D"
+              class="button-putih py-2 px-3"
+              data-bs-toggle="modal"
+              data-bs-target="#D3Modal"
+            >
+              {{ selected3D }}
+            </button>
+            <button
+              v-else
               class="button-putih py-2 px-3"
               data-bs-toggle="modal"
               data-bs-target="#D3Modal"
@@ -269,7 +278,7 @@
             >
               Batal
             </button>
-            <button type="button" class="btn button-coklat" @click="">
+            <button type="button" class="btn button-coklat" data-bs-dismiss="modal" @click="select3D(item.id)">
               Pilih
             </button>
           </div>
