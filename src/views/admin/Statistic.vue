@@ -134,13 +134,16 @@
         </div>
       </div>
     </div>
+    <div id="tes"></div>
   </LayoutDefault>
 </template>
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
+import { onMounted } from "vue";
 
-window.onload = function () {
+onMounted(() => {
+  console.log(document.getElementById("tes"))
   var monthlyChart = new CanvasJS.Chart("chartContainer", {
     animationEnabled: true,
     axisY: {
@@ -203,7 +206,7 @@ window.onload = function () {
     ],
   });
   weeklyChart.render();
-};
+})
 </script>
 <style scoped>
 .header {
