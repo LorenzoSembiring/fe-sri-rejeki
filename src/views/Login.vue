@@ -101,7 +101,11 @@ export default defineComponent({
 
           localStorage.setItem("token", strippedToken);
           localStorage.setItem("name", response.data.data.user.username);
-          router.push("/");
+          if (response.data.data.user.role === "admin") {
+            router.push("/admin/dashboard");
+          } else {
+            router.push("/");
+          }
         }
       } catch (error: any) {
         if (error.response?.status == 401) {
