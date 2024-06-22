@@ -63,30 +63,39 @@
             <div class="row">
               <div
                 class="col-lg-2 col-md-3 col-sm-4"
-                v-for="(item, index) in 5"
+                v-for="(item, index) in uploads"
                 :key="index"
               >
-                <input
-                  type="file"
-                  :ref="(el) => (pictureInputs[index] = el)"
-                  @change="handleFileChange(index)"
-                  style="display: none"
-                />
-                <div
-                  class="rounded product-picture p-3 pt-4"
-                  @click="triggerPictureInput(index)"
-                >
-                  <div class="d-flex justify-content-center">
-                    <Icon
-                      class="text-secondary d-flex justify-contents-center"
-                      icon="icon-park-outline:picture"
-                      style="font-size: 10vh"
-                    />
-                  </div>
+                <div v-if="item.file" @click="triggerPictureInput(index)">
+                  <img
+                    class="texture"
+                    :src="URL.createObjectURL(item.file)"
+                    alt="Selected Image"
+                  />
+                </div>
+                <div v-else>
+                  <input
+                    type="file"
+                    :ref="(el) => (pictureInputs[index] = el)"
+                    @change="handleFileChange(index)"
+                    style="display: none"
+                  />
                   <div
-                    class="d-flex justify-content-center text-secondary fw-semibold mt-1"
+                    class="rounded product-picture p-3 pt-4"
+                    @click="triggerPictureInput(index)"
                   >
-                    Foto {{ index + 1 }}
+                    <div class="d-flex justify-content-center">
+                      <Icon
+                        class="text-secondary d-flex justify-contents-center"
+                        icon="icon-park-outline:picture"
+                        style="font-size: 10vh"
+                      />
+                    </div>
+                    <div
+                      class="d-flex justify-content-center text-secondary fw-semibold mt-1"
+                    >
+                      Foto {{ index + 1 }}
+                    </div>
                   </div>
                 </div>
               </div>
@@ -119,11 +128,7 @@
           <div class="my-4 d-flex fw-semibold text-grey">
             <div class="col-4 p-0">Tekstur</div>
             <div v-if="textureUrl" @click="triggerTextureInput">
-              <img
-                class="texture"
-                :src="textureUrl"
-                alt="Selected Image"
-              />
+              <img class="texture" :src="textureUrl" alt="Selected Image" />
             </div>
             <div
               v-else
@@ -278,7 +283,12 @@
             >
               Batal
             </button>
-            <button type="button" class="btn button-coklat" data-bs-dismiss="modal" @click="select3D(item.id)">
+            <button
+              type="button"
+              class="btn button-coklat"
+              data-bs-dismiss="modal"
+              @click="select3D(item.id)"
+            >
               Pilih
             </button>
           </div>
@@ -298,8 +308,9 @@ import axios from "axios";
 
 const isPriceInputFocused = ref(false);
 
-const size = ref();
-const stock = ref();
+const URL = window.URL
+const size = ref("");
+const stock = ref("");
 const sizes = ref([]);
 const categories = ref([]);
 const pictureInputs = ref([]);
@@ -308,7 +319,7 @@ const uploads = ref([
   { file: null },
   { file: null },
   { file: null },
-  { file: null }
+  { file: null },
 ]);
 const textureInput = ref(null);
 const textureUrl = ref(null);
@@ -346,17 +357,20 @@ const triggerTextureInput = () => {
 };
 
 // Function to handle file selection
-const handleFileChange = (index, event) => {
+const handleFileChange = (index) => {
   const files = pictureInputs.value[index].files;
   if (files.length) {
     uploads.value[index].file = files[0];
-    // Handle the selected file here
+    // Ensure reactivity
+    uploads.value = [...uploads.value];
+    console.log(uploads)
   }
 };
 
 const handleTextureChange = () => {
   const selectedTexture = textureInput.value.files[0];
   if (selectedTexture) {
+    // console.log(selectedTexture)
     textureUrl.value = URL.createObjectURL(selectedTexture);
   }
 };
