@@ -34,29 +34,59 @@
             <li class="nav-item col">
               <a class="nav-link" href="/about">About</a>
             </li>
-            
           </ul>
         </div>
         <div class="d-flex justify-content-end col row m-0">
-          <div class="d-inline-flex col"><Icon icon="mdi:magnify" style="font-size: 24px;"/></div>
-          <div class="d-inline-flex col"><Icon icon="mdi:account-outline"  style="font-size: 24px;"/></div>
-          <div class="d-inline-flex col"><Icon icon="mdi:cart-outline"  style="font-size: 24px;"/></div>
-          <!-- <div class="d-inline-flex"><CartPopover/></div> -->
-          <!-- <div class="d-inline-flex"><Profile/></div> -->
+          <div class="d-inline-flex col">
+            <Icon class="pointer" icon="mdi:magnify" style="font-size: 24px" />
+          </div>
+          <div
+            @mouseenter="isOnHoverProfile = true"
+            @mouseleave="leaveProfile"
+            class="d-inline-flex col position-relative"
+          >
+            <Icon class="pointer" icon="mdi:account-outline" style="font-size: 24px" />
+            <div
+            @mouseenter="isOnHoverProfilePopover = true"
+            @mouseleave="leaveProfilePopover"
+              v-if="isOnHoverProfile || isOnHoverProfilePopover"
+              class="bg-white position-fixed rounded p-1 mt-5"
+            >
+              <div class="px-3 my-2"><a class="nav-link pointer" href="/login">Masuk</a></div>
+              <div class="px-3 mb-2"><a class="nav-link pointer" href="/register">Daftar</a></div>
+            </div>
+          </div>
+          <div @click="goCart" class="d-inline-flex col pointer">
+            <Icon class="pointer" icon="mdi:cart-outline" style="font-size: 24px" />
+          </div>
         </div>
-        <!-- <div class="d-inline-flex col">
-          <div class="d-inline-flex"><CartPopover class="cart-margin" /></div>
-          <div class="d-inline-flex"><Profile/></div>
-        </div> -->
       </div>
     </div>
   </nav>
 </template>
 
 <script setup>
-import CartPopover from "@/components/CartPopover.vue";
-import Profile from "@/components/Profile.vue";
 import { Icon } from "@iconify/vue";
+import { ref } from "vue";
+import router from "../router/index.js";
+
+const isOnHoverProfile = ref(false);
+const isOnHoverProfilePopover = ref(false);
+
+function leaveProfile() {
+  setTimeout(() => {
+    isOnHoverProfile.value = false;
+  }, 100);
+}
+function leaveProfilePopover() {
+  setTimeout(() => {
+    isOnHoverProfilePopover.value = false;
+  }, 100);
+}
+
+function goCart() {
+  router.push("/cart");
+}
 </script>
 
 <style scoped>
@@ -88,18 +118,13 @@ import { Icon } from "@iconify/vue";
   color: aliceblue;
   font-weight: 600;
 }
-
-.cart-background:hover {
-  background-color: rgb(235, 235, 235);
+.pointer {
   cursor: pointer;
-}
-.cart-margin {
-  margin-right: 15vw;
 }
 .profil-pic {
   background-image: url("@/assets/default_profile_picture.jpg");
 }
-.default-pic{
+.default-pic {
   background-image: url("@/assets/default_profile_picture.jpg");
   background-size: cover;
   background-position: center;
@@ -115,7 +140,7 @@ import { Icon } from "@iconify/vue";
 .button-coklat {
   border-radius: 8px;
   border-style: none;
-  background-color: #A77155;
+  background-color: #a77155;
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
