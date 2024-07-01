@@ -52,7 +52,8 @@
           class="toggle__input"
           type="checkbox"
           :id="toggleID"
-          :checked="status == 'ACTIVE'"
+          :checked="boolStatus"
+          @change="onToggleChange"
         />
         <div class="toggle__fill"></div>
       </label>
@@ -126,8 +127,11 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, onMounted } from 'vue';
+import axios from 'axios';
+import { Icon } from "@iconify/vue";
 
+// Define props
 const props = defineProps({
   id: Number,
   stock: Number,
@@ -136,14 +140,85 @@ const props = defineProps({
   status: String,
 });
 
+// Initialize refs and computed properties
 const toggleID = "toggle" + props.id;
 console.log(toggleID);
-const boolStatus = ref(false);
+
+const boolStatus = ref(props.status === 'ACTIVE');
 const isInputFocused = ref(false);
+const previousStatus = ref(props.status === 'ACTIVE');
 
 const setFocus = (value) => {
   isInputFocused.value = value;
 };
+
+// Replace `token` with your actual token or retrieve it appropriately
+const token = localStorage.getItem("token");
+
+// API call functions using axios
+const activateProduct = async () => {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/product/activate/${props.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      console.log('Product activated');
+      boolStatus.value = true;
+    } else {
+      console.error('Failed to activate product:', response);
+      // Revert the checkbox state to previousStatus.value
+      boolStatus.value = previousStatus.value;
+    }
+  } catch (error) {
+    console.error('Error activating product:', error);
+    // Revert the checkbox state to previousStatus.value
+    boolStatus.value = previousStatus.value;
+  }
+};
+
+const deactivateProduct = async () => {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/product/deactivate/${props.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      console.log('Product deactivated');
+      boolStatus.value = false;
+    } else {
+      console.error('Failed to deactivate product:', response);
+      // Revert the checkbox state to previousStatus.value
+      boolStatus.value = previousStatus.value;
+    }
+  } catch (error) {
+    console.error('Error deactivating product:', error);
+    // Revert the checkbox state to previousStatus.value
+    boolStatus.value = previousStatus.value;
+  }
+};
+
+// Handle toggle change
+const onToggleChange = async () => {
+  if (boolStatus.value) {
+    await deactivateProduct();
+  } else {
+    await activateProduct();
+  }
+};
+
+// Initialize previous status on mount
+onMounted(() => {
+  previousStatus.value = boolStatus.value;
+});
 </script>
 
 <style scoped>
