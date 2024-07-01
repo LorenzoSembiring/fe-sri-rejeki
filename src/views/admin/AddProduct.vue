@@ -9,7 +9,7 @@
           <div class="h5 mt-2 border-bottom pb-3">Informasi Produk</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Nama Produk</div>
-            <input type="text" class="form-control" id="name" />
+            <input type="text" class="form-control" id="name" v-model="name"/>
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Kategori</div>
@@ -17,6 +17,7 @@
               class="form-select"
               aria-label="Default select example"
               id="category"
+              v-model="category_id"
             >
               <option selected disabled hidden>Pilih Kategori</option>
               <option
@@ -31,7 +32,7 @@
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Deskripsi</div>
-            <textarea class="form-control" id="description" rows="4"></textarea>
+            <textarea class="form-control" id="description" rows="4" v-model="description"></textarea>
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Harga</div>
@@ -45,6 +46,7 @@
                 Rp
               </div>
               <input
+                v-model="price"
                 class="rounded-end input-item input-price"
                 type="text"
                 id="price"
@@ -306,12 +308,15 @@ import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import axios from "axios";
 
+const token = localStorage.getItem("token");
+
 const isPriceInputFocused = ref(false);
 
 const URL = window.URL
 const size = ref("");
 const stock = ref("");
 const sizes = ref([]);
+const jsonSize = JSON.stringify(sizes.value)
 const categories = ref([]);
 const pictureInputs = ref([]);
 const uploads = ref([
@@ -329,6 +334,40 @@ const D3items = ref([
   { id: 2, title: "Item 2" },
   { id: 3, title: "Item 3" },
 ]);
+// submited data
+const name = ref("")
+const description = ref("")
+const price = ref("")
+const category_id = ref("")
+
+async function submit() {
+  try {
+    const formData = new FormData();
+    formData.append("name", name.value);
+    formData.append("description", description.value);
+    formData.append("price", price.value);
+    formData.append("category_id", category_id.value);
+    formData.append("size", JSON.stringify(sizes.value));
+    formData.append("mesh_id", selected3D.value);
+
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/product/store/`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status == 201) {
+      router.push("/admin/product");
+    } else {
+      // show modal
+    }
+  } catch (error) {
+    console.error("Error atoring product:", error);
+  }
+}
 
 function back() {
   router.push("/admin/product");
@@ -389,8 +428,6 @@ function addSize(size, stock) {
     alert("Ukuran telah ada");
   } else {
     sizes.value.push({ size: size, stock: stock });
-    size.value = "";
-    stock.value = "";
   }
 }
 
