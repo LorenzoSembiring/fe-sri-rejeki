@@ -50,7 +50,7 @@
             @mouseenter="isOnHoverProfilePopover = true"
             @mouseleave="leaveProfilePopover"
               v-if="isOnHoverProfile || isOnHoverProfilePopover"
-              class="bg-white position-fixed rounded p-1 mt-5"
+              class="bg-white position-fixed rounded p-1 mt-5 border"
             >
               <div class="px-3 my-2"><a class="nav-link pointer" href="/login">Masuk</a></div>
               <div class="px-3 mb-2"><a class="nav-link pointer" href="/register">Daftar</a></div>
