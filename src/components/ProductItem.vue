@@ -11,7 +11,7 @@
                 </div>
             </div>
         </RouterLink>
-        <RouterLink :to="'/shop/'">
+        <RouterLink :to="'/shop/category/' + categoryId">
             <div class="mx-4 text-dark kategori">{{ category }}</div>
         </RouterLink>
         <RouterLink :to="'/product/' + id">
@@ -22,13 +22,19 @@
 </template>
 
 <script setup>
+import router from "../router/index.js";
+
 defineProps({
     id: Number,
     category: String,
+    categoryId: Number,
     name: String,
     price: Number,
 });
 
+function toCategory(id) {
+    router.push("/shop/category/" + id)
+}
 function formatToIDR(number) {
     return number.toLocaleString("id-ID", {
         style: "currency",
