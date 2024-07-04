@@ -129,7 +129,7 @@
                 </div>
                 <span class="ms-2">{{n.name}}</span>
               </div>
-              <div class="col-2">{{n.price}}</div>
+              <div class="col-2">{{formatToIDR(n.price)}}</div>
               <div class="col-3">{{n.sales}}</div>
               <div class="col">
                 <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
@@ -242,6 +242,12 @@ onMounted(() => {
 
   fetchBestSellers();
 });
+function formatToIDR(number) {
+    return number.toLocaleString("id-ID", {
+        style: "currency",
+        currency: "IDR",
+    });
+}
 </script>
 
 <style scoped>
