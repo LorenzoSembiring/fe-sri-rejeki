@@ -110,20 +110,30 @@
               <div class="col-5">Nama Produk</div>
               <div class="col-2">Harga</div>
               <div class="col-3">Penjualan</div>
-              <div class="col"><Icon icon="ph:dots-three-bold" style="font-size: 26px" /></div>
+              <div class="col">
+                <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
+              </div>
             </div>
           </div>
           <div class="py-2 px-0 border border-bottom-0 fw-semibold">
-            <div class="row my-3 ps-5 d-flex align-items-center">
+            <div
+              v-for="n in bestSeller"
+              class="row my-3 ps-5 d-flex align-items-center"
+            >
               <div class="col-5 d-flex align-items-center">
                 <div class="d-flex justify-content-center d-inline-flex">
-                  <img style="height: 7vh; width: 7vh;" src="@/assets/default_profile_picture.jpg">
+                  <img
+                    style="height: 7vh; width: 7vh"
+                    src="@/assets/default_profile_picture.jpg"
+                  />
                 </div>
-                <span class="ms-2">Nama Produk</span>
+                <span class="ms-2">{{n.name}}</span>
               </div>
-              <div class="col-2">Rp. 50.000</div>
-              <div class="col-3">120</div>
-              <div class="col"><Icon icon="ph:dots-three-bold" style="font-size: 26px" /></div>
+              <div class="col-2">{{n.price}}</div>
+              <div class="col-3">{{n.sales}}</div>
+              <div class="col">
+                <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
+              </div>
             </div>
           </div>
           <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
@@ -140,10 +150,16 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted } from "vue";
+import { onMounted, ref } from "vue";
+import axios from "axios";  // Make sure you import axios
+
+const token = localStorage.getItem("token");
+
+const bestSeller = ref([]);
 
 onMounted(() => {
-  console.log(document.getElementById("tes"))
+  console.log(document.getElementById("tes"));
+  
   var monthlyChart = new CanvasJS.Chart("chartContainer", {
     animationEnabled: true,
     axisY: {
@@ -206,8 +222,28 @@ onMounted(() => {
     ],
   });
   weeklyChart.render();
-})
+
+  const fetchBestSellers = async () => {
+    try {
+      const response = await axios.get(
+        import.meta.env.VITE_API_URL + "/api/statistic/best-seller",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      bestSeller.value = response.data.data;
+      console.log(bestSeller.value)
+    } catch (error) {
+      console.error("Error fetching best-seller data:", error);
+    }
+  };
+
+  fetchBestSellers();
+});
 </script>
+
 <style scoped>
 .header {
   margin-top: 5vh;
