@@ -70,18 +70,18 @@
         </button>
         <ul class="dropdown-menu">
           <li>
-            <a class="dropdown-item" href="#"
+            <a class="dropdown-item" :href="`/admin/product/${id}`" 
               ><span class="fw-semibold">Detail</span></a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#"
+            <a class="dropdown-item" :href="`/admin/edit-product/${id}`" 
               ><span class="fw-semibold">Edit</span></a
             >
           </li>
           <li>
-            <a class="dropdown-item" href="#"
-              ><span class="fw-semibold text-danger">Hapus</span></a
+            <a class="dropdown-item" @click="openDeleteModal(id, name)"
+              ><span class="fw-semibold text-danger">Hapus {{ id }}</span></a
             >
           </li>
         </ul>
@@ -91,7 +91,7 @@
   <!-- Modal -->
   <div
     class="modal fade"
-    id="deleteModal"
+    :id="`deleteModal${id}`"
     tabindex="-1"
     aria-labelledby="exampleModalLabel"
     aria-hidden="true"
@@ -104,7 +104,7 @@
           </h1>
         </div>
         <div class="modal-body">
-          Anda yakin ingin menghapus kategori {{ dataName }}
+          Anda yakin ingin menghapus produk id {{ id }}
         </div>
         <div class="modal-footer">
           <button
@@ -117,7 +117,7 @@
           <button
             type="button"
             class="btn button-merah"
-            @click="deleteCategory(dataID)"
+            @click="deleteProduct(id)"
           >
             Ya, Hapus
           </button>
@@ -129,7 +129,6 @@
 <script setup>
 import { ref, onMounted } from 'vue';
 import axios from 'axios';
-import { Icon } from "@iconify/vue";
 
 // Define props
 const props = defineProps({
@@ -139,6 +138,9 @@ const props = defineProps({
   prices: Number,
   status: String,
 });
+
+const modalId = ref(null);
+const modalName = ref('');
 
 // Initialize refs and computed properties
 const toggleID = "toggle" + props.id;
@@ -152,7 +154,6 @@ const setFocus = (value) => {
   isInputFocused.value = value;
 };
 
-// Replace `token` with your actual token or retrieve it appropriately
 const token = localStorage.getItem("token");
 
 // API call functions using axios
@@ -214,7 +215,31 @@ const onToggleChange = async () => {
     await activateProduct();
   }
 };
-
+async function deleteProduct(id) {
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/product/delete/${props.id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    );
+    if (response.status == 200) {
+      location.reload()
+    } else {
+      
+    }
+  } catch (error) {
+    
+  }
+}
+const openDeleteModal = (id) => {
+  modalId.value = id;
+  modalName.value = name;
+  const modal = new bootstrap.Modal(document.getElementById('deleteModal'+id));
+  modal.show();
+};
 // Initialize previous status on mount
 onMounted(() => {
   previousStatus.value = boolStatus.value;
@@ -311,5 +336,25 @@ input::-webkit-inner-spin-button {
 }
 .form-check-input:hover {
   border: 2px solid rgb(179, 152, 143);
+}
+.button-putih {
+  border-radius: 8px;
+  border-style: none;
+  background-color: #ffffff;
+  color: rgb(53, 53, 53);
+  font-weight: 600;
+}
+.button-putih:hover {
+  background-color: #ececec;
+}
+.button-merah {
+  border-radius: 8px;
+  border-style: none;
+  background-color: #d14747;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+}
+.button-merah:hover {
+  background-color: #be2020;
 }
 </style>
