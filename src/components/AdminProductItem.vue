@@ -81,7 +81,7 @@
           </li>
           <li>
             <a class="dropdown-item" @click="openDeleteModal(id, name)"
-              ><span class="fw-semibold text-danger">Hapus {{ id }}</span></a
+              ><span class="fw-semibold text-danger">Hapus</span></a
             >
           </li>
         </ul>
