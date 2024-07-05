@@ -14,6 +14,7 @@ import AdminDashboard from "@/views/admin/Dashboard.vue";
 import AdminProduct from "@/views/admin/Product.vue";
 import AdminAddProduct from "@/views/admin/AddProduct.vue";
 import AdminEditProduct from "@/views/admin/EditProduct.vue";
+import AdminDetailProduct from "@/views/admin/DetailProduct.vue";
 import D3 from "@/views/admin/3D.vue";
 import AdminAdd3D from "@/views/admin/Add3D.vue";
 import AdminCategory from "@/views/admin/Category.vue";
