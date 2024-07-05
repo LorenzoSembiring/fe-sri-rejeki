@@ -7,7 +7,8 @@
             <product-item class="m-2"
                 v-for="product in products"
                 :id="product.id"
-                :category="product.description"
+                :category="product.category"
+                :categoryId="product.category_id"
                 :name="product.name"
                 :price="product.price"
                 />
