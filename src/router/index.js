@@ -96,7 +96,14 @@ const router = createRouter({
 			meta: { requiresAuth: true, role: 'admin' }
     },
     {
-			path: "/admin/edit-product",
+			path: "/admin/product/:id",
+      name: "Detail Product",
+      component: AdminDetailProduct,
+      props: true,
+			meta: { requiresAuth: true, role: 'admin' }
+    },
+    {
+			path: "/admin/edit-product/:id",
       name: "Edit Product",
       component: AdminEditProduct,
       props: true,
