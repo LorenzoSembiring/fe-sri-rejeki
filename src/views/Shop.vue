@@ -25,7 +25,7 @@ const products = ref([]);
 
 const fetchProduct = async () => {
     try {
-        const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/index");
+        const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/index?page=1&limit=10");
         products.value = response.data.data;
     } catch (error) {
         console.error('Error fetching products:', error);
@@ -43,7 +43,7 @@ onMounted(
     background-color: white;
 }
 .text-tag {
-    color: #c0967b;
+    color: #803a0d;
     font-size: 2.5rem;
     font-family: "Plus Jakarta Sans", sans-serif;
     font-weight: 600;
