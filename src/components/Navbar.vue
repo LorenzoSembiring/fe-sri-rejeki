@@ -45,19 +45,48 @@
             @mouseleave="leaveProfile"
             class="d-inline-flex col position-relative"
           >
-            <Icon class="pointer" icon="mdi:account-outline" style="font-size: 24px" />
+            <Icon
+              class="pointer"
+              icon="mdi:account-outline"
+              style="font-size: 24px"
+            />
             <div
-            @mouseenter="isOnHoverProfilePopover = true"
-            @mouseleave="leaveProfilePopover"
-              v-if="isOnHoverProfile || isOnHoverProfilePopover"
+              @mouseenter="isOnHoverProfilePopover = true"
+              @mouseleave="leaveProfilePopover"
+              v-if="
+                (isOnHoverProfile || isOnHoverProfilePopover) && token === null
+              "
               class="bg-white position-fixed rounded p-1 mt-5 border"
             >
-              <div class="px-3 my-2"><a class="nav-link pointer" href="/login">Masuk</a></div>
-              <div class="px-3 mb-2"><a class="nav-link pointer" href="/register">Daftar</a></div>
+              <div class="px-3 my-2">
+                <a class="nav-link pointer" href="/login">Masuk</a>
+              </div>
+              <div class="px-3 mb-2">
+                <a class="nav-link pointer" href="/register">Daftar</a>
+              </div>
+            </div>
+            <div
+              @mouseenter="isOnHoverProfilePopover = true"
+              @mouseleave="leaveProfilePopover"
+              v-if="(isOnHoverProfile || isOnHoverProfilePopover) && token"
+              class="bg-white position-fixed rounded p-1 mt-5 border"
+            >
+              <div class="px-3 my-2">
+                <a class="nav-link pointer" href="/profile">Akun</a>
+              </div>
+              <div class="px-3 mb-2">
+                <p class="nav-link pointer text-danger" @click="logout">
+                  Logout
+                </p>
+              </div>
             </div>
           </div>
           <div @click="goCart" class="d-inline-flex col pointer">
-            <Icon class="pointer" icon="mdi:cart-outline" style="font-size: 24px" />
+            <Icon
+              class="pointer"
+              icon="mdi:cart-outline"
+              style="font-size: 24px"
+            />
           </div>
         </div>
       </div>
@@ -69,6 +98,9 @@
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
 import router from "../router/index.js";
+import axios from "axios";
+
+const token = localStorage.getItem("token");
 
 const isOnHoverProfile = ref(false);
 const isOnHoverProfilePopover = ref(false);
@@ -87,6 +119,22 @@ function leaveProfilePopover() {
 function goCart() {
   router.push("/cart");
 }
+
+async function logout() {
+      try {
+        const response = await axios.get(`${import.meta.env.VITE_API_URL}/api/user/logout`, {}, {
+          headers: {
+            Authorization: `Bearer ${token}` 
+          }
+        });
+        if (response.status === 200) {
+          localStorage.removeItem('token'); 
+          window.location.reload();
+        }
+      } catch (error) {
+        console.error('Logout failed', error);
+      }
+    }
 </script>
 
 <style scoped>
