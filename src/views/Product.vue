@@ -152,7 +152,7 @@
           <button
             class="btn btn-primary"
             @click="addToCart(selectedStock.id, 1)"
-            :disabled="selectedStock.stock === 0"
+            :disabled="selectedStock.stock === 0 || !selectedStock"
             :title="
               selectedStock.stock === 0 ? 'Ukuran yang anda pilih kosong' : ''
             "
