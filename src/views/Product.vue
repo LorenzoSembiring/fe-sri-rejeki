@@ -140,6 +140,11 @@
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
           <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
         </div>
+        <div class="ms-3 mt-1 border rounded" style="width: fit-content">
+          <button class="button-counter" @click="decrement()">-</button>
+          <input type="number" class="input-counter" v-model="inputValue" />
+          <button class="button-counter" @click="increment()">+</button>
+        </div>
         <div class="mt-4">
           <button
             class="btn btn-primary"
@@ -169,6 +174,7 @@ const route = useRoute();
 const stocks = ref([]);
 const selectedStock = ref(0);
 const products = ref([]);
+let inputValue = ref(1)
 
 const selectStock = (stock) => {
   selectedStock.value = stock;
@@ -194,6 +200,17 @@ function formatToIDR(number) {
     currency: "IDR",
   });
 }
+
+const increment = () => {
+  inputValue.value = parseInt(inputValue.value) + 1;
+  console.log(count)
+};
+
+const decrement = () => {
+  if (inputValue.value !== 1) {
+    inputValue.value = parseInt(inputValue.value) - 1;
+  }
+};
 
 async function fetchProduct() {
   try {
@@ -253,5 +270,26 @@ async function addToCart(size, quantity) {
   background-color: #28c028; /* Replace this with your custom green color */
   border-color: #493201; /* Match the border color to the background */
   color: white; /* Ensure the text is readable */
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+textarea:focus,
+input:focus {
+  outline: none;
+}
+.button-counter {
+  border-style: none;
+  color: #aa7d61;
+  background-color: white;
+  font-weight: 800;
+  width: 30px;
+}
+.input-counter {
+  border: none;
+  width: 30px;
+  text-align: center;
 }
 </style>
