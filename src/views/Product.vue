@@ -110,8 +110,14 @@
         <div class="mt-4 mb-2">Pilih Ukuran</div>
         <div>
           <div class="ms-1 col-5 row g-0">
-            <div class="col p-0 mx-1" v-for="stock in stocks">
-                <button type="button" class="border btn btn-light">{{stock.size}}</button>
+            <div class="col-2 p-0 m-0" v-for="stock in stocks">
+              <button
+                @click="selectStock(stock)"
+                type="button"
+                :class="['btn', stock === selectedStock ? 'btn-selected' : 'btn-outline-secondary']"
+              >
+                {{ stock.size }}
+              </button>
             </div>
           </div>
         </div>
@@ -139,7 +145,12 @@ import axios from "axios";
 
 const route = useRoute();
 
-const stocks = ref([])
+const stocks = ref([]);
+const selectedStock = ref(null);
+
+const selectStock = (stock) => {
+  selectedStock.value = stock;
+};
 const id = ref("");
 onMounted(() => {
   id.value = route.params.id;
@@ -193,5 +204,10 @@ onMounted(fetchProduct, fetchStock);
 }
 .left-col::-webkit-scrollbar {
   display: none;
+}
+.btn-selected {
+  background-color: #28c028; /* Replace this with your custom green color */
+  border-color: #493201; /* Match the border color to the background */
+  color: white; /* Ensure the text is readable */
 }
 </style>
