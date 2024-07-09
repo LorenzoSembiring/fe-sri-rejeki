@@ -122,6 +122,7 @@
           </div>
         </div>
         <div class="text-success fw-semibold my-1">TERSEDIA</div>
+        <div class="text-success fw-semibold my-1">{{selectedStock.stock}} Produk tersisa</div>
         <div>
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
           <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
@@ -147,14 +148,19 @@ const route = useRoute();
 
 const stocks = ref([]);
 const selectedStock = ref(null);
+const products = ref([]);
+const stockSelectedSize = ref(null);
 
 const selectStock = (stock) => {
   selectedStock.value = stock;
+  console.log(selectedStock.value)
 };
+
 const id = ref("");
 onMounted(() => {
   id.value = route.params.id;
   fetchStock();
+  fetchProduct();
 });
 
 function routeToView3D() {
@@ -169,18 +175,17 @@ function formatToIDR(number) {
   });
 }
 
-const products = ref([]);
-
-const fetchProduct = async () => {
+async function fetchProduct() {
   try {
     const response = await axios.get(
       import.meta.env.VITE_API_URL + "/api/product/get/" + id.value
     );
     products.value = response.data.data;
+    console.log(products.value);
   } catch (error) {
-    console.error("Error fetching products:", error);
+    console.log("Error fetching product:", error);
   }
-};
+}
 
 async function fetchStock() {
   try {
@@ -190,11 +195,11 @@ async function fetchStock() {
     stocks.value = response.data.data;
     console.log(stocks.value);
   } catch (error) {
-    console.log("Error fetching categories:", error);
+    console.log("Error fetching stock:", error);
   }
 }
-onMounted(fetchProduct, fetchStock);
 </script>
+
 <style scoped>
 .left-col {
   overflow-y: scroll;
