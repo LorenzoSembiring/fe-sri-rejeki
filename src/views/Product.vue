@@ -157,7 +157,7 @@
               selectedStock.stock === 0 ? 'Ukuran yang anda pilih kosong' : ''
             "
           >
-            <Icon icon="mdi:cart" style="font-size: 20px" /> Tambah Ke Keranjang
+          <Icon icon="ic:sharp-plus" style="font-size: 20px;"/> Tambah Ke Keranjang
           </button>
         </div>
       </div>
