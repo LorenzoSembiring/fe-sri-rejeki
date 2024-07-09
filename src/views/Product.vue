@@ -134,7 +134,7 @@
           <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
         </div>
         <div class="mt-4">
-          <button class="btn btn-primary">
+          <button class="btn btn-primary" :disabled="selectedStock.stock === 0" :title="selectedStock.stock === 0 ? 'Ukuran yang anda pilih kosong' : ''">
             <Icon icon="mdi:cart" style="font-size: 20px" /> Tambah Ke Keranjang
           </button>
         </div>
@@ -153,9 +153,8 @@ import axios from "axios";
 const route = useRoute();
 
 const stocks = ref([]);
-const selectedStock = ref(null);
+const selectedStock = ref(0);
 const products = ref([]);
-const stockSelectedSize = ref(null);
 
 const selectStock = (stock) => {
   selectedStock.value = stock;
