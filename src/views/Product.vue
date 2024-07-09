@@ -133,8 +133,8 @@
           <div class="text-danger fw-semibold my-1">HABIS</div>
           <div class="text-danger fw-semibold my-1">0 Produk tersisa</div>
         </div>
-        <div v-else>
-          <div class="text-success fw-semibold my-1">TERSEDIA</div>
+        <div v-else class="py-2">
+          <div v-if="selectedStock" class="text-success fw-semibold my-1">TERSEDIA</div>
           <div v-if="selectedStock" class="text-success fw-semibold my-1">
             {{ selectedStock.stock }} Produk tersisa
           </div>
