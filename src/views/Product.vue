@@ -5,13 +5,19 @@
   <div class="container-fluid">
     <div class="row pt-5">
       <!-- left col -->
-      <div class="col left-col" style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto">
+      <div
+        class="col left-col"
+        style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto"
+      >
         <!-- 360 button -->
         <!-- carousel -->
         <div id="carouselExampleIndicators" class="carousel slide z-0">
           <div class="row text-end">
-            <div class="z-2 position-absolute  ps-4 pt-4">
-              <button @click="routeToView3D" class="btn rounded-circle bg-white border border-dark">
+            <div class="z-2 position-absolute ps-4 pt-4">
+              <button
+                @click="routeToView3D"
+                class="btn rounded-circle bg-white border border-dark"
+              >
                 <Icon
                   icon="iconoir:view-360"
                   class="text-black text-opacity-75"
@@ -90,8 +96,8 @@
             class="fs-2 fw-semibold mt-5 mb-3"
             style="font-family: 'Plus Jakarta Sans'"
           >
-          {{ products.name }}
-        </div>
+            {{ products.name }}
+          </div>
           <div>
             {{ products.description }}
           </div>
@@ -102,20 +108,12 @@
         <div class="fs-2 fw-semibold mt-5 mb-1">{{ products.name }}</div>
         <div class="fs-3">{{ formatToIDR(products.price) }}</div>
         <div class="mt-4 mb-2">Pilih Ukuran</div>
-        <div class="dropdown">
-          <button
-            class="btn dropdown-toggle border"
-            type="button"
-            data-bs-toggle="dropdown"
-            aria-expanded="false"
-          >
-            UKURAN
-          </button>
-          <ul class="dropdown-menu">
-            <li><a class="dropdown-item" href="#">9</a></li>
-            <li><a class="dropdown-item" href="#">8</a></li>
-            <li><a class="dropdown-item" href="#">7</a></li>
-          </ul>
+        <div>
+          <div class="ms-1 col-5 row g-0">
+            <div class="col p-0 mx-1" v-for="stock in stocks">
+                <button type="button" class="border btn btn-light">{{stock.size}}</button>
+            </div>
+          </div>
         </div>
         <div class="text-success fw-semibold my-1">TERSEDIA</div>
         <div>
@@ -135,45 +133,56 @@
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
 import router from "../router/index.js";
-import { ref, onMounted } from 'vue';
+import { ref, onMounted } from "vue";
 import { useRoute } from "vue-router";
 import axios from "axios";
 
 const route = useRoute();
 
-const id = ref("")
+const stocks = ref([])
+const id = ref("");
 onMounted(() => {
   id.value = route.params.id;
-
+  fetchStock();
 });
 
-function routeToView3D(){
-  router.push('/product/' + id.value +'/3d')
+function routeToView3D() {
+  router.push("/product/" + id.value + "/3d");
 }
 
 function formatToIDR(number) {
-    const numbers = parseInt(number)
-    return numbers.toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
-    });
+  const numbers = parseInt(number);
+  return numbers.toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+  });
 }
 
 const products = ref([]);
 
 const fetchProduct = async () => {
-    try {
-        const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/get/" + id.value);
-        products.value = response.data.data;
-    } catch (error) {
-        console.error('Error fetching products:', error);
-    }
-    };
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/product/get/" + id.value
+    );
+    products.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+};
 
-// Fetch posts when the component is mounted
-onMounted(
-    fetchProduct
-);
+async function fetchStock() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/product/stock/" + id.value
+    );
+    stocks.value = response.data.data;
+    console.log(stocks.value);
+  } catch (error) {
+    console.log("Error fetching categories:", error);
+  }
+}
+onMounted(fetchProduct, fetchStock);
 </script>
 <style scoped>
 .left-col {
