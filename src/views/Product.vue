@@ -132,7 +132,7 @@
         </div>
         <div v-else>
           <div class="text-success fw-semibold my-1">TERSEDIA</div>
-          <div class="text-success fw-semibold my-1">
+          <div v-if="selectedStock" class="text-success fw-semibold my-1">
             {{ selectedStock.stock }} Produk tersisa
           </div>
         </div>
