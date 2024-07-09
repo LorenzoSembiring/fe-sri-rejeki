@@ -3,10 +3,10 @@
     <Navbar class="fixed-top" />
   </div>
   <div class="container-fluid">
-    <div class="row pt-5">
+    <div class="row pt-5 px-5">
       <!-- left col -->
       <div
-        class="col left-col"
+        class="col-6 left-col"
         style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto"
       >
         <!-- 360 button -->
@@ -16,7 +16,7 @@
             <div class="z-2 position-absolute ps-4 pt-4">
               <button
                 @click="routeToView3D"
-                class="btn rounded-circle bg-white border border-dark"
+                class="btn rounded-circle bg-white "
               >
                 <Icon
                   icon="iconoir:view-360"
@@ -113,7 +113,7 @@
         <div class="mt-2 mb-2 fw-semibold">Pilih Ukuran</div>
         <div>
           <div class="ms-1 col-5 row g-0">
-            <div class="col-2 p-0 m-0" v-for="stock in stocks">
+            <div class="col-3 p-0 m-0" v-for="stock in stocks">
               <button
                 @click="selectStock(stock)"
                 type="button"
@@ -129,7 +129,7 @@
             </div>
           </div>
         </div>
-        <div v-if="selectedStock.stock === 0">
+        <div v-if="selectedStock.stock === 0" class="py-2">
           <div class="text-danger fw-semibold my-1">HABIS</div>
           <div class="text-danger fw-semibold my-1">0 Produk tersisa</div>
         </div>
@@ -139,7 +139,7 @@
             {{ selectedStock.stock }} Produk tersisa
           </div>
         </div>
-        <div>
+        <div class="py-4 border-top border-dark">
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
           <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
         </div>
