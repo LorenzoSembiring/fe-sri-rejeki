@@ -114,7 +114,12 @@
               <button
                 @click="selectStock(stock)"
                 type="button"
-                :class="['btn', stock === selectedStock ? 'btn-selected' : 'btn-outline-secondary']"
+                :class="[
+                  'btn',
+                  stock === selectedStock
+                    ? 'btn-selected'
+                    : 'btn-outline-secondary',
+                ]"
               >
                 {{ stock.size }}
               </button>
@@ -127,14 +132,23 @@
         </div>
         <div v-else>
           <div class="text-success fw-semibold my-1">TERSEDIA</div>
-          <div class="text-success fw-semibold my-1">{{selectedStock.stock}} Produk tersisa</div>
+          <div class="text-success fw-semibold my-1">
+            {{ selectedStock.stock }} Produk tersisa
+          </div>
         </div>
         <div>
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
           <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
         </div>
         <div class="mt-4">
-          <button class="btn btn-primary" :disabled="selectedStock.stock === 0" :title="selectedStock.stock === 0 ? 'Ukuran yang anda pilih kosong' : ''">
+          <button
+            class="btn btn-primary"
+            @click="addToCart(selectedStock.id, 1)"
+            :disabled="selectedStock.stock === 0"
+            :title="
+              selectedStock.stock === 0 ? 'Ukuran yang anda pilih kosong' : ''
+            "
+          >
             <Icon icon="mdi:cart" style="font-size: 20px" /> Tambah Ke Keranjang
           </button>
         </div>
@@ -158,9 +172,10 @@ const products = ref([]);
 
 const selectStock = (stock) => {
   selectedStock.value = stock;
-  console.log(selectedStock.value)
+  console.log(selectedStock.value);
 };
 
+const token = localStorage.getItem("token");
 const id = ref("");
 onMounted(() => {
   id.value = route.params.id;
@@ -199,6 +214,25 @@ async function fetchStock() {
     );
     stocks.value = response.data.data;
     console.log(stocks.value);
+  } catch (error) {
+    console.log("Error fetching stock:", error);
+  }
+}
+
+async function addToCart(size, quantity) {
+  try {
+    const formData = new FormData();
+    formData.append("size_id", size);
+    formData.append("quantity", quantity);
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/cart/store`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
   } catch (error) {
     console.log("Error fetching stock:", error);
   }
