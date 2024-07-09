@@ -104,10 +104,13 @@
         </div>
       </div>
       <!-- right col -->
-      <div class="col" style="overflow-y: unset">
-        <div class="fs-2 fw-semibold mt-5 mb-1">{{ products.name }}</div>
-        <div class="fs-3">{{ formatToIDR(products.price) }}</div>
-        <div class="mt-4 mb-2">Pilih Ukuran</div>
+      <div class="col-4 pt-2" style="overflow-y: unset">
+        <div class="pt-4 h6">
+          <a href=""><Icon icon="material-symbols:arrow-back" /> Kembali ke koleksi</a>
+        </div>
+        <div class="fs-2 fw-semibold mt-1 mb-1">{{ products.name }}</div>
+        <div class="fs-3 pb-2 border-bottom border-dark">{{ formatToIDR(products.price) }}</div>
+        <div class="mt-2 mb-2 fw-semibold">Pilih Ukuran</div>
         <div>
           <div class="ms-1 col-5 row g-0">
             <div class="col-2 p-0 m-0" v-for="stock in stocks">
