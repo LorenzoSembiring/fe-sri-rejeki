@@ -16,7 +16,7 @@
             <div class="z-2 position-absolute ps-4 pt-4">
               <button
                 @click="routeToView3D"
-                class="btn rounded-circle bg-white "
+                class="btn rounded-circle bg-white"
               >
                 <Icon
                   icon="iconoir:view-360"
@@ -106,10 +106,14 @@
       <!-- right col -->
       <div class="col-4 pt-2" style="overflow-y: unset">
         <div class="pt-4 h6">
-          <a href="/shop"><Icon icon="material-symbols:arrow-back" /> Kembali ke koleksi</a>
+          <a href="/shop"
+            ><Icon icon="material-symbols:arrow-back" /> Kembali ke koleksi</a
+          >
         </div>
         <div class="fs-2 fw-semibold mt-1 mb-1">{{ products.name }}</div>
-        <div class="fs-3 pb-2 border-bottom border-dark-subtle">{{ formatToIDR(products.price) }}</div>
+        <div class="fs-3 pb-2 border-bottom border-dark-subtle">
+          {{ formatToIDR(products.price) }}
+        </div>
         <div class="mt-2 mb-2 fw-semibold">Pilih Ukuran</div>
         <div>
           <div class="ms-1 col-5 row g-0">
@@ -134,7 +138,9 @@
           <div class="text-danger fw-semibold my-1">0 Produk tersisa</div>
         </div>
         <div v-else class="py-2">
-          <div v-if="selectedStock" class="text-success fw-semibold my-1">TERSEDIA</div>
+          <div v-if="selectedStock" class="text-success fw-semibold my-1">
+            TERSEDIA
+          </div>
           <div v-if="selectedStock" class="text-success fw-semibold my-1">
             {{ selectedStock.stock }} Produk tersisa
           </div>
@@ -143,21 +149,25 @@
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
           <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
         </div>
-        <div class="ms-3 mt-1 border rounded" style="width: fit-content">
-          <button class="button-counter" @click="decrement()">-</button>
-          <input type="number" class="input-counter" v-model="inputValue" />
-          <button class="button-counter" @click="increment()">+</button>
+        <div class="d-flex">
+          <p class="fw-semibold px-1 pt-2 mb-0">Jumlah</p>
+          <div class="ms-3 mt-1 border rounded" style="width: fit-content">
+            <button class="button-counter" @click="decrement()">-</button>
+            <input type="number" class="input-counter" v-model="inputValue" />
+            <button class="button-counter" @click="increment()">+</button>
+          </div>
         </div>
         <div class="mt-4">
           <button
-            class="btn btn-primary"
+            class="btn button-coklat fw-semibold"
             @click="addToCart(selectedStock.id, 1)"
             :disabled="selectedStock.stock === 0 || !selectedStock"
             :title="
               selectedStock.stock === 0 ? 'Ukuran yang anda pilih kosong' : ''
             "
           >
-          <Icon icon="ic:sharp-plus" style="font-size: 20px;"/> Tambah Ke Keranjang
+            <Icon icon="ic:sharp-plus" style="font-size: 20px" /> Tambah Ke
+            Keranjang
           </button>
         </div>
       </div>
@@ -177,7 +187,7 @@ const route = useRoute();
 const stocks = ref([]);
 const selectedStock = ref(0);
 const products = ref([]);
-let inputValue = ref(1)
+let inputValue = ref(1);
 
 const selectStock = (stock) => {
   selectedStock.value = stock;
@@ -206,7 +216,7 @@ function formatToIDR(number) {
 
 const increment = () => {
   inputValue.value = parseInt(inputValue.value) + 1;
-  console.log(count)
+  console.log(count);
 };
 
 const decrement = () => {
@@ -255,13 +265,13 @@ async function addToCart(size, quantity) {
         }
       );
       if (response.data.code === 200) {
-        location.reload()
+        location.reload();
       }
     } catch (error) {
       console.log("Error fetching stock:", error);
     }
   } else {
-    router.push("/login")
+    router.push("/login");
   }
 }
 </script>
@@ -301,5 +311,12 @@ input:focus {
   border: none;
   width: 30px;
   text-align: center;
+}
+.button-coklat {
+  border-radius: 8px;
+  border-style: none;
+  background-color: #b44c1b;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
 }
 </style>
