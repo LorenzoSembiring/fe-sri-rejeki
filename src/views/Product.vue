@@ -240,21 +240,28 @@ async function fetchStock() {
 }
 
 async function addToCart(size, quantity) {
-  try {
-    const formData = new FormData();
-    formData.append("size_id", size);
-    formData.append("quantity", quantity);
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/cart/store`,
-      formData,
-      {
-        headers: {
-          Authorization: `Bearer ${token}`,
-        },
+  if (token) {
+    try {
+      const formData = new FormData();
+      formData.append("size_id", size);
+      formData.append("quantity", quantity);
+      const response = await axios.post(
+        `${import.meta.env.VITE_API_URL}/api/cart/store`,
+        formData,
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      if (response.data.code === 200) {
+        location.reload()
       }
-    );
-  } catch (error) {
-    console.log("Error fetching stock:", error);
+    } catch (error) {
+      console.log("Error fetching stock:", error);
+    }
+  } else {
+    router.push("/login")
   }
 }
 </script>
