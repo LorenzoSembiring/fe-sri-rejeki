@@ -109,7 +109,7 @@
           <a href="/shop"><Icon icon="material-symbols:arrow-back" /> Kembali ke koleksi</a>
         </div>
         <div class="fs-2 fw-semibold mt-1 mb-1">{{ products.name }}</div>
-        <div class="fs-3 pb-2 border-bottom border-dark">{{ formatToIDR(products.price) }}</div>
+        <div class="fs-3 pb-2 border-bottom border-dark-subtle">{{ formatToIDR(products.price) }}</div>
         <div class="mt-2 mb-2 fw-semibold">Pilih Ukuran</div>
         <div>
           <div class="ms-1 col-5 row g-0">
@@ -139,7 +139,7 @@
             {{ selectedStock.stock }} Produk tersisa
           </div>
         </div>
-        <div class="py-4 border-top border-dark">
+        <div class="py-4 border-top border-dark-subtle">
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
           <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
         </div>
