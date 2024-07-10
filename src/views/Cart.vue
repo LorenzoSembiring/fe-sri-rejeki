@@ -6,8 +6,16 @@
       <!-- container item -->
       <div class="ms-5">
         <!-- item -->
-        <CartItem class="me-4 mb-3"/>
-        <CartItem class="me-4"/>
+        <div v-for="cart in carts">
+          <CartItem class="me-4 mb-3" 
+            :id="cart.id"
+            :name="cart.name"
+            :quantity="cart.quantity"
+            :price="cart.price"
+            :size="cart.size"
+          />
+        </div>
+        <!-- <CartItem class="me-4" /> -->
       </div>
     </div>
     <div class="col pt-5 summary-col">
@@ -29,7 +37,33 @@
 
 <script setup>
 import Navbar from "@/components/Navbar.vue";
-import CartItem from "@/components/CartItem.vue"
+import CartItem from "@/components/CartItem.vue";
+import { onMounted, ref } from "vue";
+import axios from "axios";
+
+const carts = ref([""]);
+
+const token = localStorage.getItem("token");
+
+const fetchCart = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/cart/get",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    carts.value = response.data.data.data;
+    console.log(carts.value)
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+};
+
+// Fetch posts when the component is mounted
+onMounted(fetchCart());
 </script>
 
 <style scoped>
@@ -47,10 +81,9 @@ import CartItem from "@/components/CartItem.vue"
 }
 .button-bayar {
   border-radius: 8px;
-  border-style:none;
+  border-style: none;
   background-image: linear-gradient(135deg, #c6a28a 40%, #aa7d61);
   color: rgb(255, 255, 255);
   font-weight: 600;
 }
-
 </style>

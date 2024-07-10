@@ -17,11 +17,11 @@
     </div>
     <div class="col">
       <div class="row">
-        <div class="col ms-3 mt-2 h5 fw-semibold">Blangkon Jawa Tengah</div>
+        <div class="col ms-3 mt-2 h5 fw-semibold">{{ name }}</div>
         <div class="d-flex justify-content-end col mt-3 me-4 fw-bold">
-          Rp 50.000
+          {{ price.toLocaleString() }}
         </div>
-        <div class="ms-3">Ukuran: 9</div>
+        <div class="ms-3">Ukuran: {{ size }}</div>
         <div class="ms-3 mt-1 border rounded" style="width: fit-content">
           <button class="button-counter" @click="decrement()">-</button>
           <input type="number" class="input-counter" v-model="inputValue" />
@@ -34,13 +34,21 @@
   </div>
 </template>
 <script setup>
-import {ref} from 'vue';
+import { ref } from "vue";
 
-let inputValue = ref(0)
+defineProps({
+  id: Number,
+  name: String,
+  size: Number,
+  quantity: Number,
+  price: Number,
+});
+
+let inputValue = ref(0);
 
 const increment = () => {
   inputValue.value = parseInt(inputValue.value) + 1;
-  console.log(count)
+  console.log(count);
 };
 
 const decrement = () => {
