@@ -38,7 +38,7 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import CartItem from "@/components/CartItem.vue";
-import { onMounted, ref } from "vue";
+import { ref } from "vue";
 import axios from "axios";
 
 const carts = ref([""]);
@@ -63,7 +63,7 @@ const fetchCart = async () => {
 };
 
 // Fetch posts when the component is mounted
-onMounted(fetchCart());
+fetchCart()
 </script>
 
 <style scoped>
