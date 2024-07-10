@@ -117,7 +117,8 @@
             ><Icon icon="material-symbols:arrow-back" /> Kembali ke koleksi</a
           >
         </div>
-        <div class="fs-2 fw-semibold mt-1 mb-1">{{ products.name }}</div>
+        <div class="fs-5 fw-normal mt-4">{{ products.category }}</div>
+        <div class="fs-2 fw-semibold my-1">{{ products.name }}</div>
         <div class="fs-3 pb-2 border-bottom border-dark-subtle">
           {{ formatToIDR(products.price) }}
         </div>
