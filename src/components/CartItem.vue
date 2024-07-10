@@ -5,7 +5,9 @@
         class="form-check-input"
         type="checkbox"
         value=""
-        id="defaultCheck1"
+        :id="'check' + id"
+        @change="$emit('updatePrice', id);"
+        
       />
     </div>
     <div class="col-2">
@@ -42,6 +44,7 @@ defineProps({
   size: Number,
   quantity: Number,
   price: Number,
+  checked: Boolean
 });
 
 let inputValue = ref(0);
@@ -54,6 +57,10 @@ const increment = () => {
 const decrement = () => {
   inputValue.value = parseInt(inputValue.value) - 1;
 };
+
+function emitPrice(id) {
+  ctx.emit('updatePrice', id);
+}
 
 function toIDR(amount) {
     // Convert the amount to an integer

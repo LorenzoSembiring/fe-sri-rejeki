@@ -8,6 +8,7 @@
         <!-- item -->
         <div v-for="cart in carts">
           <CartItem class="me-4 mb-3" 
+            @update-price="updatePrice(cart.id)"
             :id="cart.id"
             :name="cart.name"
             :quantity="cart.quantity"
@@ -41,9 +42,16 @@ import CartItem from "@/components/CartItem.vue";
 import { ref } from "vue";
 import axios from "axios";
 
-const carts = ref([""]);
+const carts = ref([]);
+const checkedCart = ref([]);
 
 const token = localStorage.getItem("token");
+
+function updatePrice(id) {
+  const item = carts.value.find(item => item.id === id);
+  checkedCart.value.push({"id": id, "price": item.price})
+  console.log(checkedCart.value)
+}
 
 const fetchCart = async () => {
   try {
