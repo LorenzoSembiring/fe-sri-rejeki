@@ -168,7 +168,7 @@
         <div class="mt-4">
           <button
             class="btn button-coklat fw-semibold"
-            @click="addToCart(selectedStock.id, 1)"
+            @click="addToCart(selectedStock.id, inputValue)"
             :disabled="selectedStock.stock === 0 || !selectedStock"
             :title="
               selectedStock.stock === 0 ? 'Ukuran yang anda pilih kosong' : ''
