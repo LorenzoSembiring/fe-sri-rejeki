@@ -266,7 +266,7 @@ const updatePrice = async () => {
 };
 
 // Create a debounced version of the updatePrice method
-const debouncedUpdatePrice = debounce(updatePrice, 200);
+const debouncedUpdatePrice = debounce(updatePrice, 2000);
 
 // Watch for changes in the prices prop to update the price ref
 watch(
