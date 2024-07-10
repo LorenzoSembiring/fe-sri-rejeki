@@ -141,11 +141,11 @@
             </div>
           </div>
         </div>
-        <div v-if="selectedStock.stock === 0" class="py-2">
+        <div v-if="selectedStock.stock === 0" class="py-2 border-bottom border-dark-subtle">
           <div class="text-danger fw-semibold my-1">HABIS</div>
           <div class="text-danger fw-semibold my-1">0 Produk tersisa</div>
         </div>
-        <div v-else class="py-2">
+        <div v-else class="py-2 border-bottom border-dark-subtle">
           <div v-if="selectedStock" class="text-success fw-semibold my-1">
             TERSEDIA
           </div>
@@ -153,7 +153,7 @@
             {{ selectedStock.stock }} Produk tersisa
           </div>
         </div>
-        <div @click="openModal()" class="border my-4 border-top border-dark-subtle d-inline-block" style="cursor: pointer" >
+        <div @click="openModal()" class="my-4 d-inline-block" style="cursor: pointer" >
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
           <span class="text-decoration-none text-black" >Panduan Ukuran</span>
         </div>
