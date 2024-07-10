@@ -37,13 +37,14 @@
         Rp
       </div>
       <input
-        class="rounded-end input-item input-price"
-        type="text"
-        id="price"
-        :value="prices.toLocaleString()"
-        v-on:focus="setFocus(true)"
-        v-on:blur="setFocus(false)"
-        style="width: 7rem"
+      class="rounded-end input-item input-price"
+      type="text"
+      id="price"
+      v-model="price"
+      @input="debouncedUpdatePrice"
+      @focus="setFocus(true)"
+      @blur="setFocus(false)"
+      style="width: 7rem"
       />
     </div>
     <div class="col-1 ms-5">
@@ -127,7 +128,8 @@
   </div>
 </template>
 <script setup>
-import { ref, onMounted } from 'vue';
+import { ref, onMounted, watch } from 'vue';
+import debounce from 'lodash.debounce';
 import axios from 'axios';
 
 // Define props
@@ -138,6 +140,7 @@ const props = defineProps({
   prices: Number,
   status: String,
 });
+const price = ref(props.prices.toLocaleString());
 
 const modalId = ref(null);
 const modalName = ref('');
@@ -240,6 +243,40 @@ const openDeleteModal = (id) => {
   const modal = new bootstrap.Modal(document.getElementById('deleteModal'+id));
   modal.show();
 };
+const updatePrice = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("price", price.value);
+
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/product/update-price/${props.id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    );
+    const data = await response.json();
+    // Handle the response data as needed
+    console.log(data);
+  } catch (error) {
+    console.error('Error updating price:', error);
+  }
+};
+
+// Create a debounced version of the updatePrice method
+const debouncedUpdatePrice = debounce(updatePrice, 200);
+
+// Watch for changes in the prices prop to update the price ref
+watch(
+  () => props.prices,
+  (newPrice) => {
+    price.value = newPrice.toLocaleString();
+  },
+  { immediate: true } // Ensure the watch triggers initially
+);
+
 // Initialize previous status on mount
 onMounted(() => {
   previousStatus.value = boolStatus.value;
