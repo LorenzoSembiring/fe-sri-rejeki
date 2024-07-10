@@ -153,9 +153,9 @@
             {{ selectedStock.stock }} Produk tersisa
           </div>
         </div>
-        <div class="py-4 border-top border-dark-subtle">
+        <div @click="openModal()" class="border my-4 border-top border-dark-subtle d-inline-block" style="cursor: pointer" >
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
-          <a class="text-decoration-none text-black" href="/">Panduan Ukuran</a>
+          <span class="text-decoration-none text-black" >Panduan Ukuran</span>
         </div>
         <div class="d-flex">
           <p class="fw-semibold px-1 pt-2 mb-0">Jumlah</p>
@@ -176,6 +176,38 @@
           >
             <Icon icon="ic:sharp-plus" style="font-size: 20px" /> Tambah Ke
             Keranjang
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- modal -->
+  <div
+    class="modal fade"
+    :id="`Modal`"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h1 class="modal-title fs-5" id="exampleModalLabel">
+            Panduan Ukuran
+          </h1>
+        </div>
+        <div class="modal-body">
+          <div class="d-flex justify-content-center">
+            <img src="@/assets/tabel-ukuran.png" alt="">
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-danger border"
+            data-bs-dismiss="modal"
+          >
+            Tutup
           </button>
         </div>
       </div>
@@ -282,6 +314,11 @@ async function addToCart(size, quantity) {
     router.push("/login");
   }
 }
+
+const openModal = () => {
+  const modal = new bootstrap.Modal(document.getElementById('Modal'));
+  modal.show();
+};
 </script>
 
 <style scoped>
