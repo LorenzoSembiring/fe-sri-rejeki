@@ -19,7 +19,7 @@
       <div class="row">
         <div class="col ms-3 mt-2 h5 fw-semibold">{{ name }}</div>
         <div class="d-flex justify-content-end col mt-3 me-4 fw-bold">
-          {{ price.toLocaleString() }}
+          {{ toIDR(price) }}
         </div>
         <div class="ms-3">Ukuran: {{ size }}</div>
         <div class="ms-3 mt-1 border rounded" style="width: fit-content">
@@ -54,6 +54,23 @@ const increment = () => {
 const decrement = () => {
   inputValue.value = parseInt(inputValue.value) - 1;
 };
+
+function toIDR(amount) {
+    // Convert the amount to an integer
+    amount = parseInt(amount, 10);
+    
+    if (isNaN(amount)) {
+        return "Invalid input.";
+    }
+    
+    // Format the integer to IDR format without decimal places
+    let idr = amount.toLocaleString('id-ID');
+    
+    // Add "Rp." prefix
+    idr = 'Rp. ' + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
+    
+    return idr;
+}
 </script>
 <style scoped>
 img {
