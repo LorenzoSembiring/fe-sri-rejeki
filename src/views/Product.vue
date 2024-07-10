@@ -1,6 +1,6 @@
 <template>
   <div>
-    <Navbar class="fixed-top" />
+    <Navbar class="fixed-top border-bottom" />
   </div>
   <div class="container-fluid">
     <div class="row pt-5 px-5">
@@ -9,6 +9,13 @@
         class="col-6 left-col"
         style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto"
       >
+      <div class="d-flex my-3" style="font-family: sans-serif;" >
+        <a class="text-secondary" href="/">Beranda</a>
+        <p class="mx-2 text-secondary"><Icon icon="ep:arrow-right" /></p>
+        <a class="text-secondary" href="/shop">{{ products.category }}</a>
+        <p class="mx-2 text-secondary"><Icon icon="ep:arrow-right" /></p>
+        <p class="fw-semibold">{{ products.name }}</p>
+      </div>
         <!-- 360 button -->
         <!-- carousel -->
         <div id="carouselExampleIndicators" class="carousel slide z-0">
