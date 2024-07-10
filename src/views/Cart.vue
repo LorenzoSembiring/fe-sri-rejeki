@@ -26,7 +26,7 @@
           <div class="summary-text fw-bold">Total Belanja</div>
         </div>
         <div class="col my-3">
-          <div class="summary-text fw-bold">Rp. 50.000</div>
+          <div class="summary-text fw-bold">{{ sumTotalPrice }}</div>
         </div>
         <div class="justify-content-center d-flex my-4">
           <button class="button-bayar py-2 px-5">Pilih Pengiriman</button>
@@ -39,11 +39,12 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import CartItem from "@/components/CartItem.vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import axios from "axios";
 
 const carts = ref([]);
 const checkedCart = ref([]);
+const total = ref();
 
 const token = localStorage.getItem("token");
 
@@ -52,6 +53,10 @@ function updatePrice(id) {
   checkedCart.value.push({"id": id, "price": item.price})
   console.log(checkedCart.value)
 }
+
+const sumTotalPrice = computed(() => {
+  return checkedCart.value.reduce((sum, item) => sum + item.price, 0);
+});
 
 const fetchCart = async () => {
   try {
