@@ -36,7 +36,7 @@
   </div>
 </template>
 <script setup>
-import { onMounted, toRef, ref } from "vue";
+import { nextTick, toRef, ref } from "vue";
 import axios from "axios";
 
 const props = defineProps({
@@ -48,6 +48,8 @@ const props = defineProps({
   checked: Boolean,
 });
 
+const token = localStorage.getItem("token");
+
 const { quantity } = props;
 const quantityRef = toRef(quantity);
 const isChecked = ref(false);
@@ -55,17 +57,40 @@ const emit = defineEmits(['update-price']);
 
 const increment = () => {
   quantityRef.value = parseInt(quantityRef.value) + 1;
-  console.log(count);
+  nextTick(() => {
+    updateQuantity();
+  });
 };
 
 const decrement = () => {
   quantityRef.value = parseInt(quantityRef.value) - 1;
+  nextTick(() => {
+    updateQuantity();
+  });
 };
 
 const emitChange = () => {
   emit('update-price', props.id, isChecked.value, quantityRef);
 };
 
+async function updateQuantity() {
+  try {
+    const formData = new FormData();
+    formData.append("quantity", quantityRef.value);
+
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/cart/update/${props.id}`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+  } catch (error) {
+    console.error("Error updating category:", error);
+  }
+}
 function toIDR(amount) {
   amount = parseInt(amount, 10);
   if (isNaN(amount)) {
