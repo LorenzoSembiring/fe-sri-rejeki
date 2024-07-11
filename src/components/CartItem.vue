@@ -26,7 +26,7 @@
         <div class="ms-3">Ukuran: {{ size }}</div>
         <div class="ms-3 mt-1 border rounded" style="width: fit-content">
           <button class="button-counter" @click="decrement()">-</button>
-          <input type="number" class="input-counter" v-model="inputValue" />
+          <input type="number" class="input-counter" v-model="quantityRef" />
           <button class="button-counter" @click="increment()">+</button>
         </div>
       </div>
@@ -36,9 +36,9 @@
   </div>
 </template>
 <script setup>
-import { ref } from "vue";
+import { ref, toRef } from "vue";
 
-defineProps({
+const props = defineProps({
   id: Number,
   name: String,
   size: Number,
@@ -46,8 +46,8 @@ defineProps({
   price: Number,
   checked: Boolean
 });
-
-let inputValue = ref(0);
+const { quantity } = props
+const quantityRef =  toRef(quantity)
 
 const increment = () => {
   inputValue.value = parseInt(inputValue.value) + 1;
@@ -57,10 +57,6 @@ const increment = () => {
 const decrement = () => {
   inputValue.value = parseInt(inputValue.value) - 1;
 };
-
-function emitPrice(id) {
-  ctx.emit('updatePrice', id);
-}
 
 function toIDR(amount) {
     // Convert the amount to an integer
