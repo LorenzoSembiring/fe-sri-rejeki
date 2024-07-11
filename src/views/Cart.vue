@@ -8,7 +8,7 @@
         <!-- item -->
         <div v-for="cart in carts">
           <CartItem class="me-4 mb-3" 
-            @update-price="updatePrice(cart.id)"
+            @update-price="updatePrice"
             :id="cart.id"
             :name="cart.name"
             :quantity="cart.quantity"
@@ -48,11 +48,19 @@ const total = ref();
 
 const token = localStorage.getItem("token");
 
-function updatePrice(id) {
+const updatePrice = (id, isChecked) => {
   const item = carts.value.find(item => item.id === id);
-  checkedCart.value.push({"id": id, "price": item.price})
-  console.log(checkedCart.value)
-}
+  if (isChecked) {
+    // Add to checkedCart if isChecked is true and not already present
+    if (!checkedCart.value.some(cartItem => cartItem.id === id)) {
+      checkedCart.value.push({ id, price: item.price });
+    }
+  } else {
+    // Remove from checkedCart if isChecked is false
+    checkedCart.value = checkedCart.value.filter(cartItem => cartItem.id !== id);
+  }
+  console.log('Updated checkedCart:', checkedCart.value);
+};
 
 const sumTotalPrice = computed(() => {
   return checkedCart.value.reduce((sum, item) => sum + item.price, 0);

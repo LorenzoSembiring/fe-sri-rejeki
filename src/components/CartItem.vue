@@ -6,8 +6,8 @@
         type="checkbox"
         value=""
         :id="'check' + id"
-        @change="$emit('updatePrice', id);"
-        
+        v-model="isChecked"
+        @change="emitChange"
       />
     </div>
     <div class="col-2">
@@ -36,7 +36,8 @@
   </div>
 </template>
 <script setup>
-import { ref, toRef } from "vue";
+import { onMounted, toRef, ref } from "vue";
+import axios from "axios";
 
 const props = defineProps({
   id: Number,
@@ -44,10 +45,13 @@ const props = defineProps({
   size: Number,
   quantity: Number,
   price: Number,
-  checked: Boolean
+  checked: Boolean,
 });
-const { quantity } = props
-const quantityRef =  toRef(quantity)
+
+const { quantity } = props;
+const quantityRef = toRef(quantity);
+const isChecked = ref(false);
+const emit = defineEmits(['update-price']);
 
 const increment = () => {
   quantityRef.value = parseInt(quantityRef.value) + 1;
@@ -58,21 +62,19 @@ const decrement = () => {
   quantityRef.value = parseInt(quantityRef.value) - 1;
 };
 
+const emitChange = () => {
+  emit('update-price', props.id, isChecked.value);
+};
+
 function toIDR(amount) {
-    // Convert the amount to an integer
-    amount = parseInt(amount, 10);
-    
-    if (isNaN(amount)) {
-        return "Invalid input.";
-    }
-    
-    // Format the integer to IDR format without decimal places
-    let idr = amount.toLocaleString('id-ID');
-    
-    // Add "Rp." prefix
-    idr = 'Rp. ' + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, '$1.');
-    
-    return idr;
+  amount = parseInt(amount, 10);
+  if (isNaN(amount)) {
+    return "Invalid input.";
+  }
+  let idr = amount.toLocaleString("id-ID");
+  // Add "Rp." prefix
+  idr = "Rp. " + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  return idr;
 }
 </script>
 <style scoped>
