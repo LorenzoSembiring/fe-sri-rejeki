@@ -26,7 +26,7 @@
           <div class="summary-text fw-bold">Total Belanja</div>
         </div>
         <div class="col my-3">
-          <div class="summary-text fw-bold">{{ sumTotalPrice }}</div>
+          <div class="summary-text fw-bold">{{ toIDR(sumTotalPrice) }}</div>
         </div>
         <div class="justify-content-center d-flex my-4">
           <button class="button-bayar py-2 px-5">Pilih Pengiriman</button>
@@ -70,6 +70,17 @@ const updatePrice = (id, isChecked, quantity) => {
 const sumTotalPrice = computed(() => {
   return checkedCart.value.reduce((sum, item) => sum + item.price * item.quantity, 0);
 });
+
+function toIDR(amount) {
+  amount = parseInt(amount, 10);
+  if (isNaN(amount)) {
+    return "Invalid input.";
+  }
+  let idr = amount.toLocaleString("id-ID");
+  // Add "Rp." prefix
+  idr = "Rp. " + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  return idr;
+}
 
 const fetchCart = async () => {
   try {
