@@ -29,7 +29,7 @@
           <div class="summary-text fw-bold">{{ toIDR(sumTotalPrice) }}</div>
         </div>
         <div class="justify-content-center d-flex my-4">
-          <button class="button-bayar py-2 px-5">Pilih Pengiriman</button>
+          <button @click="toCheckout" class="button-bayar py-2 px-5">Pilih Pengiriman</button>
         </div>
       </div>
     </div>
@@ -40,6 +40,7 @@
 import Navbar from "@/components/Navbar.vue";
 import CartItem from "@/components/CartItem.vue";
 import { ref, computed } from "vue";
+import router from "../router/index.js";
 import axios from "axios";
 
 const carts = ref([]);
@@ -81,7 +82,9 @@ function toIDR(amount) {
   idr = "Rp. " + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
   return idr;
 }
-
+function toCheckout(selectedCart) {
+  router.push("/shipping")
+}
 const fetchCart = async () => {
   try {
     const response = await axios.get(
