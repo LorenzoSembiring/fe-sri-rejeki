@@ -63,7 +63,7 @@ const decrement = () => {
 };
 
 const emitChange = () => {
-  emit('update-price', props.id, isChecked.value);
+  emit('update-price', props.id, isChecked.value, quantityRef);
 };
 
 function toIDR(amount) {

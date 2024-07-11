@@ -48,12 +48,17 @@ const total = ref();
 
 const token = localStorage.getItem("token");
 
-const updatePrice = (id, isChecked) => {
+const updatePrice = (id, isChecked, quantity) => {
   const item = carts.value.find(item => item.id === id);
+  
   if (isChecked) {
     // Add to checkedCart if isChecked is true and not already present
     if (!checkedCart.value.some(cartItem => cartItem.id === id)) {
-      checkedCart.value.push({ id, price: item.price });
+      checkedCart.value.push({ id, price: item.price, quantity });
+    } else {
+      // Update quantity if item is already present
+      const cartItem = checkedCart.value.find(cartItem => cartItem.id === id);
+      cartItem.quantity = quantity;
     }
   } else {
     // Remove from checkedCart if isChecked is false
@@ -63,7 +68,7 @@ const updatePrice = (id, isChecked) => {
 };
 
 const sumTotalPrice = computed(() => {
-  return checkedCart.value.reduce((sum, item) => sum + item.price, 0);
+  return checkedCart.value.reduce((sum, item) => sum + item.price * item.quantity, 0);
 });
 
 const fetchCart = async () => {
