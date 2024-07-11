@@ -50,12 +50,12 @@ const { quantity } = props
 const quantityRef =  toRef(quantity)
 
 const increment = () => {
-  inputValue.value = parseInt(inputValue.value) + 1;
+  quantityRef.value = parseInt(quantityRef.value) + 1;
   console.log(count);
 };
 
 const decrement = () => {
-  inputValue.value = parseInt(inputValue.value) - 1;
+  quantityRef.value = parseInt(quantityRef.value) - 1;
 };
 
 function toIDR(amount) {
