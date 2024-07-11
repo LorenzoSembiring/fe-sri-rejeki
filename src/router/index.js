@@ -5,7 +5,7 @@ import Register from "@/views/Register.vue";
 import Login from "@/views/Login.vue";
 import Home from "@/views/Home.vue";
 import Shop from "@/views/Shop.vue";
-import Profile from "@/views/Profile.vue";
+import ProfileOld from "@/views/ProfileOld.vue";
 import Product from "@/views/Product.vue";
 import View3D from "@/views/View3D.vue";
 import Cart from "@/views/Cart.vue";
@@ -52,9 +52,9 @@ const router = createRouter({
       component: Shop,
     },
     {
-      path: "/profile",
-      name: "profile",
-      component: Profile,
+      path: "/profile-old",
+      name: "profileold",
+      component: ProfileOld,
     },
     {
       path: "/product/:id",
