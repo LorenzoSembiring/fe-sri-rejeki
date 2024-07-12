@@ -1,7 +1,7 @@
 <template>
   <Navbar class="fixed-top" />
   <div class="row mt-5">
-    <div class="col-3 pt-5 bg-primar">
+    <div class="col-3">
       <div class="ms-5 border rounded px-3">
         <div class="px-2 pe-3 my-3 border-bottom">
           <div
@@ -33,13 +33,65 @@
         </div>
       </div>
     </div>
-    <div class="col pt-5 summary-col d-flex">
-      <Icon
-        class="text-secondary"
-        icon="mdi:account-outline"
-        style="font-size: 24px"
-      />
-      <p class="text-secondary fw-bold">{{ username }}</p>
+    <div class="col pt-5 summary-col">
+      <div class="row">
+        <div class="d-flex">
+          <Icon
+            class="text-secondary"
+            icon="mdi:account-outline"
+            style="font-size: 24px"
+          />
+          <p class="text-secondary fw-bold">{{ username }}</p>
+        </div>
+        <div class="col-4 border-end">
+          <div class="d-flex justify-content-center">
+            <img
+              src="@/assets/default_profile_picture.jpg"
+              alt="@/assets/default_profile_picture.jpg"
+              style="max-width: 100%"
+            />
+          </div>
+          <div class="px-5 mx-3" style="font-size: smaller; color: #555">
+            Besar file maksimum 2Mb. Ekstensi file yang diperbolehkan: .JPG .JPEG .PNG
+          </div>
+          <div class="mt-3 d-flex justify-content-center">
+            <button class="btn button-foto border">
+              <Icon icon="mdi:image" class="" style="font-size: 24px" />Ubah
+              foto
+            </button>
+          </div>
+        </div>
+        <div class="col">
+          <div class="row">
+            <div class="fw-semibold">Biodata Diri</div>
+            <div class="col-4">
+              <div class="my-2">Nama</div>
+              <div class="my-2">Username</div>
+              <div class="my-2">Email</div>
+              <div class="my-2">Nomor Telpon</div>
+            </div>
+            <div class="col">
+              <div class="my-2">{{users.first_name}}</div>
+              <div class="my-2">{{users.username}}</div>
+              <div class="my-2">{{users.email}}</div>
+              <div class="my-2">{{users.phone}}</div>
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- <div class="d-flex bg-white">
+        <div>
+          <Icon
+            class="text-secondary"
+            icon="mdi:account-outline"
+            style="font-size: 24px"
+          />
+          <p class="text-secondary fw-bold">{{ username }}</p>
+        </div>
+        <div class="bg-primary">
+          <div>a</div>
+        </div>
+      </div> -->
     </div>
   </div>
 </template>
@@ -47,8 +99,30 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
+import { onMounted, ref } from 'vue';
+import axios from "axios";
 
+const token = localStorage.getItem("token");
+const users = ref([""])
 const username = localStorage.name ?? null;
+
+async function fetchUser() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/auth/get/",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    users.value = response.data.data;
+    console.log(users.value);
+  } catch (error) {
+    console.log("Error fetching user:", error);
+  }
+}
+onMounted(fetchUser())
 </script>
 
 <style scoped>
@@ -61,5 +135,21 @@ const username = localStorage.name ?? null;
   background-color: #f7f5f0;
   border-radius: 1px;
   font-weight: 500;
+}
+.button-foto {
+  align-items: center;
+  background-color: white;
+  color: rgb(105, 75, 58);
+  cursor: pointer;
+  font-family: "Plus Jakarta Sans", sans-serif;
+  font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 1px;
+  max-width: 100%;
+}
+.button-foto:hover {
+  background-color: #fffaf8;
+  color: #694b3a;
+  transform: scale(0.98);
 }
 </style>
