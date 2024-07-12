@@ -46,7 +46,7 @@
         </div>
           <div class="d-flex justify-content-center">
             <img
-              src="@/assets/default_profile_picture.jpg"
+              :src="profilePicture"
               alt="@/assets/default_profile_picture.jpg"
               style="max-width: 100%"
             />
@@ -86,12 +86,19 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref } from 'vue';
+import { ref, computed } from 'vue';
+import router from "../router/index.js";
 import axios from "axios";
+import defaultProfilePicture from '@/assets/default_profile_picture.jpg';
 
 const token = localStorage.getItem("token");
 const users = ref([""])
 const username = localStorage.name ?? null;
+
+// Ensure users.value.picture is a string URL or get the correct property from the object
+const profilePicture = computed(() => {
+  return users.value.picture || defaultProfilePicture; // Adjust according to the structure of your object
+});
 
 async function fetchUser() {
   try {
