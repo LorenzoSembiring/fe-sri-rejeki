@@ -1,6 +1,6 @@
 <template>
   <Navbar class="fixed-top" />
-  <div class="row mt-5">
+  <div class="row mt-5 pt-5">
     <div class="col-3">
       <div class="ms-5 border rounded px-3">
         <div class="px-2 pe-3 my-3 border-bottom">
@@ -33,9 +33,10 @@
         </div>
       </div>
     </div>
-    <div class="col pt-5 summary-col">
+    <div class="col pt-4 summary-col">
       <div class="row">
-        <div class="d-flex">
+        <div class="col-4 border-end">
+          <div class="d-flex ps-5">
           <Icon
             class="text-secondary"
             icon="mdi:account-outline"
@@ -43,7 +44,6 @@
           />
           <p class="text-secondary fw-bold">{{ username }}</p>
         </div>
-        <div class="col-4 border-end">
           <div class="d-flex justify-content-center">
             <img
               src="@/assets/default_profile_picture.jpg"
@@ -122,7 +122,8 @@ async function fetchUser() {
     console.log("Error fetching user:", error);
   }
 }
-onMounted(fetchUser())
+fetchUser()
+// onMounted()
 </script>
 
 <style scoped>
