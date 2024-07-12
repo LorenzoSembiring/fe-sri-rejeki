@@ -50,18 +50,7 @@
             </div>
           </div>
           <div class="col">
-            <div class="ms-5 mb-3 p-4 border rounded card">
-              <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
-              <div class="fw-bold my-1">
-                <Icon icon="gg:pin" />
-                Rumah • Malik
-              </div>
-              <div>
-                Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota Jakarta
-                Pusat, DKI Jakarta, 081123456789
-              </div>
-            </div>
-            <div class="ms-5 p-4 border rounded card-selected d-flex">
+            <div class="ms-5 p-4 mb-3 border rounded card-unselected d-flex">
               <div class="row">
                 <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
                 <div class="col-11">
@@ -70,13 +59,43 @@
                     Rumah • Malik
                   </div>
                   <div>
-                    Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota Jakarta
-                    Pusat, DKI Jakarta, 081123456789
+                    Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota
+                    Jakarta Pusat, DKI Jakarta, 081123456789
                   </div>
                 </div>
               </div>
               <div class="col d-flex align-items-center">
-                <Icon class="text-success" style="font-size: 30px;" icon="ic:outline-check" />
+                <button
+                  class="btn button border"
+                  style="
+                    border-width: 2px !important;
+                    border-color: #e2e2e2 !important;
+                  "
+                >
+                  Pilih
+                </button>
+              </div>
+            </div>
+            <div class="ms-5 p-4 border mb-3 rounded card-selected d-flex">
+              <div class="row">
+                <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
+                <div class="col-11">
+                  <div class="fw-bold my-1">
+                    <Icon icon="gg:pin" />
+                    Rumah • Malik
+                  </div>
+                  <div>
+                    Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota
+                    Jakarta Pusat, DKI Jakarta, 081123456789
+                  </div>
+                </div>
+              </div>
+              <div class="col d-flex align-items-center">
+                <Icon
+                  class="text-success"
+                  style="font-size: 30px"
+                  icon="ic:outline-check"
+                />
               </div>
             </div>
           </div>
@@ -143,13 +162,14 @@ fetchUser();
   color: #694b3a;
   transform: scale(0.98);
 }
-.card {
-  background-image: url('@/assets/kratos.png');
+.card-unselected {
+  background-image: url("@/assets/kratos.png");
   background-repeat: no-repeat;
   background-position: bottom right;
+  border-width: 2px !important;
 }
 .card-selected {
-  background-image: url('@/assets/kratos-success.png');
+  background-image: url("@/assets/kratos-success.png");
   background-color: #f9fffa;
   border-color: #c0ffc8 !important;
   border-width: 2px !important;
