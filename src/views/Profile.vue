@@ -61,7 +61,7 @@
             </button>
           </div>
         </div>
-        <div class="col">
+        <div class="col ps-4">
           <div class="row">
             <div class="fw-semibold">Biodata Diri</div>
             <div class="col-4">
