@@ -79,19 +79,6 @@
           </div>
         </div>
       </div>
-      <!-- <div class="d-flex bg-white">
-        <div>
-          <Icon
-            class="text-secondary"
-            icon="mdi:account-outline"
-            style="font-size: 24px"
-          />
-          <p class="text-secondary fw-bold">{{ username }}</p>
-        </div>
-        <div class="bg-primary">
-          <div>a</div>
-        </div>
-      </div> -->
     </div>
   </div>
 </template>
@@ -99,7 +86,7 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted, ref } from 'vue';
+import { ref } from 'vue';
 import axios from "axios";
 
 const token = localStorage.getItem("token");
@@ -123,7 +110,6 @@ async function fetchUser() {
   }
 }
 fetchUser()
-// onMounted()
 </script>
 
 <style scoped>
