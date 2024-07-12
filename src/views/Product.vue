@@ -227,7 +227,7 @@ const route = useRoute();
 const stocks = ref([]);
 const selectedStock = ref(0);
 const products = ref([]);
-let inputValue = ref(1);
+const inputValue = ref(1);
 
 const selectStock = (stock) => {
   selectedStock.value = stock;
