@@ -25,7 +25,7 @@
         </div>
         <div class="px-3 py-2 border-bottom">
           <div class="py-2 sidebar-list">Biodata</div>
-          <div class="py-2 sidebar-list">Daftar Alamat</div>
+          <div @click="router.push('/profile/address')" class="py-2 sidebar-list">Daftar Alamat</div>
         </div>
         <div class="px-3 pt-2 pb-4">
           <div class="py-2 sidebar-list">Menunggu Pembayaran</div>
