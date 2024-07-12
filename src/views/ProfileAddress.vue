@@ -61,15 +61,22 @@
                 Pusat, DKI Jakarta, 081123456789
               </div>
             </div>
-            <div class="ms-5 p-4 border rounded card-selected">
-              <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
-              <div class="fw-bold my-1">
-                <Icon icon="gg:pin" />
-                Rumah • Malik
+            <div class="ms-5 p-4 border rounded card-selected d-flex">
+              <div class="row">
+                <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
+                <div class="col-11">
+                  <div class="fw-bold my-1">
+                    <Icon icon="gg:pin" />
+                    Rumah • Malik
+                  </div>
+                  <div>
+                    Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota Jakarta
+                    Pusat, DKI Jakarta, 081123456789
+                  </div>
+                </div>
               </div>
-              <div>
-                Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota Jakarta
-                Pusat, DKI Jakarta, 081123456789
+              <div class="col d-flex align-items-center">
+                <Icon class="text-success" style="font-size: 30px;" icon="ic:outline-check" />
               </div>
             </div>
           </div>
