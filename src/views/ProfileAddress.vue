@@ -50,22 +50,32 @@
             </div>
           </div>
           <div class="col">
-            <div class="ms-5 p-4 mb-3 border rounded card-unselected d-flex">
+            <div
+              v-for="n in address"
+              class="ms-5 p-4 mb-3 border rounded d-flex"
+              :class="n.selected ? 'card-selected' : 'card-unselected'"
+            >
               <div class="row">
                 <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
                 <div class="col-11">
                   <div class="fw-bold my-1">
                     <Icon icon="gg:pin" />
-                    Rumah • Malik
+                    {{ n.label }} • {{ n.name }}
                   </div>
                   <div>
-                    Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota
-                    Jakarta Pusat, DKI Jakarta, 081123456789
+                    {{ n.jalan }}, {{ n.kelurahan }}, {{ n.kecamatan }}, {{ n.kota }}, {{n.provinsi}}, {{n.phone}}
                   </div>
                 </div>
               </div>
               <div class="col d-flex align-items-center">
+                <Icon
+                  v-if="n.selected"
+                  class="text-success"
+                  style="font-size: 30px"
+                  icon="ic:outline-check"
+                />
                 <button
+                  v-else
                   class="btn button border"
                   style="
                     border-width: 2px !important;
@@ -74,28 +84,6 @@
                 >
                   Pilih
                 </button>
-              </div>
-            </div>
-            <div class="ms-5 p-4 border mb-3 rounded card-selected d-flex">
-              <div class="row">
-                <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
-                <div class="col-11">
-                  <div class="fw-bold my-1">
-                    <Icon icon="gg:pin" />
-                    Rumah • Malik
-                  </div>
-                  <div>
-                    Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota
-                    Jakarta Pusat, DKI Jakarta, 081123456789
-                  </div>
-                </div>
-              </div>
-              <div class="col d-flex align-items-center">
-                <Icon
-                  class="text-success"
-                  style="font-size: 30px"
-                  icon="ic:outline-check"
-                />
               </div>
             </div>
           </div>
@@ -196,6 +184,7 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 const users = ref([""]);
 const username = localStorage.name ?? null;
+var address = [];
 
 const name = ref("");
 const phone = ref("");
@@ -214,18 +203,18 @@ const selectedKota = ref("");
 const selectedProvinsi = ref("");
 const selectedKodePos = ref("");
 
-async function fetchUser() {
+async function fetchAddress() {
   try {
     const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/auth/get/",
+      import.meta.env.VITE_API_URL + "/api/address/get",
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    users.value = response.data.data;
-    console.log(users.value);
+    address = response.data.data;
+    console.log(address);
   } catch (error) {
     console.log("Error fetching user:", error);
   }
@@ -308,10 +297,10 @@ watch(selectedKecamatan, (newValue) => {
 });
 function closeModal() {
   // isModalOpen.value = false;
-  selectedProvinsi.value = '';
-  selectedKota.value = '';
-  selectedKecamatan.value = '';
-  selectedKelurahan.value = '';
+  selectedProvinsi.value = "";
+  selectedKota.value = "";
+  selectedKecamatan.value = "";
+  selectedKelurahan.value = "";
   kota.value = [];
   kecamatan.value = [];
   kelurahan.value = [];
@@ -321,6 +310,7 @@ const addAddress = () => {
   modal.show();
 };
 
+fetchAddress();
 fetchProvince();
 </script>
 
