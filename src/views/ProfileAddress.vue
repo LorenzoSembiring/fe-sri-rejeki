@@ -114,6 +114,7 @@
             class="btn-close"
             data-bs-dismiss="modal"
             aria-label="Close"
+            @click="closeModal()"
           ></button>
         </div>
         <div class="modal-body">
@@ -174,6 +175,7 @@
             type="button"
             class="btn button-putih"
             data-bs-dismiss="modal"
+            @click="closeModal()"
           >
             Tutup
           </button>
@@ -304,6 +306,16 @@ watch(selectedKecamatan, (newValue) => {
     kelurahan.value = [];
   }
 });
+function closeModal() {
+  // isModalOpen.value = false;
+  selectedProvinsi.value = '';
+  selectedKota.value = '';
+  selectedKecamatan.value = '';
+  selectedKelurahan.value = '';
+  kota.value = [];
+  kecamatan.value = [];
+  kelurahan.value = [];
+}
 const addAddress = () => {
   const modal = new bootstrap.Modal(document.getElementById("Modal"));
   modal.show();
