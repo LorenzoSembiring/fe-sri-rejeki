@@ -76,6 +76,7 @@
                 />
                 <button
                   v-else
+                  @click="changeSelected(n.id)"
                   class="btn button border"
                   style="
                     border-width: 2px !important;
@@ -177,14 +178,14 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref, watch } from "vue";
+import { ref, watch, onMounted } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
 const users = ref([""]);
 const username = localStorage.name ?? null;
-var address = [];
+var address = ref([""]);
 
 const name = ref("");
 const phone = ref("");
@@ -203,6 +204,30 @@ const selectedKota = ref("");
 const selectedProvinsi = ref("");
 const selectedKodePos = ref("");
 
+onMounted( () => {
+  fetchAddress();
+  }
+)
+
+async function changeSelected(id) {
+  try {
+    const response = await axios.put(
+      import.meta.env.VITE_API_URL + "/api/address/update-selected/" + id,
+      {}
+      ,{
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status == 200) {
+      location.reload();
+    }
+  } catch (error) {
+    console.log("Error fetching user:", error);
+  }
+}
+
 async function fetchAddress() {
   try {
     const response = await axios.get(
@@ -213,7 +238,7 @@ async function fetchAddress() {
         },
       }
     );
-    address = response.data.data;
+    address.value = response.data.data;
     console.log(address);
   } catch (error) {
     console.log("Error fetching user:", error);
@@ -310,7 +335,7 @@ const addAddress = () => {
   modal.show();
 };
 
-fetchAddress();
+
 fetchProvince();
 </script>
 
