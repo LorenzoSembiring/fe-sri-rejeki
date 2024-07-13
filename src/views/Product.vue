@@ -9,7 +9,7 @@
         class="col-6 left-col"
         style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto"
       >
-      <div class="d-flex my-3" style="font-family: sans-serif;" >
+      <div class="d-flex my-3" style="font-family: sans-serif; font-size: 14px" >
         <a class="text-secondary" href="/">Beranda</a>
         <p class="mx-2 text-secondary"><Icon icon="ep:arrow-right" /></p>
         <a class="text-secondary" href="/shop">{{ products.category }}</a>
