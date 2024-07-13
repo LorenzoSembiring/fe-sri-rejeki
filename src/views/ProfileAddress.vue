@@ -45,7 +45,7 @@
               style="font-size: 24px"
             />
             <p class="text-secondary fw-bold">{{ username }}</p>
-            <div class="ms-auto">
+            <div class="ms-auto" @click="addAddress">
               <button class="btn button border">+ Tambah Alamat</button>
             </div>
           </div>
@@ -103,18 +103,114 @@
       </div>
     </div>
   </div>
+  <!-- modal -->
+  <div class="modal" :id="`Modal`" tabindex="-1">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title">Tambah Alamat</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="my-4 fw-semibold text-grey d-flex">
+            <div class="col-4 p-0">Provinsi</div>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              v-model="selectedProvinsi"
+            >
+              <option v-for="n in provinsi" :value="n.id" :key="n.id">
+                {{ n.name }}
+              </option>
+            </select>
+          </div>
+          <div class="my-4 fw-semibold text-grey d-flex">
+            <div class="col-4 p-0">Kabupaten / Kota</div>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              v-model="selectedKota"
+              :disabled="!selectedProvinsi"
+            >
+              <option v-for="n in kota" :value="n.id" :key="n.id">
+                {{ n.name }}
+              </option>
+            </select>
+          </div>
+          <div class="my-4 fw-semibold text-grey d-flex">
+            <div class="col-4 p-0">Kecamatan</div>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              v-model="selectedKecamatan"
+              :disabled="!selectedKota"
+            >
+              <option v-for="n in kecamatan" :value="n.id" :key="n.id">
+                {{ n.name }}
+              </option>
+            </select>
+          </div>
+          <div class="my-4 fw-semibold text-grey d-flex">
+            <div class="col-4 p-0">Kelurahan</div>
+            <select
+              class="form-select"
+              aria-label="Default select example"
+              v-model="selectedKelurahan"
+              :disabled="!selectedKecamatan"
+            >
+              <option v-for="n in kelurahan" :value="n.id" :key="n.id">
+                {{ n.name }}
+              </option>
+            </select>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn button-putih"
+            data-bs-dismiss="modal"
+          >
+            Tutup
+          </button>
+          <button type="button" class="btn button-coklat">Simpan</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref } from "vue";
+import { ref, watch } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
 const users = ref([""]);
 const username = localStorage.name ?? null;
+
+const name = ref("");
+const phone = ref("");
+const jalan = ref("");
+const kelurahan = ref("");
+const kecamatan = ref("");
+const kota = ref("");
+const provinsi = ref("");
+const kodePos = ref("");
+const selectedName = ref("");
+const selectedPhone = ref("");
+const selectedJalan = ref("");
+const selectedKelurahan = ref("");
+const selectedKecamatan = ref("");
+const selectedKota = ref("");
+const selectedProvinsi = ref("");
+const selectedKodePos = ref("");
 
 async function fetchUser() {
   try {
@@ -132,7 +228,88 @@ async function fetchUser() {
     console.log("Error fetching user:", error);
   }
 }
-fetchUser();
+async function fetchProvince() {
+  try {
+    const response = await axios.get(
+      "https://www.emsifa.com/api-wilayah-indonesia/api/provinces.json"
+    );
+    provinsi.value = response.data;
+  } catch (error) {
+    console.error("Error fetching province:", error);
+  }
+}
+
+async function fetchCity() {
+  try {
+    const response = await axios.get(
+      `https://www.emsifa.com/api-wilayah-indonesia/api/regencies/${selectedProvinsi.value}.json`
+    );
+    kota.value = response.data;
+  } catch (error) {
+    console.error("Error fetching city:", error);
+  }
+}
+
+async function fetchKecamatan() {
+  try {
+    const response = await axios.get(
+      `https://www.emsifa.com/api-wilayah-indonesia/api/districts/${selectedKota.value}.json`
+    );
+    kecamatan.value = response.data;
+  } catch (error) {
+    console.error("Error fetching kecamatan:", error);
+  }
+}
+
+async function fetchKelurahan() {
+  try {
+    const response = await axios.get(
+      `https://www.emsifa.com/api-wilayah-indonesia/api/villages/${selectedKecamatan.value}.json`
+    );
+    kelurahan.value = response.data;
+  } catch (error) {
+    console.error("Error fetching kelurahan:", error);
+  }
+}
+
+watch(selectedProvinsi, (newValue) => {
+  if (newValue) {
+    fetchCity();
+  } else {
+    selectedKota.value = "";
+    selectedKecamatan.value = "";
+    selectedKelurahan.value = "";
+    kota.value = [];
+    kecamatan.value = [];
+    kelurahan.value = [];
+  }
+});
+
+watch(selectedKota, (newValue) => {
+  if (newValue) {
+    fetchKecamatan();
+  } else {
+    selectedKecamatan.value = "";
+    selectedKelurahan.value = "";
+    kecamatan.value = [];
+    kelurahan.value = [];
+  }
+});
+
+watch(selectedKecamatan, (newValue) => {
+  if (newValue) {
+    fetchKelurahan();
+  } else {
+    selectedKelurahan.value = "";
+    kelurahan.value = [];
+  }
+});
+const addAddress = () => {
+  const modal = new bootstrap.Modal(document.getElementById("Modal"));
+  modal.show();
+};
+
+fetchProvince();
 </script>
 
 <style scoped>
@@ -175,5 +352,19 @@ fetchUser();
   border-width: 2px !important;
   background-repeat: no-repeat;
   background-position: bottom right;
+}
+.button-coklat {
+  border-radius: 8px;
+  border-style: none;
+  background-color: #a77155;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
+}
+.button-putih {
+  border-radius: 8px;
+  background-color: #ffffff;
+  border: 1px solid #ccc;
+  color: rgb(53, 53, 53);
+  font-weight: 600;
 }
 </style>
