@@ -105,8 +105,7 @@
           >
             {{ products.name }}
           </div>
-          <div>
-            {{ products.description }}
+          <div v-html="products.description">
           </div>
         </div>
       </div>
