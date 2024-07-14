@@ -29,13 +29,15 @@ async function validateToken() {
       if (response.data.code != 200) {
         // If the response is not OK, handle the error (e.g., redirect to login page)
         localStorage.removeItem("token");
+        location.reload()
       }
-
+      
       // Token is valid, continue with the application initialization
     } catch (error) {
       // Handle token validation error (e.g., redirect to login page)
       localStorage.removeItem("token");
       console.log("error");
+      location.reload()
     }
   }
 }
