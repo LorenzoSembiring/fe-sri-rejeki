@@ -7,10 +7,11 @@
         <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
         <div class="fw-bold my-1">
           <Icon icon="gg:pin" />
-          Rumah • Malik
+          {{ address.label }} • {{ address.name }}
         </div>
         <div>
-          Jl. Ahmad Yani No. 123, Kelurahan Cempaka Putih, Kota Jakarta Pusat, DKI Jakarta, 081123456789</div>
+          {{ address.jalan }}, {{ address.kelurahan }}, {{ address.kecamatan }}, {{ address.kota }}, {{address.provinsi}}, {{address.phone}}
+        </div>
         <a href="" style="text-decoration: none">
           <div class="mt-1">Ganti Alamat</div>
         </a>
@@ -42,12 +43,40 @@
 import Navbar from "@/components/Navbar.vue";
 import ShippingItem from "@/components/ShippingItem.vue";
 import { Icon } from "@iconify/vue";
+import { ref, onMounted } from "vue";
 import { onBeforeRouteLeave } from 'vue-router';
+import axios from "axios";
+
+const token = localStorage.getItem("token");
+
+const address = ref([''])
+
+async function fetchAddress() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/address/get-selected",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    address.value = response.data.data;
+    console.log(address.value);
+  } catch (error) {
+    console.log("Error fetching user:", error);
+  }
+}
 
 onBeforeRouteLeave((to, from, next) => {
   localStorage.removeItem('cart');
   next();
 });
+
+onMounted( () => {
+  fetchAddress();
+  }
+)
 </script>
 
 <style scoped>
