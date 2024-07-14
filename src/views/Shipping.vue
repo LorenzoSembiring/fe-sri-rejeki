@@ -48,8 +48,15 @@ import { onBeforeRouteLeave } from 'vue-router';
 import axios from "axios";
 
 const token = localStorage.getItem("token");
+const cart = localStorage.getItem("cart");
+const arrayCart = JSON.parse(cart)
 
 const address = ref([''])
+const product = ref([''])
+
+arrayCart.forEach((item) => {
+  fetchProduct(item.id);
+});
 
 async function fetchAddress() {
   try {
@@ -68,6 +75,22 @@ async function fetchAddress() {
   }
 }
 
+async function fetchProduct(id) {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/cart/get/" + id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+      product.value.push(response.data.data)
+  } catch (error) {
+    console.log("Error Fetch product")
+  }
+}
+
 onBeforeRouteLeave((to, from, next) => {
   localStorage.removeItem('cart');
   next();
@@ -75,6 +98,7 @@ onBeforeRouteLeave((to, from, next) => {
 
 onMounted( () => {
   fetchAddress();
+
   }
 )
 </script>
