@@ -7,7 +7,8 @@
       <div class="ms-5">
         <!-- item -->
         <div v-for="cart in carts">
-          <CartItem class="me-4 mb-3" 
+          <CartItem
+            class="me-4 mb-3"
             @update-price="updatePrice"
             :id="cart.id"
             :name="cart.name"
@@ -29,7 +30,13 @@
           <div class="summary-text fw-bold">{{ toIDR(sumTotalPrice) }}</div>
         </div>
         <div class="justify-content-center d-flex my-4">
-          <button @click="toCheckout" class="button-bayar py-2 px-5">Pilih Pengiriman</button>
+          <button
+            @click="toCheckout()"
+            :disabled="checkedCart.length === 0"
+            class="button-bayar py-2 px-5"
+          >
+            Pilih Pengiriman
+          </button>
         </div>
       </div>
     </div>
@@ -50,26 +57,31 @@ const total = ref();
 const token = localStorage.getItem("token");
 
 const updatePrice = (id, isChecked, quantity) => {
-  const item = carts.value.find(item => item.id === id);
-  
+  const item = carts.value.find((item) => item.id === id);
+
   if (isChecked) {
     // Add to checkedCart if isChecked is true and not already present
-    if (!checkedCart.value.some(cartItem => cartItem.id === id)) {
+    if (!checkedCart.value.some((cartItem) => cartItem.id === id)) {
       checkedCart.value.push({ id, price: item.price, quantity });
     } else {
       // Update quantity if item is already present
-      const cartItem = checkedCart.value.find(cartItem => cartItem.id === id);
+      const cartItem = checkedCart.value.find((cartItem) => cartItem.id === id);
       cartItem.quantity = quantity;
     }
   } else {
     // Remove from checkedCart if isChecked is false
-    checkedCart.value = checkedCart.value.filter(cartItem => cartItem.id !== id);
+    checkedCart.value = checkedCart.value.filter(
+      (cartItem) => cartItem.id !== id
+    );
   }
-  console.log('Updated checkedCart:', checkedCart.value);
+  console.log("Updated checkedCart:", checkedCart.value);
 };
 
 const sumTotalPrice = computed(() => {
-  return checkedCart.value.reduce((sum, item) => sum + item.price * item.quantity, 0);
+  return checkedCart.value.reduce(
+    (sum, item) => sum + item.price * item.quantity,
+    0
+  );
 });
 
 function toIDR(amount) {
@@ -82,8 +94,9 @@ function toIDR(amount) {
   idr = "Rp. " + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
   return idr;
 }
-function toCheckout(selectedCart) {
-  router.push("/shipping")
+function toCheckout() {
+  localStorage.setItem("cart", JSON.stringify(checkedCart.value));
+  router.push("/shipping");
 }
 const fetchCart = async () => {
   try {
@@ -96,14 +109,14 @@ const fetchCart = async () => {
       }
     );
     carts.value = response.data.data.data;
-    console.log(carts.value)
+    console.log(carts.value);
   } catch (error) {
     console.error("Error fetching products:", error);
   }
 };
 
 // Fetch posts when the component is mounted
-fetchCart()
+fetchCart();
 </script>
 
 <style scoped>
