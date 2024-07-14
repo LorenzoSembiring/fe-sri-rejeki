@@ -13,7 +13,7 @@
           {{ address.jalan }}, {{ address.kelurahan }}, {{ address.kecamatan }}, {{ address.kota }}, {{address.provinsi}}, {{address.phone}}
         </div>
         <a href="/profile/address" style="text-decoration: none">
-          <div class="mt-1">Ganti Alamat</div>
+          <div class="mt-1 d-inline-block">Ganti Alamat</div>
         </a>
       </div>
     <ShippingItem/>
