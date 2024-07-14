@@ -62,7 +62,7 @@ const updatePrice = (id, isChecked, quantity) => {
   if (isChecked) {
     // Add to checkedCart if isChecked is true and not already present
     if (!checkedCart.value.some((cartItem) => cartItem.id === id)) {
-      checkedCart.value.push({ id, price: item.price, quantity });
+      checkedCart.value.push({ id, price: item.price, quantity, name: item.name });
     } else {
       // Update quantity if item is already present
       const cartItem = checkedCart.value.find((cartItem) => cartItem.id === id);
