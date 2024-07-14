@@ -42,6 +42,12 @@
 import Navbar from "@/components/Navbar.vue";
 import ShippingItem from "@/components/ShippingItem.vue";
 import { Icon } from "@iconify/vue";
+import { onBeforeRouteLeave } from 'vue-router';
+
+onBeforeRouteLeave((to, from, next) => {
+  localStorage.removeItem('cart');
+  next();
+});
 </script>
 
 <style scoped>
