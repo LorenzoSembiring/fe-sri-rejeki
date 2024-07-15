@@ -26,13 +26,15 @@
               alt=""
             />
           </div>
-          <div class="col-7 pt-2 ms-3">
+          <div class="col-6 pt-2 ms-3">
             <div class="row h5">{{ item.name }}</div>
             <div class="row">Ukuran: {{ item.size }}</div>
           </div>
-          <div class="col text-end me-2 h5">{{ item.quantity }} x {{ toIDR(item.price) }}</div>
+          <div class="col text-end me-2 h5">
+            {{ item.quantity }} x {{ toIDR(item.price) }}
+          </div>
         </div>
-        <div class="row" style="margin-left: 9vw;">
+        <div class="row" style="margin-left: 9vw">
           <select class="form-select" aria-label="Default select example">
             <option selected hidden>Pilih Pengiriman</option>
             <option value="1">One</option>
@@ -51,7 +53,7 @@
           <div class="border-top mt-3 summary-text fw-bold">Total</div>
         </div>
         <div class="col my-3">
-          <div class="summary-text">Rp. 50.000</div>
+          <div class="summary-text">{{ toIDR(totalPrice) }}</div>
           <div class="summary-text">Rp. 50.000</div>
           <div class="summary-text mt-3 fw-bold">Rp. 100.000</div>
         </div>
@@ -66,13 +68,13 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref, onMounted } from "vue";
+import { ref, onMounted, computed } from "vue";
 import { onBeforeRouteLeave } from "vue-router";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
 const cart = localStorage.getItem("cart");
-const cartItem = ref([''])
+const cartItem = ref([""]);
 const arrayCart = JSON.parse(cart);
 cartItem.value = arrayCart;
 
@@ -125,6 +127,13 @@ function toIDR(amount) {
   idr = "Rp. " + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
   return idr;
 }
+
+const totalPrice = computed(() => {
+  return arrayCart.reduce((total, item) => {
+    return total + (item.price * item.quantity);
+  }, 0);
+});
+
 onBeforeRouteLeave((to, from, next) => {
   localStorage.removeItem("cart");
   next();
