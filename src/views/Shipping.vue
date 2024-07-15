@@ -10,13 +10,37 @@
           {{ address.label }} • {{ address.name }}
         </div>
         <div>
-          {{ address.jalan }}, {{ address.kelurahan }}, {{ address.kecamatan }}, {{ address.kota }}, {{address.provinsi}}, {{address.phone}}
+          {{ address.jalan }}, {{ address.kelurahan }}, {{ address.kecamatan }},
+          {{ address.kota }}, {{ address.provinsi }}, {{ address.phone }}
         </div>
         <a href="/profile/address" style="text-decoration: none">
           <div class="mt-1 d-inline-block">Ganti Alamat</div>
         </a>
       </div>
-    <ShippingItem/>
+      <div class="ms-5 mt-3 p-2 border rounded">
+        <div class="row" v-for="item in cartItem">
+          <div class="col-2">
+            <img
+              class="m-2 rounded"
+              src="@/assets/default_profile_picture.jpg"
+              alt=""
+            />
+          </div>
+          <div class="col-7 pt-2 ms-3">
+            <div class="row h5">{{ item.name }}</div>
+            <div class="row">Ukuran: {{ item.size }}</div>
+          </div>
+          <div class="col text-end me-2 h5">{{ item.quantity }} x {{ toIDR(item.price) }}</div>
+        </div>
+        <div class="row" style="margin-left: 9vw;">
+          <select class="form-select" aria-label="Default select example">
+            <option selected hidden>Pilih Pengiriman</option>
+            <option value="1">One</option>
+            <option value="2">Two</option>
+            <option value="3">Three</option>
+          </select>
+        </div>
+      </div>
     </div>
     <div class="col pt-5 summary-col">
       <div class="h2 ms-4">Ringkasan Pesanan</div>
@@ -41,18 +65,19 @@
 
 <script setup>
 import Navbar from "@/components/Navbar.vue";
-import ShippingItem from "@/components/ShippingItem.vue";
 import { Icon } from "@iconify/vue";
 import { ref, onMounted } from "vue";
-import { onBeforeRouteLeave } from 'vue-router';
+import { onBeforeRouteLeave } from "vue-router";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
 const cart = localStorage.getItem("cart");
-const arrayCart = JSON.parse(cart)
+const cartItem = ref([''])
+const arrayCart = JSON.parse(cart);
+cartItem.value = arrayCart;
 
-const address = ref([''])
-const product = ref([''])
+const address = ref([""]);
+const product = ref([""]);
 
 arrayCart.forEach((item) => {
   fetchProduct(item.id);
@@ -85,22 +110,29 @@ async function fetchProduct(id) {
         },
       }
     );
-      product.value.push(response.data.data)
+    product.value.push(response.data.data);
   } catch (error) {
-    console.log("Error Fetch product")
+    console.log("Error Fetch product");
   }
 }
-
+function toIDR(amount) {
+  amount = parseInt(amount, 10);
+  if (isNaN(amount)) {
+    return "Invalid input.";
+  }
+  let idr = amount.toLocaleString("id-ID");
+  // Add "Rp." prefix
+  idr = "Rp. " + idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  return idr;
+}
 onBeforeRouteLeave((to, from, next) => {
-  localStorage.removeItem('cart');
+  localStorage.removeItem("cart");
   next();
 });
 
-onMounted( () => {
+onMounted(() => {
   fetchAddress();
-
-  }
-)
+});
 </script>
 
 <style scoped>
@@ -129,5 +161,8 @@ onMounted( () => {
   background-image: linear-gradient(135deg, #c6a28a 40%, #aa7d61);
   color: rgb(255, 255, 255);
   font-weight: 600;
+}
+img {
+  width: 7vw;
 }
 </style>
