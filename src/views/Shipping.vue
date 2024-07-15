@@ -27,8 +27,14 @@
             />
           </div>
           <div class="col-6 pt-2 ms-3">
-            <div class="row h5">{{ item.name }}</div>
-            <div class="row">Ukuran: {{ item.size }}</div>
+            <div class="row h5">
+              <span class="text-truncate">
+                {{ item.name }}
+              </span>
+            </div>
+            <div class="row">
+              <span> Ukuran: {{ item.size }} </span>
+            </div>
           </div>
           <div class="col text-end me-2 h5">
             {{ item.quantity }} x {{ toIDR(item.price) }}
@@ -130,7 +136,7 @@ function toIDR(amount) {
 
 const totalPrice = computed(() => {
   return arrayCart.reduce((total, item) => {
-    return total + (item.price * item.quantity);
+    return total + item.price * item.quantity;
   }, 0);
 });
 
