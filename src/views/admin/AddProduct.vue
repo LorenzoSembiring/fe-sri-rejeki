@@ -9,7 +9,7 @@
           <div class="h5 mt-2 border-bottom pb-3">Informasi Produk</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Nama Produk</div>
-            <input type="text" class="form-control" id="name" v-model="name"/>
+            <input type="text" class="form-control" id="name" v-model="name" />
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Kategori</div>
@@ -32,7 +32,12 @@
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Deskripsi</div>
-            <textarea class="form-control" id="description" rows="4" v-model="description"></textarea>
+            <textarea
+              class="form-control"
+              id="description"
+              rows="4"
+              v-model="description"
+            ></textarea>
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Harga</div>
@@ -59,9 +64,14 @@
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Berat</div>
             <div class="col-1">
-              <input type="text" class="form-control" id="weight" v-model="weight"/>
+              <input
+                type="text"
+                class="form-control"
+                id="weight"
+                v-model="weight"
+              />
             </div>
-            <span class="ps-2 pt-1" >gram</span>
+            <span class="ps-2 pt-1">gram</span>
           </div>
         </div>
       </div>
@@ -75,24 +85,14 @@
                 v-for="(item, index) in uploads"
                 :key="index"
               >
-                <div v-if="item.file" @click="triggerPictureInput(index)">
+                <div @click="triggerPictureInput(index)">
                   <img
+                    v-if="item.preview"
                     class="texture"
-                    :src="URL.createObjectURL(item.file)"
+                    :src="item.preview"
                     alt="Selected Image"
                   />
-                </div>
-                <div v-else>
-                  <input
-                    type="file"
-                    :ref="(el) => (pictureInputs[index] = el)"
-                    @change="handleFileChange(index)"
-                    style="display: none"
-                  />
-                  <div
-                    class="rounded product-picture p-3 pt-4"
-                    @click="triggerPictureInput(index)"
-                  >
+                  <div v-else class="rounded product-picture p-3 pt-4">
                     <div class="d-flex justify-content-center">
                       <Icon
                         class="text-secondary d-flex justify-contents-center"
@@ -107,6 +107,13 @@
                     </div>
                   </div>
                 </div>
+                <input
+                  type="file"
+                  :ref="(el) => (pictureInputs[index] = el)"
+                  @change="handleFileChange(index)"
+                  style="display: none"
+                  accept=".png,.jpg,.jpeg"
+                />
               </div>
             </div>
           </div>
@@ -319,19 +326,19 @@ const token = localStorage.getItem("token");
 
 const isPriceInputFocused = ref(false);
 
-const URL = window.URL
+const URL = window.URL;
 const size = ref("");
 const stock = ref("");
 const sizes = ref([]);
-const jsonSize = JSON.stringify(sizes.value)
+const jsonSize = JSON.stringify(sizes.value);
 const categories = ref([]);
 const pictureInputs = ref([]);
 const uploads = ref([
-  { file: null, index: 1 },
-  { file: null, index: 2 },
-  { file: null, index: 3 },
-  { file: null, index: 4 },
-  { file: null, index: 5 },
+  { file: null, index: 1, preview: "" },
+  { file: null, index: 2, preview: "" },
+  { file: null, index: 3, preview: "" },
+  { file: null, index: 4, preview: "" },
+  { file: null, index: 5, preview: "" },
 ]);
 const textureInput = ref(null);
 const textureUrl = ref(null);
@@ -342,11 +349,11 @@ const D3items = ref([
   { id: 3, title: "Item 3" },
 ]);
 // submited data
-const name = ref("")
-const description = ref("")
-const price = ref("")
+const name = ref("");
+const description = ref("");
+const price = ref("");
 const weight = ref("");
-const category_id = ref("")
+const category_id = ref("");
 const productId = ref("");
 
 async function submit() {
@@ -385,9 +392,9 @@ async function submitPictures(productId) {
     for (let i = 0; i < uploads.value.length; i++) {
       if (uploads.value[i].file) {
         const formData = new FormData();
-        formData.append('file', uploads.value[i].file);
-        formData.append('product_id', productId);
-        formData.append('index', uploads.value[i].index);
+        formData.append("file", uploads.value[i].file);
+        formData.append("product_id", productId);
+        formData.append("index", uploads.value[i].index);
 
         const response = await axios.post(
           `${import.meta.env.VITE_API_URL}/api/product/picture/store/`,
@@ -395,7 +402,7 @@ async function submitPictures(productId) {
           {
             headers: {
               Authorization: `Bearer ${token}`,
-              'Content-Type': 'multipart/form-data',
+              "Content-Type": "multipart/form-data",
             },
           }
         );
@@ -437,10 +444,18 @@ const triggerTextureInput = () => {
 const handleFileChange = (index) => {
   const files = pictureInputs.value[index].files;
   if (files.length) {
-    uploads.value[index].file = files[0];
+    const file = files[0];
+    uploads.value[index].file = file;
+    // Revoke the old object URL to avoid memory leaks
+    if (uploads.value[index].preview) {
+      URL.revokeObjectURL(uploads.value[index].preview);
+    }
+    uploads.value[index].preview = URL.createObjectURL(file);
     // Ensure reactivity
     uploads.value = [...uploads.value];
-    console.log(uploads)
+    console.log("File changed for index:", index, uploads.value);
+  } else {
+    console.log("No file selected for index:", index);
   }
 };
 
