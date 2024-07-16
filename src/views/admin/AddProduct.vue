@@ -358,6 +358,7 @@ async function submit() {
     formData.append("category_id", category_id.value);
     formData.append("size", JSON.stringify(sizes.value));
     formData.append("mesh_id", selected3D.value);
+    formData.append("file", textureInput.value.files[0]);
 
     const response = await axios.post(
       `${import.meta.env.VITE_API_URL}/api/product/store/`,
