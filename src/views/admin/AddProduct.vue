@@ -327,11 +327,11 @@ const jsonSize = JSON.stringify(sizes.value)
 const categories = ref([]);
 const pictureInputs = ref([]);
 const uploads = ref([
-  { file: null },
-  { file: null },
-  { file: null },
-  { file: null },
-  { file: null },
+  { file: null, index: 1 },
+  { file: null, index: 2 },
+  { file: null, index: 3 },
+  { file: null, index: 4 },
+  { file: null, index: 5 },
 ]);
 const textureInput = ref(null);
 const textureUrl = ref(null);
@@ -347,6 +347,7 @@ const description = ref("")
 const price = ref("")
 const weight = ref("");
 const category_id = ref("")
+const productId = ref("");
 
 async function submit() {
   try {
@@ -370,12 +371,39 @@ async function submit() {
       }
     );
     if (response.status == 201) {
-      router.push("/admin/product");
+      await submitPictures(response.data.data.id);
     } else {
       // show modal
     }
   } catch (error) {
-    console.error("Error atoring product:", error);
+    console.error("Error storing product:", error);
+  }
+}
+
+async function submitPictures(productId) {
+  try {
+    for (let i = 0; i < uploads.value.length; i++) {
+      if (uploads.value[i].file) {
+        const formData = new FormData();
+        formData.append('file', uploads.value[i].file);
+        formData.append('product_id', productId);
+        formData.append('index', uploads.value[i].index);
+
+        const response = await axios.post(
+          `${import.meta.env.VITE_API_URL}/api/product/picture/store/`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              'Content-Type': 'multipart/form-data',
+            },
+          }
+        );
+        console.log(response.data);
+      }
+    }
+  } catch (error) {
+    console.error("Error storing pictures:", error);
   }
 }
 
