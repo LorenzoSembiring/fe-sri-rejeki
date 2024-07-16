@@ -56,6 +56,13 @@
               />
             </div>
           </div>
+          <div class="my-4 fw-semibold text-grey d-flex">
+            <div class="col-4 p-0">Berat</div>
+            <div class="col-1">
+              <input type="text" class="form-control" id="weight" v-model="weight"/>
+            </div>
+            <span class="ps-2 pt-1" >gram</span>
+          </div>
         </div>
       </div>
       <div class="py-1 my-2 rounded border bg-white">
@@ -338,6 +345,7 @@ const D3items = ref([
 const name = ref("")
 const description = ref("")
 const price = ref("")
+const weight = ref("");
 const category_id = ref("")
 
 async function submit() {
@@ -346,6 +354,7 @@ async function submit() {
     formData.append("name", name.value);
     formData.append("description", description.value);
     formData.append("price", price.value);
+    formData.append("weight", weight.value);
     formData.append("category_id", category_id.value);
     formData.append("size", JSON.stringify(sizes.value));
     formData.append("mesh_id", selected3D.value);
