@@ -9,7 +9,7 @@
         <div class="img-fluid my-2" style="text-align: center">
           <img
             class="justify-center"
-            src="@/assets/default_profile_picture.jpg"
+            :src="parsedImage"
             alt=""
           />
         </div>
@@ -29,14 +29,17 @@
 import router from "../router/index.js";
 import { ref } from 'vue';
 
-defineProps({
-    id: Number,
-    category: String,
-    categoryId: Number,
-    name: String,
-    price: Number,
+const props = defineProps({
+  id: Number,
+  category: String,
+  categoryId: Number,
+  name: String,
+  price: Number,
+  picture: String
 });
 
+const parsedImage = import.meta.env.VITE_API_URL + "/uploads/" + props.picture;
+console.log(parsedImage)
 const isHovered = ref(false);
 
 function toCategory(id) {
@@ -50,12 +53,17 @@ function formatToIDR(number) {
 }
 </script>
 
-<style>
+<style scoped>
 .content {
   width: 250px;
 }
 
 a {
   text-decoration: none;
+}
+img {
+  object-fit: cover;
+  width: 30vh;
+  height: 30vh;
 }
 </style>
