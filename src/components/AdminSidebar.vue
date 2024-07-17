@@ -89,4 +89,7 @@ const username = localStorage.name ?? null;
   border-width: 1px;
   border-color: #865439
 }
+a {
+  text-decoration: none;
+}
 </style>
