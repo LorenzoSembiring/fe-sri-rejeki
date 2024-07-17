@@ -25,7 +25,12 @@
         </div>
         <div class="px-3 py-2 border-bottom">
           <div class="py-2 sidebar-list">Biodata</div>
-          <div @click="router.push('/profile/address')" class="py-2 sidebar-list">Daftar Alamat</div>
+          <div
+            @click="router.push('/profile/address')"
+            class="py-2 sidebar-list"
+          >
+            Daftar Alamat
+          </div>
         </div>
         <div class="px-3 pt-2 pb-4">
           <div class="py-2 sidebar-list">Menunggu Pembayaran</div>
@@ -37,13 +42,13 @@
       <div class="row">
         <div class="col-4 border-end">
           <div class="d-flex ps-5">
-          <Icon
-            class="text-secondary"
-            icon="mdi:account-outline"
-            style="font-size: 24px"
-          />
-          <p class="text-secondary fw-bold">{{ username }}</p>
-        </div>
+            <Icon
+              class="text-secondary"
+              icon="mdi:account-outline"
+              style="font-size: 24px"
+            />
+            <p class="text-secondary fw-bold">{{ username }}</p>
+          </div>
           <div class="d-flex justify-content-center">
             <img
               :src="profilePicture"
@@ -52,7 +57,8 @@
             />
           </div>
           <div class="px-5 mx-3" style="font-size: smaller; color: #555">
-            Besar file maksimum 2Mb. Ekstensi file yang diperbolehkan: .JPG .JPEG .PNG
+            Besar file maksimum 2Mb. Ekstensi file yang diperbolehkan: .JPG
+            .JPEG .PNG
           </div>
           <div class="mt-3 d-flex justify-content-center">
             <button class="btn button-foto border">
@@ -71,10 +77,10 @@
               <div class="my-2">Nomor Telpon</div>
             </div>
             <div class="col">
-              <div class="my-2">{{users.first_name}}</div>
-              <div class="my-2">{{users.username}}</div>
-              <div class="my-2">{{users.email}}</div>
-              <div class="my-2">{{users.phone}}</div>
+              <div class="my-2">{{ users.first_name }}</div>
+              <div class="my-2">{{ users.username }}</div>
+              <div class="my-2">{{ users.email }}</div>
+              <div class="my-2">{{ users.phone }}</div>
             </div>
           </div>
         </div>
@@ -86,13 +92,13 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref, computed } from 'vue';
+import { ref, computed } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
-import defaultProfilePicture from '@/assets/default_profile_picture.jpg';
+import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
 
 const token = localStorage.getItem("token");
-const users = ref([""])
+const users = ref([""]);
 const username = localStorage.name ?? null;
 
 // Ensure users.value.picture is a string URL or get the correct property from the object
@@ -116,7 +122,7 @@ async function fetchUser() {
     console.log("Error fetching user:", error);
   }
 }
-fetchUser()
+fetchUser();
 </script>
 
 <style scoped>
