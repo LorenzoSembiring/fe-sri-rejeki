@@ -12,7 +12,7 @@
       <div class="d-flex align-items-center">
         <img
           class="m-2 rounded"
-          src="@/assets/default_profile_picture.jpg"
+          :src="parsedImage"
           alt=""
         />
       </div>
@@ -139,7 +139,10 @@ const props = defineProps({
   name: String,
   prices: Number,
   status: String,
+  picture: String
 });
+const parsedImage = import.meta.env.VITE_API_URL + props.picture;
+console.log(parsedImage)
 const price = ref(props.prices.toLocaleString());
 
 const modalId = ref(null);

@@ -36,6 +36,7 @@
         :name="product.name"
         :prices="product.price"
         :status="product.status"
+        :picture="product.picture"
       />
     </div>
   </div>
