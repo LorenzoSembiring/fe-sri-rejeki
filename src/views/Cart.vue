@@ -1,42 +1,33 @@
 <template>
   <Navbar class="fixed-top" />
-  <div class="row mt-5">
+  <div class="row mt-5 position-relative" style="height: 100vh;">
     <div class="col-7 pt-5">
       <div class="h1 ms-5 mb-3">Keranjang</div>
       <!-- container item -->
       <div class="ms-5">
         <!-- item -->
         <div v-for="cart in carts">
-          <CartItem
-            class="me-4 mb-3"
-            @update-price="updatePrice"
-            :id="cart.id"
-            :name="cart.name"
-            :quantity="cart.quantity"
-            :price="cart.price"
-            :size="cart.size"
-          />
+          <CartItem class="me-4 mb-3" @update-price="updatePrice" :id="cart.id" :name="cart.name"
+            :quantity="cart.quantity" :price="cart.price" :size="cart.size" />
         </div>
         <!-- <CartItem class="me-4" /> -->
       </div>
     </div>
     <div class="col pt-5 summary-col">
-      <div class="h2 ms-4">Ringkasan Pesanan</div>
-      <div class="d-flex row bg-white rounded mx-3 mt-4">
-        <div class="col-8 my-3">
-          <div class="summary-text fw-bold">Total Belanja</div>
-        </div>
-        <div class="col my-3">
-          <div class="summary-text fw-bold">{{ toIDR(sumTotalPrice) }}</div>
-        </div>
-        <div class="justify-content-center d-flex my-4">
-          <button
-            @click="toCheckout()"
-            :disabled="checkedCart.length === 0"
-            class="button-bayar py-2 px-5"
-          >
-            Pilih Pengiriman
-          </button>
+      <div class="sticky-top" style="top: 104px;">
+        <div class="h2 ms-4">Ringkasan Pesanan</div>
+        <div class="d-flex row bg-white rounded mx-3 mt-4">
+          <div class="col-8 my-3">
+            <div class="summary-text fw-bold">Total Belanja</div>
+          </div>
+          <div class="col my-3">
+            <div class="summary-text fw-bold">{{ toIDR(sumTotalPrice) }}</div>
+          </div>
+          <div class="justify-content-center d-flex my-4">
+            <button @click="toCheckout()" :disabled="checkedCart.length === 0" class="button-bayar py-2 px-5">
+              Pilih Pengiriman
+            </button>
+          </div>
         </div>
       </div>
     </div>
@@ -132,6 +123,7 @@ fetchCart();
   font-family: "Plus Jakarta Sans", sans-serif;
   margin-top: 1vh;
 }
+
 .button-bayar {
   border-radius: 8px;
   border-style: none;
