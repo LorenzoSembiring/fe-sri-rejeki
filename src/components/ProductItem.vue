@@ -38,7 +38,7 @@ const props = defineProps({
   picture: String
 });
 
-const parsedImage = import.meta.env.VITE_API_URL + "/uploads/" + props.picture;
+const parsedImage = import.meta.env.VITE_API_URL + props.picture;
 console.log(parsedImage)
 const isHovered = ref(false);
 
