@@ -9,30 +9,15 @@
           <div class="h5 mt-2 border-bottom pb-3">Informasi Produk</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Nama Produk</div>
-            <input type="text" class="form-control" id="name" v-model="name"/>
+            <div>{{ name }}</div>
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Kategori</div>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              id="category"
-              v-model="category_id"
-            >
-              <option selected disabled hidden>Pilih Kategori</option>
-              <option
-                v-for="category in categories"
-                :id="category.id"
-                :value="category.id"
-                :key="category.id"
-              >
-                {{ category.name }}
-              </option>
-            </select>
+            <div>{{ category }}</div>
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Deskripsi</div>
-            <textarea class="form-control" id="description" rows="4" v-model="description"></textarea>
+            <div v-html="description" ></div>
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Harga</div>
@@ -46,12 +31,11 @@
                 Rp
               </div>
               <input
-                v-model="price"
+                :placeholder="toIDR(price)"
+                disabled
                 class="rounded-end input-item input-price"
                 type="text"
                 id="price"
-                v-on:focus="setPriceFocus(true)"
-                v-on:blur="setPriceFocus(false)"
                 style="width: 7rem"
               />
             </div>
@@ -65,40 +49,15 @@
             <div class="row">
               <div
                 class="col-lg-2 col-md-3 col-sm-4"
-                v-for="(item, index) in uploads"
+                v-for="(item, index) in picture"
                 :key="index"
               >
-                <div v-if="item.file" @click="triggerPictureInput(index)">
+                <div>
                   <img
                     class="texture"
-                    :src="URL.createObjectURL(item.file)"
+                    :src="getFullImageUrl(item.path)"
                     alt="Selected Image"
                   />
-                </div>
-                <div v-else>
-                  <input
-                    type="file"
-                    :ref="(el) => (pictureInputs[index] = el)"
-                    @change="handleFileChange(index)"
-                    style="display: none"
-                  />
-                  <div
-                    class="rounded product-picture p-3 pt-4"
-                    @click="triggerPictureInput(index)"
-                  >
-                    <div class="d-flex justify-content-center">
-                      <Icon
-                        class="text-secondary d-flex justify-contents-center"
-                        icon="icon-park-outline:picture"
-                        style="font-size: 10vh"
-                      />
-                    </div>
-                    <div
-                      class="d-flex justify-content-center text-secondary fw-semibold mt-1"
-                    >
-                      Foto {{ index + 1 }}
-                    </div>
-                  </div>
                 </div>
               </div>
             </div>
@@ -110,52 +69,13 @@
           <div class="h5 mt-2 border-bottom pb-3">3D</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Objek 3D</div>
-            <button
-              v-if="selected3D"
-              class="button-putih py-2 px-3"
-              data-bs-toggle="modal"
-              data-bs-target="#D3Modal"
-            >
-              {{ selected3D }}
-            </button>
-            <button
-              v-else
-              class="button-putih py-2 px-3"
-              data-bs-toggle="modal"
-              data-bs-target="#D3Modal"
-            >
-              Pilih objek 3D
-            </button>
+            <View3D :height="250" :width="250" :mesh="meshData.path" :texture="meshData.texture" v-if="meshData" />
           </div>
           <div class="my-4 d-flex fw-semibold text-grey">
             <div class="col-4 p-0">Tekstur</div>
-            <div v-if="textureUrl" @click="triggerTextureInput">
-              <img class="texture" :src="textureUrl" alt="Selected Image" />
+            <div>
+              <img class="texture" :src="getFullImageUrl(texture)" alt="Selected Image" />
             </div>
-            <div
-              v-else
-              class="rounded p-3"
-              @click="triggerTextureInput"
-              style="border: 3px dashed #6e6c6b; cursor: pointer"
-            >
-              <div class="d-flex justify-content-center">
-                <Icon
-                  class="text-secondary d-flex justify-content-center"
-                  icon="icon-park-outline:picture"
-                  style="font-size: 7vh"
-                />
-              </div>
-              <div class="d-flex justify-content-center mt-1">
-                Pilih Tekstur
-              </div>
-            </div>
-            <input
-              type="file"
-              ref="textureInput"
-              @change="handleTextureChange"
-              style="display: none"
-              accept=".png,.jpg,.jpeg"
-            />
           </div>
         </div>
       </div>
@@ -163,54 +83,10 @@
         <div class="col">
           <div class="h5 mt-2 border-bottom pb-3">Ukuran</div>
           <div class="my-4 fw-semibold text-grey d-flex">
-            <div class="col-4 p-0">Ukuran dan Stok</div>
+            <div class="col-4 py-3">Ukuran dan Stok</div>
             <div class="col row">
-              <div class="d-flex">
-                <div
-                  :class="[
-                    { focused: isSizeInputFocused },
-                    'd-inline fw-semibold rounded-start border-end-0 bg-light section-price px-2',
-                  ]"
-                >
-                  Ukuran
-                </div>
-                <input
-                  class="rounded-end input-item input-price me-2"
-                  type="text"
-                  id="size"
-                  maxlength="3"
-                  v-model="size"
-                  v-on:focus="setSizeFocus(true)"
-                  v-on:blur="setSizeFocus(false)"
-                  style="width: 3rem"
-                />
-                <div
-                  :class="[
-                    { focused: isStockInputFocused },
-                    'd-inline fw-semibold rounded-start border-end-0 bg-light section-price px-2',
-                  ]"
-                >
-                  Stok
-                </div>
-                <input
-                  class="rounded-end input-item input-price"
-                  type="text"
-                  id="price"
-                  maxlength="4"
-                  v-model="stock"
-                  v-on:focus="setStockFocus(true)"
-                  v-on:blur="setStockFocus(false)"
-                  style="width: 4rem"
-                />
-                <button
-                  class="button-coklat py-2 px-4 mx-2"
-                  @click="addSize(size, stock)"
-                >
-                  Tambah
-                </button>
-              </div>
               <div class="row">
-                <div v-for="(size, key) in sizes" class="my-1 fs-5 col-3">
+                <div v-for="(size, key) in sizes" class="fs-5 col-3">
                   <div
                     class="d-inline-flex badge rounded border text-bg-light mt-2"
                   >
@@ -222,12 +98,7 @@
                         Stok: {{ size.stock }}
                       </div>
                     </div>
-                    <div
-                      class="cross d-inline-flex badge rounded-circle text-bg-light p-2 ms-2 my-1 border-light d-inline align-items-center fs-5 fw-semibold"
-                      @click="deleteSize(key)"
-                    >
-                      x
-                    </div>
+                    
                   </div>
                 </div>
               </div>
@@ -238,62 +109,8 @@
       <div class="col">
         <div class="d-flex justify-content-end my-5">
           <button class="button-putih py-2 px-5 mx-4" @click="back">
-            Batal
+            kembali
           </button>
-          <button class="button-coklat py-2 px-5" @click="submit">
-            Simpan
-          </button>
-        </div>
-      </div>
-    </div>
-    <!-- modal 3D -->
-    <div
-      class="modal fade"
-      id="D3Modal"
-      tabindex="-1"
-      aria-labelledby="exampleModalLabel"
-      aria-hidden="true"
-    >
-      <div class="modal-dialog">
-        <div class="modal-content">
-          <div class="modal-header">
-            <h1 class="modal-title fs-5" id="exampleModalLabel">
-              Pilih objek 3D
-            </h1>
-          </div>
-          <div class="modal-body">
-            <div
-              v-for="item in D3items"
-              :key="item.id"
-              class="d-inline-block border rounded mx-1"
-              :class="{ glow: selected3D === item.id }"
-              :id="item.id"
-              @click="select3D(item.id)"
-            >
-              <div class="m-2 justify-content-center d-flex">
-                <ModalView3D :width="200" :height="200"></ModalView3D>
-              </div>
-              <div class="my-2 text-center fw-semibold">3D Model Blangkon</div>
-            </div>
-          </div>
-          <div class="modal-footer">
-            <button
-              type="button"
-              class="btn button-putih border"
-              data-bs-dismiss="modal"
-              @click="selected3D = null"
-            >
-              Batal
-            </button>
-            <button
-              type="button"
-              class="btn button-coklat"
-              data-bs-dismiss="modal"
-              @click="select3D(item.id)"
-            >
-              Pilih
-            </button>
-          </div>
         </div>
       </div>
     </div>
@@ -302,7 +119,7 @@
 
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
-import ModalView3D from "@/components/ModalView3D.vue";
+import View3D from "@/components/View3D.vue";
 import router from "../../router/index.js";
 import { Icon } from "@iconify/vue";
 import { useRoute } from "vue-router";
@@ -314,155 +131,82 @@ const route = useRoute();
 const id = ref("")
 onMounted(() => {
   id.value = route.params.id;
-
+  fetchProduct();
+  fetchMesh()
 });
 
 const token = localStorage.getItem("token");
 
-const isPriceInputFocused = ref(false);
-
-const URL = window.URL
-const size = ref("");
-const stock = ref("");
 const sizes = ref([]);
-const jsonSize = JSON.stringify(sizes.value)
-const categories = ref([]);
-const pictureInputs = ref([]);
-const uploads = ref([
-  { file: null },
-  { file: null },
-  { file: null },
-  { file: null },
-  { file: null },
-]);
-const textureInput = ref(null);
-const textureUrl = ref(null);
-const selected3D = ref(null);
-const D3items = ref([
-  { id: 1, title: "Item 1" },
-  { id: 2, title: "Item 2" },
-  { id: 3, title: "Item 3" },
-]);
+const category = ref();
+const picture = ref([]);
 // submited data
+const fetchProductData = ref({})
 const name = ref("")
+const texture = ref("");
 const description = ref("")
 const price = ref("")
-const category_id = ref("")
+const mesh = ref("")
 
-async function submit() {
+const meshData = ref(null);
+
+async function fetchMesh() {
   try {
-    const formData = new FormData();
-    formData.append("name", name.value);
-    formData.append("description", description.value);
-    formData.append("price", price.value);
-    formData.append("category_id", category_id.value);
-    formData.append("size", JSON.stringify(sizes.value));
-    formData.append("mesh_id", selected3D.value);
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/mesh/get-product/" + id.value
+    );
+    meshData.value = response.data.data;
+  } catch (error) {
+    console.log("Error fetching mesh:", error);
+  }
+}
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/product/store/`,
-      formData,
+async function fetchProduct() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/product/admin-get/" + id.value,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-    if (response.status == 201) {
-      router.push("/admin/product");
-    } else {
-      // show modal
-    }
+    fetchProductData.value = response.data.data;
+
+    sizes.value = JSON.parse(fetchProductData.value.sizes)
+    picture.value = JSON.parse(fetchProductData.value.pictures)
+    name.value = fetchProductData.value.name
+    texture.value = fetchProductData.value.texture
+    price.value = fetchProductData.value.price
+    category.value = fetchProductData.value.category
+    mesh.value = fetchProductData.value.mesh
+    description.value = fetchProductData.value.description
+    console.log(picture.value);
+    console.log(fetchProductData.value);
   } catch (error) {
-    console.error("Error atoring product:", error);
+    console.log("Error fetching product:", error);
   }
+}
+
+const getFullImageUrl = (path) => {
+  return `${import.meta.env.VITE_API_URL}${path}`;
+};
+
+function toIDR(amount) {
+  amount = parseInt(amount, 10);
+  if (isNaN(amount)) {
+    return "Invalid input.";
+  }
+  let idr = amount.toLocaleString("id-ID");
+  // Add "Rp." prefix
+  idr = idr.replace(/(\d)(?=(\d{3})+(?!\d))/g, "$1.");
+  return idr;
 }
 
 function back() {
   router.push("/admin/product");
 }
 
-async function fetchCategory() {
-  console.log("fetchcategory");
-  try {
-    const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/category/get"
-    );
-    console.log(response.data.data.data);
-    categories.value = response.data.data.data;
-  } catch (error) {
-    console.log("Error fetching categories:", error);
-    console.log("error");
-  }
-}
-
-const triggerPictureInput = (index) => {
-  pictureInputs.value[index].click();
-};
-
-const triggerTextureInput = () => {
-  textureInput.value.click();
-};
-
-// Function to handle file selection
-const handleFileChange = (index) => {
-  const files = pictureInputs.value[index].files;
-  if (files.length) {
-    uploads.value[index].file = files[0];
-    // Ensure reactivity
-    uploads.value = [...uploads.value];
-    console.log(uploads)
-  }
-};
-
-const handleTextureChange = () => {
-  const selectedTexture = textureInput.value.files[0];
-  if (selectedTexture) {
-    // console.log(selectedTexture)
-    textureUrl.value = URL.createObjectURL(selectedTexture);
-  }
-};
-
-function deleteSize(key) {
-  sizes.value.splice(key, 1);
-}
-
-function addSize(size, stock) {
-  if (!size || !stock) {
-    alert("Ukuran dan stok tidak boleh kosong");
-    return;
-  }
-  const sizeExists = sizes.value.some((item) => item.size === size);
-  if (sizeExists) {
-    alert("Ukuran telah ada");
-  } else {
-    sizes.value.push({ size: size, stock: stock });
-  }
-}
-
-const setPriceFocus = (value) => {
-  isPriceInputFocused.value = value;
-};
-const isSizeInputFocused = ref(false);
-
-const setSizeFocus = (value) => {
-  isSizeInputFocused.value = value;
-};
-const isStockInputFocused = ref(false);
-
-const setStockFocus = (value) => {
-  isStockInputFocused.value = value;
-};
-
-function select3D(id) {
-  if (selected3D.value === id) {
-    selected3D.value = null;
-  } else {
-    selected3D.value = id;
-  }
-}
-
-fetchCategory();
 </script>
 
 <style scoped>

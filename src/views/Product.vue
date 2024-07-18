@@ -9,13 +9,16 @@
         class="col-6 left-col"
         style="height: calc(100vh - 60px); margin-top: 10px; overflow-y: auto"
       >
-      <div class="d-flex my-3" style="font-family: sans-serif; font-size: 14px" >
-        <a class="text-secondary" href="/">Beranda</a>
-        <p class="mx-2 text-secondary"><Icon icon="ep:arrow-right" /></p>
-        <a class="text-secondary" href="/shop">{{ products.category }}</a>
-        <p class="mx-2 text-secondary"><Icon icon="ep:arrow-right" /></p>
-        <p class="fw-semibold">{{ products.name }}</p>
-      </div>
+        <div
+          class="d-flex my-3"
+          style="font-family: sans-serif; font-size: 14px"
+        >
+          <a class="text-secondary" href="/">Beranda</a>
+          <p class="mx-2 text-secondary"><Icon icon="ep:arrow-right" /></p>
+          <a class="text-secondary" href="/shop">{{ products.category }}</a>
+          <p class="mx-2 text-secondary"><Icon icon="ep:arrow-right" /></p>
+          <p class="fw-semibold">{{ products.name }}</p>
+        </div>
         <!-- 360 button -->
         <!-- carousel -->
         <div id="carouselExampleIndicators" class="carousel slide z-0">
@@ -35,47 +38,24 @@
           </div>
           <div class="carousel-indicators">
             <button
+              v-for="(item, index) in pictures"
+              :key="index"
               type="button"
               data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="0"
-              class="active"
-              aria-current="true"
-              aria-label="Slide 1"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="1"
-              aria-label="Slide 2"
-            ></button>
-            <button
-              type="button"
-              data-bs-target="#carouselExampleIndicators"
-              data-bs-slide-to="2"
-              aria-label="Slide 3"
+              :data-bs-slide-to="index"
+              :class="{ active: index === 0 }"
+              :aria-current="index === 0 ? 'true' : undefined"
+              :aria-label="`Slide ${index + 1}`"
             ></button>
           </div>
           <div class="carousel-inner">
-            <div class="carousel-item active">
-              <img
-                src="@/assets/default_profile_picture.jpg"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="@/assets/default_profile_picture.jpg"
-                class="d-block w-100"
-                alt="..."
-              />
-            </div>
-            <div class="carousel-item">
-              <img
-                src="@/assets/default_profile_picture.jpg"
-                class="d-block w-100"
-                alt="..."
-              />
+            <div
+              class="carousel-item"
+              :class="{ active: index === 0 }"
+              v-for="(item, index) in pictures"
+              :key="index"
+            >
+              <img :src="getFullImageUrl(item.path)" class="d-block w-100 product-picture" :alt="item.alt" />
             </div>
           </div>
           <button
@@ -105,8 +85,7 @@
           >
             {{ products.name }}
           </div>
-          <div v-html="products.description">
-          </div>
+          <div v-html="products.description"></div>
         </div>
       </div>
       <!-- right col -->
@@ -140,7 +119,10 @@
             </div>
           </div>
         </div>
-        <div v-if="selectedStock.stock === 0" class="py-2 border-bottom border-dark-subtle">
+        <div
+          v-if="selectedStock.stock === 0"
+          class="py-2 border-bottom border-dark-subtle"
+        >
           <div class="text-danger fw-semibold my-1">HABIS</div>
           <div class="text-danger fw-semibold my-1">0 Produk tersisa</div>
         </div>
@@ -152,9 +134,13 @@
             {{ selectedStock.stock }} Produk tersisa
           </div>
         </div>
-        <div @click="openModal()" class="my-4 d-inline-block" style="cursor: pointer" >
+        <div
+          @click="openModal()"
+          class="my-4 d-inline-block"
+          style="cursor: pointer"
+        >
           <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
-          <span class="text-decoration-none text-black" >Panduan Ukuran</span>
+          <span class="text-decoration-none text-black">Panduan Ukuran</span>
         </div>
         <div class="d-flex">
           <p class="fw-semibold px-1 pt-2 mb-0">Jumlah</p>
@@ -197,7 +183,7 @@
         </div>
         <div class="modal-body">
           <div class="d-flex justify-content-center">
-            <img src="@/assets/tabel-ukuran.png" alt="">
+            <img src="@/assets/tabel-ukuran.png" alt="" />
           </div>
         </div>
         <div class="modal-footer">
@@ -226,6 +212,7 @@ const route = useRoute();
 const stocks = ref([]);
 const selectedStock = ref(0);
 const products = ref([]);
+const pictures = ref([]);
 const inputValue = ref(1);
 
 const selectStock = (stock) => {
@@ -239,6 +226,7 @@ onMounted(() => {
   id.value = route.params.id;
   fetchStock();
   fetchProduct();
+  fetchPicture();
 });
 
 function routeToView3D() {
@@ -275,6 +263,21 @@ async function fetchProduct() {
     console.log("Error fetching product:", error);
   }
 }
+async function fetchPicture() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/product/picture/get/" + id.value
+    );
+    pictures.value = response.data.data;
+    console.log(pictures.value);
+  } catch (error) {
+    console.log("Error fetching product:", error);
+  }
+}
+
+const getFullImageUrl = (path) => {
+  return `${import.meta.env.VITE_API_URL}${path}`;
+};
 
 async function fetchStock() {
   try {
@@ -315,7 +318,7 @@ async function addToCart(size, quantity) {
 }
 
 const openModal = () => {
-  const modal = new bootstrap.Modal(document.getElementById('Modal'));
+  const modal = new bootstrap.Modal(document.getElementById("Modal"));
   modal.show();
 };
 </script>
@@ -362,5 +365,10 @@ input:focus {
   background-color: #b44c1b;
   color: rgb(255, 255, 255);
   font-weight: 600;
+}
+.product-picture{
+  width: 100px;
+  height: 600px;
+  object-fit: cover;
 }
 </style>
