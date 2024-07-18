@@ -1,6 +1,6 @@
 <template>
   <div
-    :class="['col-2', 'd-inline-block', 'content', { border: isHovered }]"
+    :class="['col-2', 'd-inline-block', 'content', 'border', { 'border-white': !isHovered }]"
     @mouseover="isHovered = true"
     @mouseleave="isHovered = false"
   >

@@ -4,7 +4,8 @@
         <div class="text-container px-5 py-3">
             <div class="text-tag">Koleksi Kami</div>
         </div>
-            <product-item class="m-2"
+        <div class="d-flex">
+            <product-item class="m-2 card-product"
                 v-for="product in products"
                 :id="product.id"
                 :category="product.category"
@@ -13,6 +14,7 @@
                 :price="product.price"
                 :picture="product.picture"
                 />
+        </div>
     </body>
 </template>
 
@@ -48,5 +50,8 @@ onMounted(
     font-size: 2.5rem;
     font-family: "Plus Jakarta Sans", sans-serif;
     font-weight: 600;
+}
+.card-product{
+    height: 322px;
 }
 </style>
