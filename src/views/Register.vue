@@ -93,6 +93,7 @@
 import { ref, defineComponent, reactive, onMounted } from "vue";
 import axios from "axios";
 import { Icon } from "@iconify/vue";
+import router from "@/router";
 
 export default defineComponent({
   components: {
@@ -128,6 +129,15 @@ export default defineComponent({
           }
         );
         console.log(response);
+        if (response.status == 200) {
+          const token = JSON.stringify(response.data.data.token.token);
+          const strippedToken = token.slice(1, -1);
+
+          localStorage.setItem("token", strippedToken);
+          localStorage.setItem("name", response.data.data.user.username);
+          
+          router.push("/")
+        }
       } catch (error) {
         console.error(error);
       }
