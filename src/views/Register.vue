@@ -34,6 +34,12 @@
                   type="text"
                   placeholder="Nama Belakang"
                 /><br />
+                <input
+                  class="form-control"
+                  v-model="formData.phone"
+                  type="tel"
+                  placeholder="Nomor Telepon"
+                /><br />
                 <div class="input-group mb-3">
                   <input
                     required
@@ -97,6 +103,7 @@ export default defineComponent({
       email: "",
       nama_depan: "",
       nama_belakang: "",
+      phone: "",
       password: "",
       ulangi_password: ""
     });
@@ -117,6 +124,7 @@ export default defineComponent({
             last_name: formData.nama_belakang,
             password: formData.password,
             username: formData.nama_depan + formData.nama_belakang,
+            phone: formData.phone
           }
         );
         console.log(response);
