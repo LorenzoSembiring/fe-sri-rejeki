@@ -9,11 +9,21 @@
 import * as THREE from "three";
 import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
 import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { ref, onMounted, onBeforeUnmount } from "vue";
+import { ref, computed, onMounted, onBeforeUnmount } from "vue";
 
 const props = defineProps({
   width: Number,
   height: Number,
+  mesh: String,
+  texture: String
+});
+
+
+const parsedTexture = computed(() => {
+  return import.meta.env.VITE_API_URL + props.texture
+});
+const parsedMesh = computed(() => {
+  return import.meta.env.VITE_API_URL + props.mesh;
 });
 
 const container = ref(null);
@@ -46,13 +56,13 @@ const init = () => {
 
   // Initialize texture
   const texture = new THREE.TextureLoader().load(
-    "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIceEv7Ybvt_pN4AcFhwxV3-_EcaMQ14WKkxxDEhor9Q&s"
+    parsedTexture.value
   );
 
   // Load GLTF model
   const loader = new GLTFLoader();
   loader.load(
-    import.meta.env.VITE_API_URL + "/uploads/mesh/coneuv.glb", // Update with correct path
+    parsedMesh.value,
     (gltf) => {
       const phongMaterial = new THREE.MeshBasicMaterial({ map: texture });
       gltf.scene.traverse((child) => {
