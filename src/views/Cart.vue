@@ -1,6 +1,6 @@
 <template>
   <Navbar class="fixed-top" />
-  <div class="row mt-5 position-relative" style="height: 100vh;">
+  <div class="row mt-5">
     <div class="col-7 pt-5">
       <div class="h1 ms-5 mb-3">Keranjang</div>
       <!-- container item -->
