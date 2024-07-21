@@ -13,7 +13,7 @@
     <div class="col-2">
       <img
         class="m-2 rounded"
-        src="@/assets/default_profile_picture.jpg"
+        :src=parsedImage
         alt=""
       />
     </div>
@@ -46,13 +46,16 @@ const props = defineProps({
   quantity: Number,
   price: Number,
   checked: Boolean,
+  picture: String
 });
+const parsedImage = import.meta.env.VITE_API_URL + props.picture;
 
 const token = localStorage.getItem("token");
 
 const { quantity } = props;
 const quantityRef = toRef(quantity);
 const isChecked = ref(false);
+const picture = ref("")
 const emit = defineEmits(['update-price']);
 
 const increment = () => {

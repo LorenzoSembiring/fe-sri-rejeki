@@ -8,7 +8,7 @@
         <!-- item -->
         <div v-for="cart in carts">
           <CartItem class="me-4 mb-3" @update-price="updatePrice" :id="cart.id" :name="cart.name"
-            :quantity="cart.quantity" :price="cart.price" :size="cart.size" />
+            :quantity="cart.quantity" :price="cart.price" :size="cart.size" :picture="cart.path"/>
         </div>
         <!-- <CartItem class="me-4" /> -->
       </div>
@@ -54,7 +54,7 @@ const updatePrice = async (id, isChecked, quantity) => {
     const productID = await fetchProductID(item.id);
 
     if (!checkedCart.value.some((cartItem) => cartItem.id === id)) {
-      checkedCart.value.push({ id, price: item.price, quantity, name: item.name, size: item.size, product: productID});
+      checkedCart.value.push({ id, price: item.price, quantity, name: item.name, size: item.size, product: productID, picture: item.path});
     } else {
       // Update quantity if item is already present
       const cartItem = checkedCart.value.find((cartItem) => cartItem.id === id);
