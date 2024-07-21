@@ -37,7 +37,7 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import CartItem from "@/components/CartItem.vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
 
@@ -46,14 +46,15 @@ const checkedCart = ref([]);
 const total = ref();
 
 const token = localStorage.getItem("token");
-
-const updatePrice = (id, isChecked, quantity) => {
+const updatePrice = async (id, isChecked, quantity) => {
   const item = carts.value.find((item) => item.id === id);
 
   if (isChecked) {
     // Add to checkedCart if isChecked is true and not already present
+    const productID = await fetchProductID(item.id);
+
     if (!checkedCart.value.some((cartItem) => cartItem.id === id)) {
-      checkedCart.value.push({ id, price: item.price, quantity, name: item.name, size: item.size});
+      checkedCart.value.push({ id, price: item.price, quantity, name: item.name, size: item.size, product: productID});
     } else {
       // Update quantity if item is already present
       const cartItem = checkedCart.value.find((cartItem) => cartItem.id === id);
@@ -106,7 +107,18 @@ const fetchCart = async () => {
   }
 };
 
-// Fetch posts when the component is mounted
+const fetchProductID = async (id) => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/cart/get-product-id/" + id,
+    );
+    console.log(response.data)
+    return response.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
+};
+
 fetchCart();
 </script>
 
