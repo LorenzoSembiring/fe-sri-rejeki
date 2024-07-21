@@ -63,7 +63,8 @@
                     {{ n.label }} • {{ n.name }}
                   </div>
                   <div>
-                    {{ n.jalan }}, {{ n.kelurahan }}, {{ n.kecamatan }}, {{ n.kota }}, {{n.provinsi}}, {{n.phone}}
+                    {{ n.jalan }}, {{ n.kelurahan }}, {{ n.kecamatan }},
+                    {{ n.kota }}, {{ n.provinsi }}, {{ n.phone }}
                   </div>
                 </div>
               </div>
@@ -94,7 +95,7 @@
   </div>
   <!-- modal -->
   <div class="modal" :id="`Modal`" tabindex="-1">
-    <div class="modal-dialog">
+    <div class="modal-dialog modal-lg">
       <div class="modal-content">
         <div class="modal-header">
           <h5 class="modal-title">Tambah Alamat</h5>
@@ -106,59 +107,93 @@
             @click="closeModal()"
           ></button>
         </div>
-        <div class="modal-body">
-          <div class="my-4 fw-semibold text-grey d-flex">
-            <div class="col-4 p-0">Provinsi</div>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              v-model="selectedProvinsi"
-            >
-              <option v-for="n in provinsi" :value="n.id" :key="n.id">
-                {{ n.name }}
-              </option>
-            </select>
+        <form class="modal-body" @submit.prevent="submit()" id="form_address" >
+          <div class="row mb-2">
+            <div class="col-6 fw-semibold text-grey">
+              <label class="form-label">Label</label>
+              <input required class="form-control" type="text" v-model="label" />
+            </div>
+            <div class="col-6 fw-semibold text-grey">
+              <label class="form-label">Nama</label>
+              <input required class="form-control" type="text" v-model="name" />
+            </div>
           </div>
-          <div class="my-4 fw-semibold text-grey d-flex">
-            <div class="col-4 p-0">Kabupaten / Kota</div>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              v-model="selectedKota"
-              :disabled="!selectedProvinsi"
-            >
-              <option v-for="n in kota" :value="n.id" :key="n.id">
-                {{ n.name }}
-              </option>
-            </select>
+          <div class="row">
+            <div class="fw-semibold text-grey col-6">
+              <label class="form-label">Provinsi</label>
+              <select
+                required
+                class="form-select"
+                aria-label="Default select example"
+                v-model="selectedProvinsi"
+              >
+                <option v-for="n in provinsi" :value="n.id" :key="n.id">
+                  {{ n.name }}
+                </option>
+              </select>
+            </div>
+            <div class="fw-semibold text-grey col-6">
+              <label class="form-label">Kabupaten / Kota</label>
+              <select
+                required
+                class="form-select"
+                aria-label="Default select example"
+                v-model="selectedKota"
+                :disabled="!selectedProvinsi"
+              >
+                <option v-for="n in kota" :value="n.id" :key="n.id">
+                  {{ n.name }}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="my-4 fw-semibold text-grey d-flex">
-            <div class="col-4 p-0">Kecamatan</div>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              v-model="selectedKecamatan"
-              :disabled="!selectedKota"
-            >
-              <option v-for="n in kecamatan" :value="n.id" :key="n.id">
-                {{ n.name }}
-              </option>
-            </select>
+          <div class="row">
+            <div class="my-4 fw-semibold text-grey col-6">
+              <label class="form-label">Kecamatan</label>
+              <select
+                required
+                class="form-select"
+                aria-label="Default select example"
+                v-model="selectedKecamatan"
+                :disabled="!selectedKota"
+              >
+                <option v-for="n in kecamatan" :value="n.id" :key="n.id">
+                  {{ n.name }}
+                </option>
+              </select>
+            </div>
+            <div class="my-4 fw-semibold text-grey col-6">
+              <label class="form-label">Kelurahan</label>
+              <select
+                required
+                class="form-select"
+                aria-label="Default select example"
+                v-model="selectedKelurahan"
+                :disabled="!selectedKecamatan"
+              >
+                <option v-for="n in kelurahan" :value="n.id" :key="n.id">
+                  {{ n.name }}
+                </option>
+              </select>
+            </div>
           </div>
-          <div class="my-4 fw-semibold text-grey d-flex">
-            <div class="col-4 p-0">Kelurahan</div>
-            <select
-              class="form-select"
-              aria-label="Default select example"
-              v-model="selectedKelurahan"
-              :disabled="!selectedKecamatan"
-            >
-              <option v-for="n in kelurahan" :value="n.id" :key="n.id">
-                {{ n.name }}
-              </option>
-            </select>
+          <div class="row mb-2">
+            <div class="col-6 fw-semibold text-grey">
+              <label class="form-label">Kode Pos</label>
+              <input required class="form-control" type="number" pattern="[0-9]{5}" v-model="kodePos"/>
+            </div>
+            <div class="col-6 fw-semibold text-grey">
+              <label class="form-label">Telepon</label>
+              <input required class="form-control" type="tel" v-model="phone" />
+            </div>
           </div>
-        </div>
+          <div class="div row">
+            <div class="col-12">
+              <label class="form-label">Alamat lengkap</label>
+              <textarea required class="form-control" v-model="jalan" rows="2"></textarea>
+            </div>
+          </div>
+        </form>
         <div class="modal-footer">
           <button
             type="button"
@@ -168,7 +203,7 @@
           >
             Tutup
           </button>
-          <button type="button" class="btn button-coklat">Simpan</button>
+          <button form="form_address" type="submit" class="btn button-coklat">Simpan</button>
         </div>
       </div>
     </div>
@@ -185,36 +220,39 @@ import axios from "axios";
 const token = localStorage.getItem("token");
 const users = ref([""]);
 const username = localStorage.name ?? null;
-var address = ref([""]);
+var address = ref([]);
 
 const name = ref("");
-const phone = ref("");
 const jalan = ref("");
+const label = ref("");
+const phone = ref("");
 const kelurahan = ref("");
 const kecamatan = ref("");
 const kota = ref("");
 const provinsi = ref("");
 const kodePos = ref("");
-const selectedName = ref("");
-const selectedPhone = ref("");
-const selectedJalan = ref("");
 const selectedKelurahan = ref("");
 const selectedKecamatan = ref("");
 const selectedKota = ref("");
 const selectedProvinsi = ref("");
-const selectedKodePos = ref("");
 
-onMounted( () => {
+const selectedNames = ref({
+  provinsi: '',
+  kota: '',
+  kecamatan: '',
+  kelurahan: ''
+});
+
+onMounted(() => {
   fetchAddress();
-  }
-)
+});
 
 async function changeSelected(id) {
   try {
     const response = await axios.put(
       import.meta.env.VITE_API_URL + "/api/address/update-selected/" + id,
-      {}
-      ,{
+      {},
+      {
         headers: {
           Authorization: `Bearer ${token}`,
         },
@@ -225,6 +263,36 @@ async function changeSelected(id) {
     }
   } catch (error) {
     console.log("Error fetching user:", error);
+  }
+}
+
+async function submit() {
+  try {
+    const formData = new FormData();
+    formData.append("jalan", jalan.value);
+    formData.append("kota", selectedNames.value.kota);
+    formData.append("provinsi", selectedNames.value.provinsi);
+    formData.append("kode_pos", kodePos.value);
+    formData.append("kecamatan", selectedNames.value.kecamatan);
+    formData.append("kelurahan", selectedNames.value.kelurahan);
+    formData.append("label", label.value);
+    formData.append("name", name.value);
+    formData.append("phone", phone.value);
+    const response = await axios.post(
+      import.meta.env.VITE_API_URL + "/api/address/store",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response.data);
+    if (response.status == 201) {
+      location.reload()
+    }
+  } catch (error) {
+    console.log("Error Fetch Shipping");
   }
 }
 
@@ -289,6 +357,9 @@ async function fetchKelurahan() {
 }
 
 watch(selectedProvinsi, (newValue) => {
+  const selected = provinsi.value.find(p => p.id === newValue);
+  selectedNames.value.provinsi = selected ? selected.name : '';
+  
   if (newValue) {
     fetchCity();
   } else {
@@ -302,6 +373,9 @@ watch(selectedProvinsi, (newValue) => {
 });
 
 watch(selectedKota, (newValue) => {
+  const selected = kota.value.find(k => k.id === newValue);
+  selectedNames.value.kota = selected ? selected.name : '';
+  
   if (newValue) {
     fetchKecamatan();
   } else {
@@ -313,12 +387,20 @@ watch(selectedKota, (newValue) => {
 });
 
 watch(selectedKecamatan, (newValue) => {
+  const selected = kecamatan.value.find(k => k.id === newValue);
+  selectedNames.value.kecamatan = selected ? selected.name : '';
+  
   if (newValue) {
     fetchKelurahan();
   } else {
     selectedKelurahan.value = "";
     kelurahan.value = [];
   }
+});
+
+watch(selectedKelurahan, (newValue) => {
+  const selected = kelurahan.value.find(k => k.id === newValue);
+  selectedNames.value.kelurahan = selected ? selected.name : '';
 });
 function closeModal() {
   // isModalOpen.value = false;
@@ -334,7 +416,6 @@ const addAddress = () => {
   const modal = new bootstrap.Modal(document.getElementById("Modal"));
   modal.show();
 };
-
 
 fetchProvince();
 </script>
@@ -393,5 +474,15 @@ fetchProvince();
   border: 1px solid #ccc;
   color: rgb(53, 53, 53);
   font-weight: 600;
+}
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+/* Firefox */
+input[type=number] {
+  -moz-appearance: textfield;
 }
 </style>
