@@ -24,20 +24,26 @@
           {{ toIDR(price) }}
         </div>
         <div class="ms-3">Ukuran: {{ size }}</div>
-        <div class="ms-3 mt-1 border rounded" style="width: fit-content">
-          <button class="button-counter" @click="decrement()">-</button>
-          <input type="number" class="input-counter" v-model="quantityRef" />
-          <button class="button-counter" @click="increment()">+</button>
+        <div class="d-flex my-2">
+          <div class="ms-3 mt-1 border rounded" style="width: fit-content">
+            <button class="button-counter" v-if="quantityRef > 1" @click="decrement()">-</button>
+            <button class="button-counter" style="cursor: not-allowed;" v-else disabled>-</button>
+            <input type="number" class="input-counter" v-model="quantityRef" />
+            <button class="button-counter" @click="increment()">+</button>
+          </div>
+          <div class="ms-5">
+            <Icon icon="ph:trash" class="text-danger fs-4 mt-1" style="cursor: pointer;" @click="deleteCart(props.id)"/>
+          </div>
         </div>
       </div>
 
-      <div></div>
     </div>
   </div>
 </template>
 <script setup>
 import { nextTick, toRef, ref } from "vue";
 import axios from "axios";
+import { Icon } from "@iconify/vue";
 
 const props = defineProps({
   id: Number,
@@ -71,6 +77,26 @@ const decrement = () => {
     updateQuantity();
   });
 };
+
+async function deleteCart(id) {
+  try {
+    const response = await axios.delete(
+      `${import.meta.env.VITE_API_URL}/api/cart/delete/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        }
+      }
+    );
+    if (response.status == 200) {
+      location.reload()
+    } else {
+      
+    }
+  } catch (error) {
+    
+  }
+}
 
 const emitChange = () => {
   emit('update-price', props.id, isChecked.value, quantityRef);
