@@ -1,92 +1,31 @@
 <template>
-  <div ref="container"></div>
+  <View3D :height="500" :width="1000" :mesh="meshData.path" :texture="meshData.texture" v-if="meshData" />
 </template>
 
 <script setup>
-import * as THREE from "three";
-import { GLTFLoader } from "three/examples/jsm/loaders/GLTFLoader.js";
-import { OrbitControls } from "three/examples/jsm/controls/OrbitControls.js";
-import { ref, onMounted } from "vue";
+import View3D from "@/components/View3D.vue";
+import { ref, onMounted, watch } from "vue";
+import axios from "axios";
+import { useRoute } from "vue-router";
 
-const container = ref(null);
-let scene, camera, renderer, controls;
+const route = useRoute();
 
-onMounted(() => {
-  init();
-  animate();
+const id = ref("");
+const meshData = ref(null);
+
+async function fetchMesh() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/mesh/get-product/" + id.value
+    );
+    meshData.value = response.data.data;
+  } catch (error) {
+    console.log("Error fetching mesh:", error);
+  }
+}
+
+onMounted(async () => {
+  id.value = route.params.id;
+  await fetchMesh();
 });
-
-function init() {
-  // Scene setup
-  scene = new THREE.Scene();
-  scene.background = new THREE.Color(0xebebeb);
-
-  // Camera setup
-  camera = new THREE.PerspectiveCamera(
-    75,
-    window.innerWidth / window.innerHeight,
-    0.1,
-    1000
-  );
-
-  camera.position.x = 2.7488196461488967
-  camera.position.y = 1.9438984306648681
-  camera.position.z = 4.76080344523951
-
-  // Renderer setup
-  renderer = new THREE.WebGLRenderer();
-  renderer.setSize(window.innerWidth, window.innerHeight);
-  container.value.appendChild(renderer.domElement);
-
-  // Orbit controls setup
-  controls = new OrbitControls(camera, renderer.domElement);
-  controls.maxDistance = 7
-  controls.minDistance = 2.5
-
-  // Initialize texture
-  const texture = new THREE.TextureLoader().load('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcRIceEv7Ybvt_pN4AcFhwxV3-_EcaMQ14WKkxxDEhor9Q&s')
-
-  // Load GLTF model
-  const loader = new GLTFLoader();
-  loader.load(
-    import.meta.env.VITE_API_URL + "/uploads/mesh/coneuv.glb", // Update with correct path
-    function (gltf) {
-      const phongMaterial = new THREE.MeshBasicMaterial( { map: texture } );
-      gltf.scene.traverse((child) => {
-        if (child.isMesh) {
-          child.material = phongMaterial;
-        }
-      });
-      scene.add(gltf.scene);
-    },
-    function (xhr) {
-      console.log((xhr.loaded / xhr.total) * 100 + "% loaded");
-    },
-    function (error) {
-      console.log(error);
-    }
-  );
-
-  // Add lights to the scene
-  const ambientLight = new THREE.AmbientLight(0xffffff, 0.5);
-  scene.add(ambientLight);
-
-  const directionalLight1 = new THREE.DirectionalLight(0xffffff, 1);
-  directionalLight1.position.set(1, 0, 0);
-  scene.add(directionalLight1);
-
-  const directionalLight2 = new THREE.DirectionalLight(0xffffff, 1);
-  directionalLight2.position.set(0, 1, 0);
-  scene.add(directionalLight2);
-
-  const directionalLight3 = new THREE.DirectionalLight(0xffffff, 1);
-  directionalLight3.position.set(0, 0, 1);
-  scene.add(directionalLight3);
-}
-
-function animate() {
-  requestAnimationFrame(animate);
-  controls.update();
-  renderer.render(scene, camera);
-}
 </script>
