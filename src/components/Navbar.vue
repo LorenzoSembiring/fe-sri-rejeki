@@ -32,7 +32,7 @@
               <a class="nav-link" href="/shop">Shop</a>
             </li>
             <li class="nav-item col">
-              <a class="nav-link" href="/about">About</a>
+              <a class="nav-link" href="#about">About</a>
             </li>
           </ul>
         </div>
