@@ -4,16 +4,17 @@
         <div class="text-container px-5 py-3">
             <div class="text-tag">Koleksi Kami</div>
         </div>
-        <div class="d-flex">
-            <product-item class="m-2 card-product"
-                v-for="product in products"
-                :id="product.id"
-                :category="product.category"
-                :categoryId="product.category_id"
-                :name="product.name"
-                :price="product.price"
-                :picture="product.picture"
-                />
+        <div class="d-flex row mx-0">
+
+                <product-item class="m-2 card-product"
+                    v-for="product in products"
+                    :id="product.id"
+                    :category="product.category"
+                    :categoryId="product.category_id"
+                    :name="product.name"
+                    :price="product.price"
+                    :picture="product.picture"
+                    />
         </div>
     </body>
 </template>
@@ -33,7 +34,7 @@ const fetchProduct = async () => {
     } catch (error) {
         console.error('Error fetching products:', error);
     }
-    };
+};
 
 // Fetch posts when the component is mounted
 onMounted(
