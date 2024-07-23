@@ -278,16 +278,15 @@
           <div class="modal-body">
             <div
               v-for="item in D3items"
-              :key="item.id"
               class="d-inline-block border rounded mx-1"
               :class="{ glow: selected3D === item.id }"
               :id="item.id"
               @click="select3D(item.id)"
             >
               <div class="m-2 justify-content-center d-flex">
-                <ModalView3D :width="200" :height="200"></ModalView3D>
+                <ModalView3D :width="200" :height="200" :mesh="item.path" :texture="texture"></ModalView3D>
               </div>
-              <div class="my-2 text-center fw-semibold">3D Model Blangkon</div>
+              <div class="my-2 text-center fw-semibold">{{ item.name }}</div>
             </div>
           </div>
           <div class="modal-footer">
@@ -319,7 +318,7 @@ import LayoutDefault from "@/components/LayoutDefault.vue";
 import ModalView3D from "@/components/ModalView3D.vue";
 import router from "../../router/index.js";
 import { Icon } from "@iconify/vue";
-import { ref } from "vue";
+import { ref, computed } from "vue";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
@@ -343,11 +342,8 @@ const uploads = ref([
 const textureInput = ref(null);
 const textureUrl = ref(null);
 const selected3D = ref(null);
-const D3items = ref([
-  { id: 1, title: "Item 1" },
-  { id: 2, title: "Item 2" },
-  { id: 3, title: "Item 3" },
-]);
+const D3items = ref([]);
+const texture = "/uploads/texture/checker-default.png"
 // submited data
 const name = ref("");
 const description = ref("");
@@ -407,6 +403,11 @@ async function submitPictures(productId) {
           }
         );
         console.log(response.data);
+        console.log(i)
+        console.log(smallestIndexWithoutFile.value)
+        if((i + 1) == smallestIndexWithoutFile.value && response.status == 201) {
+          router.push("/admin/product")
+        }
       }
     }
   } catch (error) {
@@ -431,6 +432,25 @@ async function fetchCategory() {
     console.log("error");
   }
 }
+async function fetchMesh() {
+  try {
+      const response = await axios.get(
+        import.meta.env.VITE_API_URL + "/api/mesh/index",
+        {
+          headers: {
+            Authorization: `Bearer ${token}`,
+          },
+        }
+      );
+      D3items.value = response.data.data;
+    } catch (error) {
+      console.error("Error fetching mesh:", error);
+    }
+}
+
+const smallestIndexWithoutFile = computed(() => {
+  return uploads.value.findIndex(item => !item.preview);
+});
 
 const triggerPictureInput = (index) => {
   pictureInputs.value[index].click();
@@ -507,6 +527,7 @@ function select3D(id) {
 }
 
 fetchCategory();
+fetchMesh();
 </script>
 
 <style scoped>
