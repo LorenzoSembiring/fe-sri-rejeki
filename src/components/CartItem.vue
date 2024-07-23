@@ -10,7 +10,7 @@
         @change="emitChange"
       />
     </div>
-    <div class="col-2">
+    <div class="col-2 align-items-center d-flex">
       <img
         class="m-2 rounded"
         :src=parsedImage
