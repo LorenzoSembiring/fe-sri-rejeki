@@ -453,7 +453,10 @@ const smallestIndexWithoutFile = computed(() => {
 });
 
 const triggerPictureInput = (index) => {
-  pictureInputs.value[index].click();
+  if (index <= smallestIndexWithoutFile.value) {
+    pictureInputs.value[index].click();
+    console.log(smallestIndexWithoutFile)
+  }
 };
 
 const triggerTextureInput = () => {
