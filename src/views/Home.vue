@@ -3,7 +3,7 @@
     <navbar />
     <div class="tagline pt-5 pb-5 ps-5">
       <div class="row m-0">
-        <div class="pe-5 text-end col" style="padding-top: 20vh;">
+        <div class="pe-5 text-end col" style="padding-top: 10vh;">
           <div class="text">Warisan Budaya</div>
           <div class="text">Pesona Tradisi</div>
           <a class="btn button-belanja p-3 mt-4 mb-5" href="/shop"
@@ -49,10 +49,10 @@ export default {
 
 <style>
 .tagline {
-  background-image: url("@/assets/hero3.jpg");
+  background-image: url("@/assets/hero4.png");
   background-size: cover;
   width:100%;
-  height:100vh;
+  height:70vh;
 }
 .tagline .text {
   color: white;
