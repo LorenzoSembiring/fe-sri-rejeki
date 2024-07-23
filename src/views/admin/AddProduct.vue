@@ -420,12 +420,10 @@ function back() {
 }
 
 async function fetchCategory() {
-  console.log("fetchcategory");
   try {
     const response = await axios.get(
       import.meta.env.VITE_API_URL + "/api/category/get"
     );
-    console.log(response.data.data.data);
     categories.value = response.data.data.data;
   } catch (error) {
     console.log("Error fetching categories:", error);
