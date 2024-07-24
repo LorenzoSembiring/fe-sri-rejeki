@@ -8,6 +8,7 @@ import Shop from "@/views/Shop.vue";
 import ProfileOld from "@/views/ProfileOld.vue";
 import Profile from "@/views/Profile.vue";
 import ProfileAddress from "@/views/ProfileAddress.vue";
+import TransactionHistory from "@/views/TransactionHistory.vue"
 import Product from "@/views/Product.vue";
 import View3D from "@/views/View3D.vue";
 import Cart from "@/views/Cart.vue";
@@ -67,6 +68,11 @@ const router = createRouter({
       path: "/profile/address",
       name: "profile-address",
       component: ProfileAddress,
+    },
+    {
+      path: "/profile/transaction-history",
+      name: "transaction-history",
+      component: TransactionHistory,
     },
     {
       path: "/product/:id",
