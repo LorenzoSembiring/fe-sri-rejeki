@@ -33,8 +33,8 @@
           </div>
         </div>
         <div class="px-3 pt-2 pb-4">
-          <div class="py-2 sidebar-list">Menunggu Pembayaran</div>
-          <div class="py-2 sidebar-list">Riwayat Transaksi</div>
+          <div @click="router.push('/profile/waiting-payment')" class="py-2 sidebar-list">Menunggu Pembayaran</div>
+          <div @click="router.push('/profile/transaction-history')" class="py-2 sidebar-list">Riwayat Transaksi</div>
         </div>
       </div>
     </div>
