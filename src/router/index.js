@@ -9,6 +9,7 @@ import ProfileOld from "@/views/ProfileOld.vue";
 import Profile from "@/views/Profile.vue";
 import ProfileAddress from "@/views/ProfileAddress.vue";
 import TransactionHistory from "@/views/TransactionHistory.vue"
+import WaitingPayment from "@/views/WaitingPayment.vue"
 import Product from "@/views/Product.vue";
 import View3D from "@/views/View3D.vue";
 import Cart from "@/views/Cart.vue";
@@ -73,6 +74,11 @@ const router = createRouter({
       path: "/profile/transaction-history",
       name: "transaction-history",
       component: TransactionHistory,
+    },
+    {
+      path: "/profile/waiting-payment",
+      name: "waiting-payment",
+      component: WaitingPayment,
     },
     {
       path: "/product/:id",
