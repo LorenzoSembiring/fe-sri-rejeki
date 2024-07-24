@@ -17,7 +17,10 @@
             >
               Pesanan baru
             </div>
-            <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">12</div>
+            <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">
+              <!-- Check if newOrderCount is not null or undefined before rendering -->
+              {{ newOrderCount !== null ? newOrderCount : 'Loading...' }}
+            </div>
           </div>
         </div>
         <div
@@ -32,7 +35,10 @@
             >
               Total Pesanan
             </div>
-            <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">372</div>
+            <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">
+              <!-- Check if orderCount is not null or undefined before rendering -->
+              {{ orderCount !== null ? orderCount : 'Loading...' }}
+            </div>
           </div>
         </div>
         <div class="col border-coklat d-inline-flex rounded bg-card d-flex">
@@ -46,7 +52,8 @@
               Total Penjualan
             </div>
             <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">
-              Rp120.000.000
+              <!-- Check if totalSales is not null or undefined before rendering -->
+              {{ totalSales !== null ? formatToIDR(parseInt(totalSales)) : 'Loading...' }}
             </div>
           </div>
         </div>
@@ -63,38 +70,24 @@
             <div class="col">Aksi</div>
           </div>
         </div>
-        <div class="py-2 px-0 border border-bottom-0">
+        <div v-for="item in newOrder" class="py-2 px-0 border border-bottom-0">
           <div class="row my-3 ms-3">
-            <div class="col-1">1</div>
-            <div class="col">Enzo</div>
+            <div class="col-1">{{ item.id }}</div>
+            <div class="col">{{ item.username }}</div>
             <div class="col-3">
               <span class="badge rounded-pill text-bg-secondary"
-                >• Menunggu Konfirmasi</span
+                >• {{item.status}}</span
               >
             </div>
-            <div class="col">10 Jan 2024</div>
-            <div class="col">50.000</div>
-            <div class="col">
-              <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
-            </div>
-          </div>
-          <div class="row my-3 ms-3">
-            <div class="col-1">2</div>
-            <div class="col">Malik</div>
-            <div class="col-3">
-              <span class="badge rounded-pill text-bg-success"
-                >• Sedang Dikirm</span
-              >
-            </div>
-            <div class="col">15 Jan 2024</div>
-            <div class="col">50.000</div>
+            <div class="col">{{item.formatted_date}}</div>
+            <div class="col">{{item.total !== null ? formatToIDR(parseInt(item.total)) : 'Loading...'}}</div>
             <div class="col">
               <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
             </div>
           </div>
         </div>
-        <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
-          <div class="row mx-3 text-secondary">
+        <div class="pt-3 rounded-bottom border border-top-0 bg-tabel py-4">
+          <!-- <div class="row mx-3 text-secondary">
             <div class="col mt-1">Menampilkan 1-10 dari 20 Pesanan</div>
             <div class="col d-flex justify-content-end align-items-center">
               <nav aria-label="Page navigation example">
@@ -111,7 +104,7 @@
                 </ul>
               </nav>
             </div>
-          </div>
+          </div> -->
         </div>
       </div>
     </LayoutDefault>
@@ -121,36 +114,98 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted } from "vue";
-import router from "../../router/index.js";
+import { ref, onMounted } from "vue";
 import axios from "axios";
 
 const token = localStorage.getItem("token");
 const username = localStorage.name ?? null;
 
-// authenticated-user
-async function checkAdmin() {
-  if (token) {
-    try {
-      const response = await axios.get(
-        import.meta.env.VITE_API_URL + "/api/auth/authenticated-user",
-        {
-          headers: { Authorization: `Bearer ${token}` },
-        }
-      );
-      if (response.data.data.role !== "admin") {
-        router.push("/")
+const newOrder = ref([]);
+const newOrderCount = ref(null);
+const orderCount = ref(null);
+const totalSales = ref(null);
+
+const fetchNewOrderCount = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/dashboard/count-new-order",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
       }
-    } catch (error) {
-      router.push("/login");
-    }
-  } else {
-    router.push("/login");
+    );
+    newOrderCount.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching new order count:", error);
   }
-}
+};
+
+const fetchNewOrder = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/dashboard/new-order",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    newOrder.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching new orders:", error);
+  }
+};
+
+const fetchCountOrder = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/dashboard/count-order",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    orderCount.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching order count:", error);
+  }
+};
+
+const fetchTotalSales = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/dashboard/total-sales",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    totalSales.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching total sales:", error);
+  }
+};
+
+const formatToIDR = (value) => {
+  if (value !== null && value !== undefined) {
+    return value.toLocaleString("id-ID", {
+      style: "currency",
+      currency: "IDR",
+      minimumFractionDigits: 0,
+      maximumFractionDigits: 0,
+    });
+  }
+  return "Loading...";
+};
 
 onMounted(async () => {
-  await checkAdmin();
+  await fetchNewOrderCount();
+  await fetchCountOrder();
+  await fetchNewOrder();
+  await fetchTotalSales();
 });
 </script>
 
