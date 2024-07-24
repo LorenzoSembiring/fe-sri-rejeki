@@ -3,37 +3,29 @@
     <navbar />
     <div class="tagline pt-5 pb-5 ps-5">
       <div class="row m-0">
-        <div class="pe-5 text-end col" style="padding-top: 10vh;">
+        <div class="pe-5 text-end col" style="padding-top: 10vh">
           <div class="text">Warisan Budaya</div>
           <div class="text">Pesona Tradisi</div>
-          <a class="btn button-belanja p-3 mt-4 mb-5" href="/shop"
-            >Belanja Sekarang</a
-          >
+          <a class="btn button-belanja p-3 mt-4 mb-5" href="/shop">Belanja Sekarang</a>
         </div>
-        <!-- <div class="m-0 p-0 d-flex flex-row-reverse col">
-          <div>a</div>
-          <div>a</div>
-        </div> -->
       </div>
     </div>
     <div class="my-5 split justify-content-center d-flex fs-2">PRODUK KAMI</div>
-    <div class="row m-0 px-5">
-      <div class="d-inline-flex col-4 justify-content-center d-flex">
-        <div class="product-card border">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg/800px-Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg" style="width: 50vh;" alt="">
-          <div class="fw-semibol fs-4" style="font-family: 'Inter', sans-serif;">Blangkon Jogja</div>
-        </div>
-      </div>
-      <div class="d-inline-flex col-4 justify-content-center d-flex">
-        <div class="product-card border">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg/800px-Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg" style="width: 50vh;" alt="">
-        </div>
-      </div>
-      <div class="d-inline-flex col-4 justify-content-center d-flex">
-        <div class="product-card border">
-          <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg/800px-Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg" style="width: 50vh;" alt="">
-        </div>
-      </div>
+    <div class="carousel">
+  <div ref="carouselTrack" class="carousel-track">
+    <product-item
+      class="m-2 card-product"
+      v-for="product in products"
+      :key="product.id"
+      :id="product.id"
+      :category="product.category"
+      :categoryId="product.category_id"
+      :name="product.name"
+      :price="product.price"
+      :picture="product.picture"
+    />
+  </div>
+</div>
     <div id="about" class="m-5 split justify-content-center d-flex fs-2 border-top border-2">
       TENTANG KAMI
     </div>
@@ -61,21 +53,106 @@
   </footer>
 </template>
 
-<script>
+<script setup>
 import Navbar from "@/components/Navbar.vue";
-export default {
-  components: {
-    Navbar,
-  },
+import { ref, onMounted, nextTick } from "vue";
+import ProductItem from "@/components/ProductItem.vue";
+import axios from "axios";
+
+const products = ref([]);
+
+const fetchProduct = async () => {
+  try {
+    const response = await axios.get(import.meta.env.VITE_API_URL + "/api/product/index-home");
+    products.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching products:", error);
+  }
 };
+
+const carouselTrack = ref(null);
+
+const setupCarousel = () => {
+  const track = carouselTrack.value;
+  const cards = Array.from(track.children);
+
+  if (cards.length === 0) {
+    console.log("No cards found");
+    return;
+  }
+
+  let cardWidth = cards[0].offsetWidth;
+  let visibleCards = Math.ceil(track.offsetWidth / cardWidth);
+
+  // Clone the first few cards and append them to the end
+  for (let i = 0; i < visibleCards; i++) {
+    track.appendChild(cards[i].cloneNode(true));
+  }
+
+  let currentPosition = 0;
+
+  const moveCarousel = () => {
+    currentPosition -= 0.3; // Move by 1 pixel each frame
+    track.style.transform = `translateX(${currentPosition}px)`;
+
+    // Check if we need to reset
+    if (Math.abs(currentPosition) >= cardWidth * cards.length) {
+      currentPosition = 0;
+      track.style.transform = `translateX(${currentPosition}px)`;
+    }
+
+    requestAnimationFrame(moveCarousel);
+  };
+
+  requestAnimationFrame(moveCarousel);
+};
+
+onMounted(async () => {
+  await fetchProduct();
+  await nextTick();
+  setupCarousel();
+});
+
+onMounted(async () => {
+  await fetchProduct();
+  await nextTick();
+  setupCarousel();
+});
+
+onMounted(async () => {
+  await fetchProduct();
+  await nextTick();
+  setupCarousel();
+});
+
+onMounted(async () => {
+  await fetchProduct();
+  await nextTick();
+  setupCarousel();
+});
 </script>
 
-<style>
+
+<style scoped>
+.carousel {
+  overflow: hidden;
+  width: 100%;
+}
+
+.carousel-track {
+  display: flex;
+}
+
+.card-product {
+  flex: 0 0 auto;
+  width: 25%; /* Adjust this value based on how many cards you want visible at once */
+}
+
 .tagline {
   background-image: url("@/assets/hero4.png");
   background-size: cover;
-  width:100%;
-  height:70vh;
+  width: 100%;
+  height: 70vh;
 }
 .tagline .text {
   color: white;
@@ -111,6 +188,6 @@ export default {
   font-family: "Plus Jakarta Sans", sans-serif;
 }
 .product-card {
-
 }
+
 </style>
