@@ -34,8 +34,31 @@
           <img src="https://upload.wikimedia.org/wikipedia/commons/thumb/5/5d/Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg/800px-Ngayogyakarta-style_blangkon%2C_2015-05-17_04.jpg" style="width: 50vh;" alt="">
         </div>
       </div>
+    <div id="about" class="m-5 split justify-content-center d-flex fs-2 border-top border-2">
+      TENTANG KAMI
+    </div>
+    <div class="container my-5">
+      <p class="fw-semibold fs-4">Selamat datang di Sri Rejeki</p>
+      <p>
+        Kami adalah toko online yang khusus menyediakan berbagai macam blangkon, penutup kepala tradisional khas Jawa yang penuh makna dan sejarah. Dengan menggabungkan tradisi dan gaya modern, kami menawarkan koleksi blangkon yang cocok untuk segala kesempatan, baik acara formal maupun santai.
+      </p>
+      <h4 class="mt-5">Produk Kami</h4>
+      <p>
+        Di <strong>Sri Rejeki</strong>, Anda akan menemukan berbagai jenis blangkon dengan desain yang beragam, mulai dari yang klasik hingga yang modern. Setiap blangkon diproduksi dengan perhatian penuh terhadap detail dan kualitas, sehingga Anda bisa tampil percaya diri dan bergaya dengan sentuhan tradisional.
+      </p>
+      <h4 class="mt-5">Mengapa Memilih Kami?</h4>
+      <div><strong>Autentik dan Berkualitas:</strong> Semua produk kami adalah hasil karya pengrajin lokal yang berpengalaman.</div>
+      <div><strong>Desain Eksklusif:</strong> Kami menawarkan desain unik yang tidak akan Anda temukan di tempat lain.</div>
+      <div><strong>Pengiriman Cepat dan Aman:</strong> Kami bekerja sama dengan kurir terpercaya untuk memastikan pesanan Anda sampai dengan cepat dan dalam kondisi baik.</div>
+      <div><strong>Harga Terjangkau:</strong> Kami menawarkan produk berkualitas tinggi dengan harga yang bersaing.</div>
+      <p class="text-center mt-5">
+        Terima kasih telah berkunjung ke <strong>Sri Rejeki</strong>. Selamat berbelanja dan semoga Anda menemukan blangkon yang sempurna untuk Anda!
+      </p>
     </div>
   </body>
+  <footer>
+    <div class="bg-dark py-4"></div>
+  </footer>
 </template>
 
 <script>
