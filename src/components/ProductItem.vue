@@ -19,7 +19,7 @@
       <div class="mx-4 text-dark kategori">{{ category }}</div>
     </RouterLink>
     <RouterLink :to="'/product/' + id">
-      <div class="mx-4 text-dark fs-5">{{ name }}</div>
+      <div class="mx-4 text-dark fs-5  line-clamp">{{ name }}</div>
     </RouterLink>
     <div class="mx-4 mb-3 harga fw-bold">{{ formatToIDR(price) }}</div>
   </div>
@@ -49,6 +49,8 @@ function formatToIDR(number) {
   return number.toLocaleString("id-ID", {
     style: "currency",
     currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
   });
 }
 </script>
@@ -57,7 +59,12 @@ function formatToIDR(number) {
 .content {
   width: 250px;
 }
-
+.line-clamp {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;  
+  overflow: hidden;
+}
 a {
   text-decoration: none;
 }
