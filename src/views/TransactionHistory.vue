@@ -80,7 +80,7 @@
                   <p>{{ formatToIDR(parseInt(item.total)) }}</p>
                 </div>
               </div>
-              <div class="d-flex">
+              <div class="d-flex" v-if="item.status == 'waiting for payment'">
                 <div class="ps-3">
                   <button class="btn btn-outline-success border">
                     Cek Status Bayar
