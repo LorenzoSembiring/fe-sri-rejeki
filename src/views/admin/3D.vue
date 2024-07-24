@@ -22,7 +22,7 @@
             </div>
             <div class="my-2 text-center fw-semibold">{{ item.name }}</div>
             <div class="d-flex justify-content-center">
-              <div class="pe-3">
+              <div @click="router.push('/admin/edit-3d/' + item.id);" class="pe-3" style="cursor: pointer;">
                 <Icon icon="material-symbols:edit" class="text-primary fs-4"/>
               </div>
               <div @click="shareData(item.id, item.name)" style="cursor: pointer;"  data-bs-toggle="modal" data-bs-target="#deleteModal">
