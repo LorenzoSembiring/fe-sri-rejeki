@@ -98,9 +98,11 @@
       </div>
     </div>
   </div>
+  <ModalShipmentStatus></ModalShipmentStatus>
 </template>
 
 <script setup>
+import ModalShipmentStatus from "@/components/ModalShipmentStatus.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
 import { ref } from "vue";
