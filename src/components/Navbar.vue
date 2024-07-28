@@ -32,18 +32,16 @@
               <a class="nav-link" href="/shop">Shop</a>
             </li>
             <li class="nav-item col">
-              <a class="nav-link" href="#about">About</a>
+              <a class="nav-link" href="/#about">About</a>
             </li>
           </ul>
         </div>
         <div class="d-flex justify-content-end col row m-0">
-          <div class="d-inline-flex col">
-            <Icon class="pointer" icon="mdi:magnify" style="font-size: 24px" />
-          </div>
+
           <div
             @mouseenter="isOnHoverProfile = true"
             @mouseleave="leaveProfile"
-            class="d-inline-flex col position-relative"
+            class="d-inline-flex col position-relative ms-5 ps-5"
           >
             <Icon
               class="pointer"
