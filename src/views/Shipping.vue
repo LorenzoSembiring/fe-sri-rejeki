@@ -1,7 +1,7 @@
 <template>
   <Navbar class="fixed-top" />
   <div class="row mt-5">
-    <div class="col-7 pt-5">
+    <div class="col-lg-7 pt-5">
       <div class="h1 ms-5 mb-3">Pengiriman</div>
       <div class="ms-5 p-4 border rounded" v-if="address">
         <div class="fw-semibold text-secondary">ALAMAT PENGIRIMAN</div>
@@ -19,10 +19,10 @@
       </div>
       <div class="ms-5 mt-3 p-2 border rounded">
         <div class="row" v-for="item in cartItem">
-          <div class="col-2">
+          <div class="col-lg-2">
             <img class="m-2 rounded" :src="parsedImage(item.picture)" alt="" />
           </div>
-          <div class="col-6 pt-2 ms-3">
+          <div class="col-lg-6 pt-2 ms-3">
             <div class="row h5">
               <span class="text-truncate">
                 {{ item.name }}
