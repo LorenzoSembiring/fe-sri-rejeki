@@ -1,11 +1,11 @@
-<template>
+<template><div>
   <div>
     <Navbar class="fixed-top border-bottom" />
   </div>
   <div class="container-fluid">
     <div class="row pt-5 px-5">
       <!-- left col -->
-      <div class="col-6 left-col" style="margin-top: 10px;">
+      <div class="col-lg-6 left-col" style="margin-top: 10px;">
         <div class="d-flex my-3" style="font-family: sans-serif; font-size: 14px">
           <a class="text-secondary" href="/">Beranda</a>
           <p class="mx-2 text-secondary">
@@ -57,8 +57,8 @@
         </div>
       </div>
       <!-- right col -->
-      <div class="col-6 pt-2">
-        <div class="col-8 sticky-top" style="top:56px;">
+      <div class="col-lg-6 pt-2" style="min-height: 100vh;">
+        <div class="col-lg-8 sticky-top" style="top:56px;">
           <div class="pt-4 h6">
             <a href="/shop">
               <Icon icon="material-symbols:arrow-back" /> Kembali ke koleksi
@@ -71,9 +71,10 @@
           </div>
           <div class="mt-2 mb-2 fw-semibold">Pilih Ukuran</div>
           <div>
-            <div class="ms-1 col-5 row g-0">
-              <div class="col-3 p-0 m-0" v-for="stock in stocks">
+            <div class="ms-1 d-flex g-0">
+              <div class="p-0 m-0" v-for="stock in stocks">
                 <button @click="selectStock(stock)" type="button" :class="[
+                  'ms-1',
                   'btn',
                   stock === selectedStock
                     ? 'btn-selected'
@@ -96,7 +97,7 @@
               {{ selectedStock.stock }} Produk tersisa
             </div>
           </div>
-          <div @click="openModal()" class="my-4 d-inline-block" style="cursor: pointer">
+          <div @click="openModal()" class="my-2 d-inline-block" style="cursor: pointer">
             <Icon class="me-1" icon="la:ruler" style="font-size: 24px" />
             <span class="text-decoration-none text-black">Panduan Ukuran</span>
           </div>
@@ -104,7 +105,7 @@
             <p class="fw-semibold px-1 pt-2 mb-0">Jumlah</p>
             <div class="ms-3 mt-1 border rounded" style="width: fit-content">
               <button class="button-counter" @click="decrement()">-</button>
-              <input type="number" class="input-counter" v-model="inputValue" />
+              <input type="number" class="input-counter" v-model="inputValue" @input="checkValue" :max="maxValue"/>
               <button class="button-counter" @click="increment()">+</button>
             </div>
           </div>
@@ -120,6 +121,9 @@
       </div>
     </div>
   </div>
+  <footer class="bg-dark p-4 mt-4">
+
+  </footer>
   <!-- modal -->
   <div class="modal fade" :id="`Modal`" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true">
     <div class="modal-dialog modal-lg">
@@ -142,6 +146,7 @@
       </div>
     </div>
   </div>
+</div>
 </template>
 <script setup>
 import Navbar from "@/components/Navbar.vue";
@@ -158,20 +163,34 @@ const selectedStock = ref(0);
 const products = ref([]);
 const pictures = ref([]);
 const inputValue = ref(1);
+const minValue = 1;
+const maxValue = ref(1);
 
 const selectStock = (stock) => {
   selectedStock.value = stock;
-  console.log(selectedStock.value);
+  maxValue.value = selectedStock.value.stock
+  
+  console.log(maxValue.value);
+  // console.log(selectedStock.value.stock);
 };
 
 const token = localStorage.getItem("token");
 const id = ref("");
+
 onMounted(() => {
   id.value = route.params.id;
   fetchStock();
   fetchProduct();
   fetchPicture();
 });
+
+const checkValue = () => {
+  if (numberValue.value < minValue) {
+    numberValue.value = minValue;
+  } else if (numberValue.value > maxValue) {
+    numberValue.value = maxValue;
+  }
+};
 
 function routeToView3D() {
   router.push("/product/" + id.value + "/3d");
@@ -186,12 +205,13 @@ function formatToIDR(number) {
 }
 
 const increment = () => {
-  inputValue.value = parseInt(inputValue.value) + 1;
-  console.log(count);
+  if (inputValue.value < maxValue.value) {
+    inputValue.value = parseInt(inputValue.value) + 1;
+  }
 };
 
 const decrement = () => {
-  if (inputValue.value !== 1) {
+  if (inputValue.value > minValue) {
     inputValue.value = parseInt(inputValue.value) - 1;
   }
 };
@@ -202,7 +222,6 @@ async function fetchProduct() {
       import.meta.env.VITE_API_URL + "/api/product/get/" + id.value
     );
     products.value = response.data.data;
-    console.log(products.value);
   } catch (error) {
     console.log("Error fetching product:", error);
   }
@@ -213,7 +232,6 @@ async function fetchPicture() {
       import.meta.env.VITE_API_URL + "/api/product/picture/get/" + id.value
     );
     pictures.value = response.data.data;
-    console.log(pictures.value);
   } catch (error) {
     console.log("Error fetching product:", error);
   }
@@ -229,7 +247,6 @@ async function fetchStock() {
       import.meta.env.VITE_API_URL + "/api/product/stock/" + id.value
     );
     stocks.value = response.data.data;
-    console.log(stocks.value);
   } catch (error) {
     console.log("Error fetching stock:", error);
   }
