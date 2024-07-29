@@ -8,7 +8,7 @@
         <!-- item -->
         <div v-for="cart in carts">
           <CartItem class="me-4 mb-3" @update-price="updatePrice" :id="cart.id" :name="cart.name"
-            :quantity="cart.quantity" :price="cart.price" :size="cart.size" :picture="cart.path"/>
+            :quantity="cart.quantity" :price="cart.price" :size="cart.size" :picture="cart.path" :stock="cart.stock"/>
         </div>
         <!-- <CartItem class="me-4" /> -->
       </div>

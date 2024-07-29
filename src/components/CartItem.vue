@@ -28,7 +28,7 @@
           <div class="ms-3 mt-1 border rounded" style="width: fit-content">
             <button class="button-counter" v-if="quantityRef > 1" @click="decrement()">-</button>
             <button class="button-counter" style="cursor: not-allowed;" v-else disabled>-</button>
-            <input type="number" class="input-counter" v-model="quantityRef" />
+            <input type="number" class="input-counter" v-model="quantityRef" :max="stock+quantity" />
             <button class="button-counter" @click="increment()">+</button>
           </div>
           <div class="ms-5">
@@ -41,7 +41,7 @@
   </div>
 </template>
 <script setup>
-import { nextTick, toRef, ref } from "vue";
+import { nextTick, toRef, ref, onMounted } from "vue";
 import axios from "axios";
 import { Icon } from "@iconify/vue";
 
@@ -51,6 +51,7 @@ const props = defineProps({
   size: Number,
   quantity: Number,
   price: Number,
+  stock: Number,
   checked: Boolean,
   picture: String
 });
@@ -62,13 +63,17 @@ const { quantity } = props;
 const quantityRef = toRef(quantity);
 const isChecked = ref(false);
 const picture = ref("")
+const product = ref([])
 const emit = defineEmits(['update-price']);
 
 const increment = () => {
-  quantityRef.value = parseInt(quantityRef.value) + 1;
-  nextTick(() => {
-    updateQuantity();
-  });
+  if (quantityRef.value < quantity + props.stock) {
+    // inputValue.value = parseInt(inputValue.value) + 1;
+    quantityRef.value = parseInt(quantityRef.value) + 1;
+    nextTick(() => {
+      updateQuantity();
+    });
+  }
 };
 
 const decrement = () => {
