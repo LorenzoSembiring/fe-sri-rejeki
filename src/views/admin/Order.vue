@@ -52,7 +52,7 @@
         </div>
       </div>
       <div class="py-2 px-0 border border-bottom-0">
-        <div v-for="item in order" class="row my-3 ps-4">
+        <div v-if="Array.isArray(order) && order.length > 0" v-for="item in order" class="row my-3 ps-4">
           <div class="col-1">{{ item.id }}</div>
           <div class="col">{{ item.username }}</div>
           <div class="col-3">
@@ -89,6 +89,9 @@
               </ul>
             </div>
           </div>
+        </div>
+        <div v-else class="fw-semibold text-secondary justify-content-center d-flex p-3">
+          Tidak ada data
         </div>
       </div>
       <div class="pt-3 py-4 rounded-bottom border border-top-0 bg-tabel"></div>
