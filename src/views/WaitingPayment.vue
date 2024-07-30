@@ -160,6 +160,13 @@ import axios from "axios";
 const orderData = ref([]);
 const token = localStorage.getItem("token");
 const username = localStorage.name ?? null;
+const midtransToken = ref("")
+const isPaid = ref()
+
+function setMidtransToken(token) {
+  midtransToken.value = token
+  console.log(midtransToken.value)
+}
 
 function formatToIDR(number) {
   return number.toLocaleString("id-ID", {
