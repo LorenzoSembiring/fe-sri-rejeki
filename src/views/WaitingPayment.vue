@@ -206,6 +206,26 @@ async function fetchOrder() {
     console.log("Error fetching user:", error);
   }
 }
+async function getMidtransStatus(id) {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + `/api/order/midtrans-status/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.data.status_code == 404) {
+      isPaid.value = false
+    } else if(response.data.transaction_status = "settlement") {
+      isPaid.value = true
+      location.reload()
+    }
+  } catch (error) {
+    console.log("Error fetching payment status:", error);
+  }
+}
 fetchOrder();
 </script>
 
