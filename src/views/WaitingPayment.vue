@@ -41,7 +41,12 @@
           >
             Menunggu Pembayaran
           </div>
-          <div class="py-2 sidebar-list">Riwayat Transaksi</div>
+          <div
+            @click="router.push('/profile/transaction-history')"
+            class="py-2 sidebar-list"
+          >
+            Riwayat Transaksi
+          </div>
         </div>
       </div>
     </div>
