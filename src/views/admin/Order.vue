@@ -113,34 +113,6 @@
             ></button>
           </div>
           <div class="modal-body row mx-0">
-            <div class="col-1 p-0 fw-semibold pt-2">Kurir:</div>
-            <div class="col-3">
-              <select
-              class="form-select"
-              aria-label="Default select example"
-              id="category"
-              v-model="category_id"
-            >
-              <option
-                id="tiki"
-                value="tiki"
-              >
-                TIKI
-              </option>
-              <option
-                id="jne"
-                value="jne"
-              >
-                JNE
-              </option>
-              <option
-                id="pos"
-                value="pos"
-              >
-                POS
-              </option>
-            </select>
-            </div>
             <div class="col-1 p-0 fw-semibold pt-2">Resi:</div>
             <div class=col>
               <input type="text" class="form-control" v-model="Resi" />
