@@ -377,6 +377,7 @@ async function placeOrder() {
     );
     if (response.data.code == 200) {
       window.open(response.data.data.midtrans.redirect_url)
+      router.push('/profile/waiting-payment')
     }
     console.log(response.data);
   } catch (error) {
