@@ -376,7 +376,7 @@ async function placeOrder() {
       }
     );
     if (response.data.code == 200) {
-      window.open(response.data.data.redirect_url)
+      window.open(response.data.data.midtrans.redirect_url)
     }
     console.log(response.data);
   } catch (error) {
