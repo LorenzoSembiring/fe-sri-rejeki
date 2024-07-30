@@ -62,9 +62,9 @@
             <p class="text-secondary fw-bold">{{ username }}</p>
           </div>
           <div class="d-flex ps-1">
-            <p class="text-secondary fw-bold">Riwayat Transaksi</p>
+            <p class="text-secondary fw-bold">Menunggu Pembayaran</p>
           </div>
-          <div v-for="item in orderData" class="border col-9 rounded p-3 mb-2">
+          <div v-if="Array.isArray(orderData) && orderData.length" v-for="item in orderData" class="border col-9 rounded p-3 mb-2">
             <div class="d-flex">
               <Icon icon="bi:bag" class="fs-5 secondary" />
               <p class="ps-2 fw-semibold">Belanja</p>
@@ -103,6 +103,9 @@
                 </div>
               </div>
             </div>
+          </div>
+          <div v-else class="justify-content-center d-flex fw-semibold text-secondary">
+            Tidak ada data
           </div>
         </div>
       </div>
