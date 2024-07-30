@@ -92,7 +92,7 @@
                   </button>
                 </div>
               </div>
-              <div v-else-if="item.status != 'waiting for payment' | 'pending'">
+              <div v-else-if="item.status == 'on delivery'">
                 <div class="ps-3">
                   <button class="btn btn-outline-success border">
                     Lacak
