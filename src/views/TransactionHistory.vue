@@ -97,6 +97,16 @@
                   <button class="btn btn-outline-success border">
                     Lacak
                   </button>
+                  <button class="btn btn-outline-light border">
+                    Detail
+                  </button>
+                </div>
+              </div>
+              <div v-else>
+                <div class="ps-3">
+                  <button class="btn btn-outline-secondary border">
+                    Detail
+                  </button>
                 </div>
               </div>
             </div>
