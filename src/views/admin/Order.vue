@@ -141,8 +141,6 @@
 
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
-import { Icon } from "@iconify/vue";
-import router from "../../router/index.js";
 import { ref, onMounted, watch } from "vue";
 import axios from "axios";
 
@@ -179,7 +177,6 @@ async function fetchOrder() {
       }
     );
     order.value = response.data.data;
-    console.log(stocks.value);
   } catch (error) {
     console.log("Error fetching stock:", error);
   }
