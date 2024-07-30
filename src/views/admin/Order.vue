@@ -74,7 +74,7 @@
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" :href="`/admin/order/detail/${id}`"
+                  <a class="dropdown-item" :href="`/admin/order/detail/${item.id}`"
                     ><span class="fw-semibold">Detail</span></a
                   >
                 </li>
