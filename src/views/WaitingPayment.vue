@@ -91,7 +91,7 @@
                     class="btn btn-outline-success border"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="getMidtransStatus(item.midtrans_id), setMidtransToken(item.midtrans_id)"
+                    @click="getMidtransStatus(item.midtrans_id), setMidtransToken(item.midtrans_token)"
                   >
                     Cek Status Bayar
                   </button>
@@ -134,19 +134,18 @@
             {{ clickedPayment }}
           </div>
           <div class="d-flex justify-content-center py-3">
-            <button @click="makePayment()" class="btn btn-outline-success border">Bayar</button>
+            <button @click="makePayment(midtransToken)" class="btn btn-outline-success border">Bayar</button>
           </div>
         </div>
         <div class="modal-footer">
           <button
             type="button"
-            class="btn btn-secondary"
+            class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
             @click="isPaid = null, midtransToken = null"
           >
-            Close
+            Tutup
           </button>
-          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
@@ -236,6 +235,10 @@ async function getMidtransStatus(id) {
     console.log("Error fetching payment status:", error);
   }
 }
+async function makePayment(token) {
+  window.open(`https://app.sandbox.midtrans.com/snap/v4/redirection/${token}`)
+}
+
 fetchOrder();
 </script>
 
