@@ -267,7 +267,7 @@ async function addToCart(size, quantity) {
           },
         }
       );
-      if (response.data.code === 200) {
+      if (response.data.code === 201 || response.data.code === 200) {
         location.reload();
       }
     } catch (error) {
