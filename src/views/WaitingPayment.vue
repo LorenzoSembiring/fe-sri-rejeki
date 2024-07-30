@@ -87,7 +87,12 @@
               </div>
               <div class="d-flex">
                 <div class="ps-3">
-                  <button class="btn btn-outline-success border">
+                  <button
+                    class="btn btn-outline-success border"
+                    data-bs-toggle="modal"
+                    data-bs-target="#exampleModal"
+                    @click="getMidtransStatus(item.midtrans_id), setMidtransToken(item.midtrans_id)"
+                  >
                     Cek Status Bayar
                   </button>
                 </div>
@@ -99,6 +104,46 @@
               </div>
             </div>
           </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <!-- Modal -->
+  <div
+    class="modal fade"
+    id="exampleModal"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="d-flex flex-column align-items-center">
+            <div>
+              <Icon
+                icon="mdi:information-outline"
+                class="text-danger "
+                style="font-size: 80px"
+              />
+            </div>
+            <div class="fw-semibold fs-5">Anda belum melakukan pembayaran</div>
+            {{ clickedPayment }}
+          </div>
+          <div class="d-flex justify-content-center py-3">
+            <button @click="makePayment()" class="btn btn-outline-success border">Bayar</button>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-secondary"
+            data-bs-dismiss="modal"
+            @click="isPaid = null, midtransToken = null"
+          >
+            Close
+          </button>
+          <button type="button" class="btn btn-primary">Save changes</button>
         </div>
       </div>
     </div>
