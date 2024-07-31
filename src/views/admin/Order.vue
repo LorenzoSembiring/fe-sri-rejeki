@@ -127,10 +127,15 @@
               type="button"
               class="btn btn-light border"
               data-bs-dismiss="modal"
+              @click="selectedItem = []"
             >
               Tutup
             </button>
-            <button type="button" class="btn button-coklat" @click="saveChanges">
+            <button
+              type="button"
+              class="btn button-coklat"
+              @click="submitReceipt()"
+            >
               Tambahkan
             </button>
           </div>
@@ -156,13 +161,12 @@ const currentYear = today.getFullYear().toString();
 const selectedMonth = ref(currentMonth);
 const selectedYear = ref(currentYear);
 
-const Resi = ref('');
+const resi = ref("");
+const selectedItem = ref([]);
 
-const selectedId = ref(null);
-
-const openModal = (id) => {
-  selectedId.value = id;
-  const modalElement = document.getElementById('resiModal');
+const openModal = (item) => {
+  selectedItem.value = item;
+  const modalElement = document.getElementById("resiModal");
   const modal = new bootstrap.Modal(modalElement); // Use Bootstrap's Modal class
   modal.show();
 };
