@@ -117,9 +117,19 @@
             ></button>
           </div>
           <div class="modal-body row mx-0">
-            <div class="col-1 p-0 fw-semibold pt-2">Resi:</div>
-            <div class=col>
-              <input type="text" class="form-control" v-model="Resi" />
+            <div class="row p-0 mb-3">
+              <div class="text-secondary">
+                Kurir pilihan: <b>{{ selectedItem.kurir }}</b> - <b>{{ selectedItem.type_kurir }}</b>
+              </div>
+              <div class="text-secondary">
+                Ongkir: <b>{{ formatToIDR(selectedItem.ongkir) }}</b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1 p-0 fw-semibold pt-2">Resi:</div>
+              <div class="col">
+                <input type="text" class="form-control" v-model="resi" />
+              </div>
             </div>
           </div>
           <div class="modal-footer pe-4">
