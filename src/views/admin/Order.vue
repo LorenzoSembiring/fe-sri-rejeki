@@ -52,7 +52,11 @@
         </div>
       </div>
       <div class="py-2 px-0 border border-bottom-0">
-        <div v-if="Array.isArray(order) && order.length > 0" v-for="item in order" class="row my-3 ps-4">
+        <div
+          v-if="Array.isArray(order) && order.length > 0"
+          v-for="item in order"
+          class="row my-3 ps-4"
+        >
           <div class="col-1">{{ item.id }}</div>
           <div class="col">{{ item.username }}</div>
           <div class="col-3">
@@ -74,7 +78,9 @@
               </button>
               <ul class="dropdown-menu">
                 <li>
-                  <a class="dropdown-item" :href="`/admin/order/detail/${item.id}`"
+                  <a
+                    class="dropdown-item"
+                    :href="`/admin/order/detail/${item.id}`"
                     ><span class="fw-semibold">Detail</span></a
                   >
                 </li>
@@ -91,7 +97,10 @@
             </div>
           </div>
         </div>
-        <div v-else class="fw-semibold text-secondary justify-content-center d-flex p-3">
+        <div
+          v-else
+          class="fw-semibold text-secondary justify-content-center d-flex p-3"
+        >
           Tidak ada data
         </div>
       </div>
@@ -119,7 +128,8 @@
           <div class="modal-body row mx-0">
             <div class="row p-0 mb-3">
               <div class="text-secondary">
-                Kurir pilihan: <b>{{ selectedItem.kurir }}</b> - <b>{{ selectedItem.type_kurir }}</b>
+                Kurir pilihan: <b>{{ selectedItem.kurir }}</b> -
+                <b>{{ selectedItem.type_kurir }}</b>
               </div>
               <div class="text-secondary">
                 Ongkir: <b>{{ formatToIDR(selectedItem.ongkir) }}</b>
@@ -197,7 +207,7 @@ async function submitReceipt() {
     );
     console.log(response);
     if (response.status == 200) {
-      location.reload()
+      location.reload();
     }
   } catch (error) {
     console.log("Error submitting receipt:", error);
