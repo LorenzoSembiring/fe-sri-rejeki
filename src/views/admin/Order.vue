@@ -78,10 +78,11 @@
                     ><span class="fw-semibold">Detail</span></a
                   >
                 </li>
-                <li>
+                <li v-if="item.status == 'processed'">
                   <span
                     class="fw-semibold dropdown-item"
-                    @click="openModal(item.id)"
+                    style="cursor: pointer"
+                    @click="openModal(item)"
                   >
                     Tambahkan Resi
                   </span>
