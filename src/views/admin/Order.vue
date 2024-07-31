@@ -167,6 +167,29 @@ const openModal = (id) => {
   modal.show();
 };
 
+async function submitReceipt() {
+  try {
+    const formData = new FormData();
+    formData.append("order_id", selectedItem.value.id);
+    formData.append("resi", resi.value);
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/order/add-resi`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response);
+    if (response.status == 200) {
+      location.reload()
+    }
+  } catch (error) {
+    console.log("Error submitting receipt:", error);
+  }
+}
+
 async function fetchOrder() {
   try {
     const response = await axios.get(
