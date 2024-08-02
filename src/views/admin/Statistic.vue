@@ -14,7 +14,7 @@
           <div class="my-2 fw-semibold text-secondary d-flex flex-row-reverse">
             Total Pengguna
           </div>
-          <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">118</div>
+          <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">{{ userCount }}</div>
         </div>
       </div>
       <div class="col border-coklat d-inline-flex rounded me-4 bg-card d-flex">
@@ -25,7 +25,7 @@
           <div class="my-2 fw-semibold text-secondary d-flex flex-row-reverse">
             Total Pesanan
           </div>
-          <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">372</div>
+          <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">{{totalSales}}</div>
         </div>
       </div>
       <div class="col border-coklat d-inline-flex rounded me-4 bg-card d-flex">
@@ -37,7 +37,7 @@
             Total Penjualan
           </div>
           <div class="h4 mb-3 d-flex flex-row-reverse font-jakarta">
-            Rp120.000.000
+            {{ formatToIDR(parseInt(totalRevenue))}}
           </div>
         </div>
       </div>
@@ -49,7 +49,7 @@
           <div class="my-2 fw-semibold text-secondary d-flex flex-row-reverse">
             Total Produk
           </div>
-          <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">3</div>
+          <div class="h3 mb-3 d-flex flex-row-reverse font-jakarta">{{ totalProduct }}</div>
         </div>
       </div>
       <div class="row mt-5">
@@ -150,15 +150,86 @@ const graphDaily = ref([""]);
 const graphMonthly = ref([""]);
 const todayOrder = ref(0);
 const averageMonthlyRevenue = ref(0);
+const totalSales = ref(null);
+const userCount = ref(null);
+const totalRevenue = ref(null);
+const totalProduct = ref(null);
 
 onMounted(() => {
   fetchBestSellers();
   fetchGraphDaily();
   fetchGraphMonthly();
+  fetchTotalSales();
+  fetchUserCount();
+  fetchTotalRevenue();
+  fetchTotalProduct();
 });
+
 function parsedImage(path) {
   return import.meta.env.VITE_API_URL + path;
 }
+
+const fetchTotalProduct = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/statistic/product-count",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    totalProduct.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching total revenue:", error);
+  }
+};
+const fetchTotalRevenue = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/dashboard/total-sales",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    totalRevenue.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching total revenue:", error);
+  }
+};
+const fetchUserCount = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/statistic/user-count",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    userCount.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching total sales:", error);
+  }
+};
+const fetchTotalSales = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/dashboard/count-order",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    totalSales.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching total sales:", error);
+  }
+};
+
 const fetchGraphDaily = async () => {
   try {
     const response = await axios.get(
