@@ -57,7 +57,7 @@
           <div class="d-flex">
             <div class="flex-grow-1">
               <div class="h6 text-secondary">Pendapatan Bulanan</div>
-              <div class="h4">Rp. 5.500.000</div>
+              <div class="h4">{{ formatToIDR(averageMonthlyRevenue) }}</div>
             </div>
             <div class="col-2 me-5">
               <select
@@ -81,18 +81,7 @@
           <div class="d-flex">
             <div class="flex-grow-1">
               <div class="h6 text-secondary">Pesanan harian</div>
-              <div class="h4">4</div>
-            </div>
-            <div class="col-3 me-4">
-              <select
-                class="col form-select"
-                aria-label="Default select example"
-              >
-                <option value="2021">2021</option>
-                <option value="2022">2022</option>
-                <option value="2023">2023</option>
-                <option value="2024" selected>2024</option>
-              </select>
+              <div class="h4">{{ todayOrder }}</div>
             </div>
           </div>
           <div
@@ -110,9 +99,7 @@
               <div class="col-5">Nama Produk</div>
               <div class="col-2">Harga</div>
               <div class="col-3">Penjualan</div>
-              <div class="col">
-                <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
-              </div>
+              <div class="col">Aksi</div>
             </div>
           </div>
           <div class="py-2 px-0 border border-bottom-0 fw-semibold">
@@ -124,15 +111,17 @@
                 <div class="d-flex justify-content-center d-inline-flex">
                   <img
                     style="height: 7vh; width: 7vh"
-                    src="@/assets/default_profile_picture.jpg"
+                    :src="parsedImage(n.picture)"
                   />
                 </div>
-                <span class="ms-2">{{n.name}}</span>
+                <span class="ms-2">{{ n.name }}</span>
               </div>
-              <div class="col-2">{{formatToIDR(n.price)}}</div>
-              <div class="col-3">{{n.sales}}</div>
+              <div class="col-2">{{ formatToIDR(n.price) }}</div>
+              <div class="col-3">{{ n.sales }}</div>
               <div class="col">
-                <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
+                <button class="btn btn-light border" @click="router.push('/admin/product/' + n.id)">
+                  Detail
+                </button>
               </div>
             </div>
           </div>
@@ -151,102 +140,139 @@
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
 import { onMounted, ref } from "vue";
-import axios from "axios";  // Make sure you import axios
+import axios from "axios";
+import router from "../../router/index.js";
 
 const token = localStorage.getItem("token");
 
 const bestSeller = ref([]);
+const graphDaily = ref([""]);
+const graphMonthly = ref([""]);
+const todayOrder = ref(0);
+const averageMonthlyRevenue = ref(0);
 
 onMounted(() => {
-  console.log(document.getElementById("tes"));
-  
-  var monthlyChart = new CanvasJS.Chart("chartContainer", {
-    animationEnabled: true,
-    axisY: {
-      valueFormatString: "#0,,.",
-      gridColor: "rgba(175, 175, 175,.7)",
-    },
-    axisX: {
-      gridColor: "orange",
-    },
-    data: [
-      {
-        type: "splineArea",
-        color: "rgba(217, 130, 54,.7)",
-        markerSize: 5,
-        xValueFormatString: "YYYY",
-        yValueFormatString: "$#,##0.##",
-        dataPoints: [
-          { x: new Date(2000, 0), y: 3289000 },
-          { x: new Date(2001, 0), y: 3830000 },
-          { x: new Date(2002, 0), y: 2009000 },
-          { x: new Date(2003, 0), y: 2840000 },
-          { x: new Date(2004, 0), y: 2396000 },
-          { x: new Date(2005, 0), y: 1613000 },
-          { x: new Date(2006, 0), y: 2821000 },
-          { x: new Date(2007, 0), y: 2000000 },
-          { x: new Date(2008, 0), y: 1397000 },
-          { x: new Date(2009, 0), y: 2506000 },
-          { x: new Date(2010, 0), y: 2798000 },
-          { x: new Date(2011, 0), y: 3386000 },
-          { x: new Date(2012, 0), y: 6704000 },
-          { x: new Date(2013, 0), y: 6026000 },
-          { x: new Date(2014, 0), y: 2394000 },
-          { x: new Date(2015, 0), y: 1872000 },
-          { x: new Date(2016, 0), y: 2140000 },
-        ],
-      },
-    ],
-  });
-  monthlyChart.render();
-
-  var weeklyChart = new CanvasJS.Chart("weeklyChartContainer", {
-    animationEnabled: true,
-    theme: "light2", // "light1", "light2", "dark1", "dark2"
-    axisY: {},
-    data: [
-      {
-        type: "column",
-        showInLegend: false,
-        color: "rgba(217, 130, 54)",
-        dataPoints: [
-          { y: 1, label: "M" },
-          { y: 2, label: "T" },
-          { y: 3, label: "W" },
-          { y: 4, label: "T" },
-          { y: 9, label: "F" },
-          { y: 2, label: "S" },
-          { y: 3, label: "S" },
-        ],
-      },
-    ],
-  });
-  weeklyChart.render();
-
-  const fetchBestSellers = async () => {
-    try {
-      const response = await axios.get(
-        import.meta.env.VITE_API_URL + "/api/statistic/best-seller",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      bestSeller.value = response.data.data;
-      console.log(bestSeller.value)
-    } catch (error) {
-      console.error("Error fetching best-seller data:", error);
-    }
-  };
-
   fetchBestSellers();
+  fetchGraphDaily();
+  fetchGraphMonthly();
 });
-function formatToIDR(number) {
-    return number.toLocaleString("id-ID", {
-        style: "currency",
-        currency: "IDR",
+function parsedImage(path) {
+  return import.meta.env.VITE_API_URL + path;
+}
+const fetchGraphDaily = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/statistic/graph-daily",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    graphDaily.value = response.data.data;
+    todayOrder.value = response.data.data[6].total;
+    console.log(todayOrder.value);
+
+    const dataPoints = graphDaily.value.map((item) => {
+      return { y: item.total, label: item.day };
     });
+
+    var weeklyChart = new CanvasJS.Chart("weeklyChartContainer", {
+      animationEnabled: true,
+      theme: "light2",
+      axisY: {},
+      data: [
+        {
+          type: "column",
+          showInLegend: false,
+          color: "rgba(217, 130, 54)",
+          dataPoints: dataPoints,
+        },
+      ],
+    });
+    weeklyChart.render();
+  } catch (error) {
+    console.error("Error fetching best-seller data:", error);
+  }
+};
+
+const fetchGraphMonthly = async () => {
+  try {
+    const formData = new FormData();
+    formData.append("year", 2024);
+    const response = await axios.post(
+      import.meta.env.VITE_API_URL + "/api/statistic/graph-monthly",
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    graphMonthly.value = response.data.data;
+    console.log(graphMonthly.value);
+
+    const totalRevenues = graphMonthly.value.map((entry) =>
+      Number(entry.total_revenue)
+    );
+    const totalSum = totalRevenues.reduce((acc, val) => acc + val, 0);
+    averageMonthlyRevenue.value = totalSum / totalRevenues.length;
+
+    const dataPoints = graphMonthly.value.map((entry) => ({
+      x: new Date(entry.month + "-01"),
+      y: Number(entry.total_revenue),
+    }));
+
+    var monthlyChart = new CanvasJS.Chart("chartContainer", {
+      animationEnabled: true,
+      axisY: {
+        valueFormatString: "#0,,.",
+        gridColor: "rgba(175, 175, 175,.7)",
+      },
+      axisX: {
+        gridColor: "orange",
+      },
+      data: [
+        {
+          type: "splineArea",
+          color: "rgba(217, 130, 54,.7)",
+          markerSize: 5,
+          xValueFormatString: "MMM YYYY",
+          yValueFormatString: "Rp#,##0.##",
+          dataPoints: dataPoints,
+        },
+      ],
+    });
+    monthlyChart.render();
+  } catch (error) {
+    console.error("Error fetching graph monthly data:", error);
+  }
+};
+
+const fetchBestSellers = async () => {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/statistic/best-seller",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    bestSeller.value = response.data.data;
+    console.log(bestSeller.value);
+  } catch (error) {
+    console.error("Error fetching best-seller data:", error);
+  }
+};
+
+function formatToIDR(number) {
+  return number.toLocaleString("id-ID", {
+    style: "currency",
+    currency: "IDR",
+    minimumFractionDigits: 0,
+    maximumFractionDigits: 0,
+  });
 }
 </script>
 
