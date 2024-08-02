@@ -63,6 +63,7 @@
               <select
                 class="col form-select"
                 aria-label="Default select example"
+                v-model="selectedYear"
               >
                 <option value="2021">2021</option>
                 <option value="2022">2022</option>
@@ -139,7 +140,7 @@
 <script setup>
 import LayoutDefault from "@/components/LayoutDefault.vue";
 import { Icon } from "@iconify/vue";
-import { onMounted, ref } from "vue";
+import { onMounted, ref, watch } from "vue";
 import axios from "axios";
 import router from "../../router/index.js";
 
@@ -154,6 +155,10 @@ const totalSales = ref(null);
 const userCount = ref(null);
 const totalRevenue = ref(null);
 const totalProduct = ref(null);
+const today = new Date();
+const currentYear = today.getFullYear().toString();
+const selectedYear = ref(currentYear);
+
 
 onMounted(() => {
   fetchBestSellers();
@@ -270,7 +275,7 @@ const fetchGraphDaily = async () => {
 const fetchGraphMonthly = async () => {
   try {
     const formData = new FormData();
-    formData.append("year", 2024);
+    formData.append("year", selectedYear.value);
     const response = await axios.post(
       import.meta.env.VITE_API_URL + "/api/statistic/graph-monthly",
       formData,
@@ -345,6 +350,8 @@ function formatToIDR(number) {
     maximumFractionDigits: 0,
   });
 }
+watch([selectedYear], fetchGraphMonthly);
+
 </script>
 
 <style scoped>
