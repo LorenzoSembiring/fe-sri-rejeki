@@ -102,7 +102,7 @@
               </div>
               <div v-else-if="item.status == 'shipped'">
                 <div class="ps-3">
-                  <button class="btn btn-outline-success border">Lacak</button>
+                  <button class="btn btn-outline-success border" @click="openShipmentModal">Lacak</button>
                   <button class="ms-2 btn btn-outline-secondary border">
                     Detail
                   </button>
@@ -121,7 +121,7 @@
       </div>
     </div>
   </div>
-  <ModalShipmentStatus></ModalShipmentStatus>
+  <ModalShipmentStatus ref="shipmentModal"></ModalShipmentStatus>
   <div
     class="modal fade"
     id="modalCekBayar"
@@ -183,6 +183,11 @@ const orderData = ref([]);
 const token = localStorage.getItem("token");
 const username = localStorage.name ?? null;
 const midtransToken = ref("");
+const shipmentModal = ref(null);
+
+function openShipmentModal() {
+  shipmentModal.value.show();
+}
 
 function formatToIDR(number) {
   return number.toLocaleString("id-ID", {
@@ -258,6 +263,7 @@ async function fetchOrder() {
     console.log("Error fetching user:", error);
   }
 }
+
 fetchOrder();
 </script>
 

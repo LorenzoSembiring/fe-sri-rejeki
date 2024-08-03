@@ -25,12 +25,6 @@
                             <span style="width: 20px;">:</span>
                             <p class="text-success">DELIVERED</p>
                         </div>
-                        <div class="d-flex">
-                            <p class="mb-0 fw-bold" style="width:80px;">Foto</p>
-                            <span style="width: 20px;">:</span>
-                            <img class="rounded" style="width: 80px; height:80px; object-fit: cover;"
-                                src="@/assets/hero.jpg" alt="">
-                        </div>
                     </div>
                     <h6>Status Pengiriman</h6>
                     <div class="card p-3">
@@ -114,21 +108,23 @@ onMounted(() => {
     modal_shipment_status = new bootstrap.Modal('#modal_shipment_status', {
         backdrop: true,
     })
-    modal_shipment_status.show()
 })
 
 function show() {
-    modal_shipment_status.show()
-    emit("showBsModal")
+    if (modal_shipment_status) {
+        modal_shipment_status.show()
+        emit("showBsModal")
+    }
 }
 
 function hide() {
-    modal_shipment_status.hide()
-    emit("hideBsModal")
+    if (modal_shipment_status) {
+        modal_shipment_status.hide()
+        emit("hideBsModal")
+    }
 }
 
-defineExpose(show, hide)
-
+defineExpose({ show, hide })
 </script>
 
 <style>
