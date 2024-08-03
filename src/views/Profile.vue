@@ -67,8 +67,14 @@
             .JPEG .PNG
           </div>
           <div class="mt-3 d-flex justify-content-center">
-            <button class="btn button-foto border">
-              <Icon icon="mdi:image" class="" style="font-size: 24px" />Ubah
+            <input
+              type="file"
+              ref="fileInput"
+              @change="onFileChange"
+              style="display: none"
+            />
+            <button class="btn button-foto border" @click="triggerFileInput">
+              <Icon icon="mdi:image" class="" style="font-size: 24px" /> Ubah
               foto
             </button>
           </div>
@@ -93,12 +99,29 @@
       </div>
     </div>
   </div>
+  <!-- modal -->
+  <div class="modal fade" id="successModal" tabindex="-1" aria-labelledby="successModalLabel" aria-hidden="true">
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="successModalLabel">Berhasil</h5>
+          <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+        </div>
+        <div class="modal-body">
+          Foto berhasil diperbarui
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-primary" @click="reload()">OK</button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref, computed } from "vue";
+import { ref, computed, onMounted } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
 import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
@@ -107,6 +130,46 @@ const token = localStorage.getItem("token");
 const users = ref([""]);
 const picture = ref([""]);
 const username = localStorage.name ?? null;
+const fileInput = ref(null);
+
+const triggerFileInput = () => {
+  fileInput.value.click();
+};
+
+const onFileChange = async (event) => {
+  const file = event.target.files[0];
+  if (file) {
+    await updatePicture(file);
+  }
+};
+
+const updatePicture = async (file) => {
+  const formData = new FormData();
+  formData.append('file', file);
+
+  try {
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/user/update-picture`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+          'Content-Type': 'multipart/form-data',
+        },
+      }
+    );
+
+    if (response.status === 200) {
+      openModal();
+    }
+  } catch (error) {
+    console.log('Error updating picture:', error);
+  }
+};
+const openModal = () => {
+  const modal = new bootstrap.Modal(document.getElementById("successModal"));
+  modal.show();
+};
 
 // Ensure users.value.picture is a string URL or get the correct property from the object
 const profilePicture = computed(() => {
@@ -145,6 +208,9 @@ async function fetchUserPicture() {
     console.log("Error fetching picture:", error);
   }
 }
+const reload = () => {
+  location.reload();
+};
 fetchUser();
 fetchUserPicture();
 </script>
