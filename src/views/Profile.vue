@@ -12,7 +12,7 @@
               <img
                 class="rounded-circle"
                 style="height: 7vh; width: 7vh"
-                src="@/assets/default_profile_picture.jpg"
+                :src="profilePicture"
               />
             </div>
             <div
@@ -33,8 +33,18 @@
           </div>
         </div>
         <div class="px-3 pt-2 pb-4">
-          <div @click="router.push('/profile/waiting-payment')" class="py-2 sidebar-list">Menunggu Pembayaran</div>
-          <div @click="router.push('/profile/transaction-history')" class="py-2 sidebar-list">Riwayat Transaksi</div>
+          <div
+            @click="router.push('/profile/waiting-payment')"
+            class="py-2 sidebar-list"
+          >
+            Menunggu Pembayaran
+          </div>
+          <div
+            @click="router.push('/profile/transaction-history')"
+            class="py-2 sidebar-list"
+          >
+            Riwayat Transaksi
+          </div>
         </div>
       </div>
     </div>
@@ -50,11 +60,7 @@
             <p class="text-secondary fw-bold">{{ username }}</p>
           </div>
           <div class="d-flex justify-content-center">
-            <img
-              :src="profilePicture"
-              alt="@/assets/default_profile_picture.jpg"
-              style="max-width: 100%"
-            />
+            <img :src="profilePicture" style="max-width: 100%" />
           </div>
           <div class="px-5 mx-3" style="font-size: smaller; color: #555">
             Besar file maksimum 2Mb. Ekstensi file yang diperbolehkan: .JPG
@@ -99,11 +105,12 @@ import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
 
 const token = localStorage.getItem("token");
 const users = ref([""]);
+const picture = ref([""]);
 const username = localStorage.name ?? null;
 
 // Ensure users.value.picture is a string URL or get the correct property from the object
 const profilePicture = computed(() => {
-  return users.value.picture || defaultProfilePicture; // Adjust according to the structure of your object
+  return "http://" + picture.value || defaultProfilePicture; // Adjust according to the structure of your object
 });
 
 async function fetchUser() {
@@ -122,7 +129,24 @@ async function fetchUser() {
     console.log("Error fetching user:", error);
   }
 }
+async function fetchUserPicture() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/user/get-picture",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    picture.value = response.data.data;
+    console.log(users.value);
+  } catch (error) {
+    console.log("Error fetching picture:", error);
+  }
+}
 fetchUser();
+fetchUserPicture();
 </script>
 
 <style scoped>
