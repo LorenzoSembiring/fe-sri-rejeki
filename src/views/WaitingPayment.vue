@@ -64,7 +64,11 @@
           <div class="d-flex ps-1">
             <p class="text-secondary fw-bold">Menunggu Pembayaran</p>
           </div>
-          <div v-if="Array.isArray(orderData) && orderData.length" v-for="item in orderData" class="border col-9 rounded p-3 mb-2">
+          <div
+            v-if="Array.isArray(orderData) && orderData.length"
+            v-for="item in orderData"
+            class="border col-9 rounded p-3 mb-2"
+          >
             <div class="d-flex">
               <Icon icon="bi:bag" class="fs-5 secondary" />
               <p class="ps-2 fw-semibold">Belanja</p>
@@ -91,7 +95,10 @@
                     class="btn btn-outline-success border"
                     data-bs-toggle="modal"
                     data-bs-target="#exampleModal"
-                    @click="getMidtransStatus(item.midtrans_id), setMidtransToken(item.midtrans_token)"
+                    @click="
+                      getMidtransStatus(item.midtrans_id),
+                        setMidtransToken(item.midtrans_token)
+                    "
                   >
                     Cek Status Bayar
                   </button>
@@ -104,7 +111,10 @@
               </div>
             </div>
           </div>
-          <div v-else class="justify-content-center d-flex fw-semibold text-secondary">
+          <div
+            v-else
+            class="justify-content-center d-flex fw-semibold text-secondary"
+          >
             Tidak ada data
           </div>
         </div>
@@ -122,27 +132,43 @@
     <div class="modal-dialog">
       <div class="modal-content">
         <div class="modal-body">
-          <div class="d-flex flex-column align-items-center">
-            <div>
-              <Icon
-                icon="mdi:information-outline"
-                class="text-danger "
-                style="font-size: 80px"
-              />
+          <div >
+            <div class="d-flex flex-column align-items-center">
+              <div>
+                <Icon
+                  icon="mdi:information-outline"
+                  class="text-danger"
+                  style="font-size: 80px"
+                />
+              </div>
+              <div class="fw-semibold fs-5">
+                Anda belum melakukan pembayaran
+              </div>
+              {{ clickedPayment }}
             </div>
-            <div class="fw-semibold fs-5">Anda belum melakukan pembayaran</div>
-            {{ clickedPayment }}
+            <div class="d-flex justify-content-center py-3">
+              <button
+                @click="makePayment(midtransToken)"
+                class="btn btn-outline-success border"
+              >
+                Bayar
+              </button>
+            </div>
           </div>
-          <div class="d-flex justify-content-center py-3">
-            <button @click="makePayment(midtransToken)" class="btn btn-outline-success border">Bayar</button>
-          </div>
+          <!-- <div v-else-if="!isPaid">
+            <Icon
+                  icon="line-md:loading-twotone-loop"
+                  class="text-danger"
+                  style="font-size: 80px"
+                />
+          </div> -->
         </div>
         <div class="modal-footer">
           <button
             type="button"
             class="btn btn-outline-secondary"
             data-bs-dismiss="modal"
-            @click="isPaid = null, midtransToken = null"
+            @click="(isPaid = null), (midtransToken = null)"
           >
             Tutup
           </button>
@@ -162,12 +188,12 @@ import axios from "axios";
 const orderData = ref([]);
 const token = localStorage.getItem("token");
 const username = localStorage.name ?? null;
-const midtransToken = ref("")
-const isPaid = ref()
+const midtransToken = ref("");
+const isPaid = ref(null);
 
 function setMidtransToken(token) {
-  midtransToken.value = token
-  console.log(midtransToken.value)
+  midtransToken.value = token;
+  console.log(midtransToken.value);
 }
 
 function formatToIDR(number) {
@@ -225,18 +251,19 @@ async function getMidtransStatus(id) {
         },
       }
     );
-    if (response.data.status_code == 404) {
-      isPaid.value = false
-    } else if(response.data.transaction_status = "settlement") {
+    if (response.data.transaction_status == "settlement") {
       isPaid.value = true
       location.reload()
+    }
+    else {
+      isPaid.value = false
     }
   } catch (error) {
     console.log("Error fetching payment status:", error);
   }
 }
 async function makePayment(token) {
-  window.open(`https://app.sandbox.midtrans.com/snap/v4/redirection/${token}`)
+  window.open(`https://app.sandbox.midtrans.com/snap/v4/redirection/${token}`);
 }
 
 fetchOrder();
