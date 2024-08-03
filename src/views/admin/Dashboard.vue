@@ -82,7 +82,32 @@
             <div class="col">{{item.formatted_date}}</div>
             <div class="col">{{item.total !== null ? formatToIDR(parseInt(item.total)) : 'Loading...'}}</div>
             <div class="col">
-              <Icon icon="ph:dots-three-bold" style="font-size: 26px" />
+              <button
+                class="btn button-putih border dropdown-toggle fw-semibold"
+                type="button"
+                data-bs-toggle="dropdown"
+                aria-expanded="false"
+              >
+                Aksi
+              </button>
+              <ul class="dropdown-menu">
+                <li>
+                  <a
+                    class="dropdown-item"
+                    :href="`/admin/order/detail/${item.id}`"
+                    ><span class="fw-semibold">Detail</span></a
+                  >
+                </li>
+                <li v-if="item.status == 'processed'">
+                  <span
+                    class="fw-semibold dropdown-item"
+                    style="cursor: pointer"
+                    @click="openModal(item)"
+                  >
+                    Tambahkan Resi
+                  </span>
+                </li>
+              </ul>
             </div>
           </div>
         </div>
@@ -109,6 +134,62 @@
       </div>
     </LayoutDefault>
   </div>
+      <!-- modal -->
+      <div
+      class="modal fade"
+      id="resiModal"
+      tabindex="-1"
+      aria-labelledby="resiModalLabel"
+      aria-hidden="true"
+    >
+      <div class="modal-dialog">
+        <div class="modal-content">
+          <div class="modal-header">
+            <h5 class="modal-title" id="resiModalLabel">Tambahkan Resi</h5>
+            <button
+              type="button"
+              class="btn-close"
+              data-bs-dismiss="modal"
+              aria-label="Close"
+            ></button>
+          </div>
+          <div class="modal-body row mx-0">
+            <div class="row p-0 mb-3">
+              <div class="text-secondary">
+                Kurir pilihan: <b>{{ selectedItem.kurir }}</b> -
+                <b>{{ selectedItem.type_kurir }}</b>
+              </div>
+              <div class="text-secondary">
+                Ongkir: <b>{{ formatToIDR(selectedItem.ongkir) }}</b>
+              </div>
+            </div>
+            <div class="row">
+              <div class="col-1 p-0 fw-semibold pt-2">Resi:</div>
+              <div class="col">
+                <input type="text" class="form-control" v-model="resi" />
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer pe-4">
+            <button
+              type="button"
+              class="btn btn-light border"
+              data-bs-dismiss="modal"
+              @click="selectedItem = []"
+            >
+              Tutup
+            </button>
+            <button
+              type="button"
+              class="btn button-coklat"
+              @click="submitReceipt()"
+            >
+              Tambahkan
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
 </template>
 
 <script setup>
@@ -125,6 +206,37 @@ const newOrderCount = ref(null);
 const orderCount = ref(null);
 const totalSales = ref(null);
 
+const resi = ref("");
+const selectedItem = ref([]);
+
+const openModal = (item) => {
+  selectedItem.value = item;
+  const modalElement = document.getElementById("resiModal");
+  const modal = new bootstrap.Modal(modalElement); // Use Bootstrap's Modal class
+  modal.show();
+};
+async function submitReceipt() {
+  try {
+    const formData = new FormData();
+    formData.append("order_id", selectedItem.value.id);
+    formData.append("resi", resi.value);
+    const response = await axios.post(
+      `${import.meta.env.VITE_API_URL}/api/order/add-resi`,
+      formData,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    console.log(response);
+    if (response.status == 200) {
+      location.reload();
+    }
+  } catch (error) {
+    console.log("Error submitting receipt:", error);
+  }
+}
 const fetchNewOrderCount = async () => {
   try {
     const response = await axios.get(
@@ -228,6 +340,13 @@ onMounted(async () => {
 .border-coklat {
   border: 1px solid #dbcdc5;
   /* box-shadow: 1px 1px 4px rgb(248, 217, 206);  */
+}
+.button-coklat {
+  border-radius: 8px;
+  border-style: none;
+  background-color: #a77155;
+  color: rgb(255, 255, 255);
+  font-weight: 600;
 }
 .font-jakarta {
   font-family: "Plus Jakarta Sans", sans-serif;
