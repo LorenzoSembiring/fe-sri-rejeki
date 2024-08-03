@@ -155,13 +155,6 @@
               </button>
             </div>
           </div>
-          <!-- <div v-else-if="!isPaid">
-            <Icon
-                  icon="line-md:loading-twotone-loop"
-                  class="text-danger"
-                  style="font-size: 80px"
-                />
-          </div> -->
         </div>
         <div class="modal-footer">
           <button
