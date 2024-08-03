@@ -10,7 +10,7 @@
           >
             <div class="col-3 align-items-center p-1">
               <img
-                class="rounded-circle"
+                class="rounded-circle profile-picture"
                 style="height: 7vh; width: 7vh"
                 :src="profilePicture"
               />
@@ -60,7 +60,9 @@
             <p class="text-secondary fw-bold">{{ username }}</p>
           </div>
           <div class="d-flex justify-content-center">
-            <img :src="profilePicture" style="max-width: 100%" />
+            <div class=" image-container">
+              <img :src="profilePicture" class="square-image" />
+            </div>
           </div>
           <div class="px-5 mx-3" style="font-size: smaller; color: #555">
             Besar file maksimum 2Mb. Ekstensi file yang diperbolehkan: .JPG
@@ -241,5 +243,25 @@ fetchUserPicture();
   background-color: #fffaf8;
   color: #694b3a;
   transform: scale(0.98);
+}
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.image-container {
+  width: 200px;
+  height: 200px;
+  position: relative;
+  overflow: hidden;
+}
+
+.square-image {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover; /* This ensures the image covers the container */
 }
 </style>
