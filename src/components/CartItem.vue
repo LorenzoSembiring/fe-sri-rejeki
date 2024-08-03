@@ -28,7 +28,7 @@
           <div class="ms-3 mt-1 border rounded" style="width: fit-content">
             <button class="button-counter" v-if="quantityRef > 1" @click="decrement()">-</button>
             <button class="button-counter" style="cursor: not-allowed;" v-else disabled>-</button>
-            <input type="number" class="input-counter" v-model="quantityRef" :max="stock+quantity" />
+            <span>{{ quantityRef }}</span>
             <button class="button-counter" @click="increment()">+</button>
           </div>
           <div class="ms-5">

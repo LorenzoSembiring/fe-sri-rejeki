@@ -105,7 +105,7 @@
             <p class="fw-semibold px-1 pt-2 mb-0">Jumlah</p>
             <div class="ms-3 mt-1 border rounded" style="width: fit-content">
               <button class="button-counter" @click="decrement()">-</button>
-              <input type="number" class="input-counter" v-model="inputValue" @input="checkValue" :max="maxValue"/>
+              <span>{{inputValue}}</span>
               <button class="button-counter" @click="increment()">+</button>
             </div>
           </div>
