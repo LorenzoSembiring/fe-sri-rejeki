@@ -82,7 +82,15 @@
               </div>
               <div class="d-flex" v-if="item.status == 'waiting for payment'">
                 <div class="ps-3">
-                  <button class="btn btn-outline-success border">
+                  <button
+                    class="btn btn-outline-success border"
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalCekBayar"
+                    @click="
+                      getMidtransStatus(item.midtrans_id),
+                        setMidtransToken(item.midtrans_token)
+                    "
+                  >
                     Cek Status Bayar
                   </button>
                 </div>
@@ -92,12 +100,10 @@
                   </button>
                 </div>
               </div>
-              <div v-else-if="item.status == 'on delivery'">
+              <div v-else-if="item.status == 'shipped'">
                 <div class="ps-3">
-                  <button class="btn btn-outline-success border">
-                    Lacak
-                  </button>
-                  <button class="btn btn-outline-light border">
+                  <button class="btn btn-outline-success border">Lacak</button>
+                  <button class="ms-2 btn btn-outline-secondary border">
                     Detail
                   </button>
                 </div>
@@ -116,6 +122,53 @@
     </div>
   </div>
   <ModalShipmentStatus></ModalShipmentStatus>
+  <div
+    class="modal fade"
+    id="modalCekBayar"
+    tabindex="-1"
+    aria-labelledby="exampleModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog">
+      <div class="modal-content">
+        <div class="modal-body">
+          <div>
+            <div class="d-flex flex-column align-items-center">
+              <div>
+                <Icon
+                  icon="mdi:information-outline"
+                  class="text-danger"
+                  style="font-size: 80px"
+                />
+              </div>
+              <div class="fw-semibold fs-5">
+                Anda belum melakukan pembayaran
+              </div>
+              {{ clickedPayment }}
+            </div>
+            <div class="d-flex justify-content-center py-3">
+              <button
+                @click="makePayment(midtransToken)"
+                class="btn btn-outline-success border"
+              >
+                Bayar
+              </button>
+            </div>
+          </div>
+        </div>
+        <div class="modal-footer">
+          <button
+            type="button"
+            class="btn btn-outline-secondary"
+            data-bs-dismiss="modal"
+            @click="(isPaid = null), (midtransToken = null)"
+          >
+            Tutup
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
@@ -129,6 +182,7 @@ import axios from "axios";
 const orderData = ref([]);
 const token = localStorage.getItem("token");
 const username = localStorage.name ?? null;
+const midtransToken = ref("");
 
 function formatToIDR(number) {
   return number.toLocaleString("id-ID", {
@@ -137,6 +191,35 @@ function formatToIDR(number) {
     minimumFractionDigits: 0,
     maximumFractionDigits: 0,
   });
+}
+async function makePayment(token) {
+  window.open(`https://app.sandbox.midtrans.com/snap/v4/redirection/${token}`);
+}
+
+function setMidtransToken(token) {
+  midtransToken.value = token;
+  console.log(midtransToken.value);
+}
+
+async function getMidtransStatus(id) {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + `/api/order/midtrans-status/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.data.transaction_status == "settlement") {
+      isPaid.value = true;
+      location.reload();
+    } else {
+      isPaid.value = false;
+    }
+  } catch (error) {
+    console.log("Error fetching payment status:", error);
+  }
 }
 
 const getBadgeClass = (status) => {
