@@ -25,6 +25,7 @@ import AdminCategory from "@/views/admin/Category.vue";
 import AdminAddCategory from "@/views/admin/AddCategory.vue";
 import AdminEditCategory from "@/views/admin/EditCategory.vue";
 import Order from "@/views/admin/Order.vue";
+import AdminDetailOrder from "@/views/admin/DetailOrder.vue";
 import Statistic from "@/views/admin/Statistic.vue";
 
 const router = createRouter({
@@ -156,6 +157,13 @@ const router = createRouter({
 			path: "/admin/edit-category/:id",
       name: "Edit Category",
       component: AdminEditCategory,
+      props: true,
+			meta: { requiresAuth: true, role: 'admin' }
+    },
+    {
+			path: "/admin/order/detail/:id",
+      name: "Detail Order",
+      component: AdminDetailOrder,
       props: true,
 			meta: { requiresAuth: true, role: 'admin' }
     },
