@@ -90,6 +90,7 @@
         <div class="col">
           <div class="h5 mt-2 border-bottom pb-3 px-3">Gambar Produk</div>
           <div class="ms-4 my-4">
+            {{ uploads }}
             <div class="row">
               <div
                 class="col-lg-2 col-md-3 col-sm-4"
@@ -434,17 +435,25 @@ const sizesMatch = computed(() => {
 async function submit() {
   try {
     const formData = new FormData();
-    formData.append("name", name.value);
-    formData.append("description", description.value);
-    formData.append("price", price.value);
-    formData.append("weight", weight.value);
-    formData.append("category_id", category_id.value);
-    formData.append("size", JSON.stringify(sizes.value));
-    formData.append("mesh_id", selected3D.value);
-    formData.append("file", textureInput.value.files[0]);
 
-    const response = await axios.post(
-      `${import.meta.env.VITE_API_URL}/api/product/store/`,
+    // Append only if values exist
+    if (name.value) formData.append("name", name.value);
+    if (description.value) formData.append("description", description.value);
+    if (price.value) formData.append("price", price.value);
+    if (weight.value) formData.append("weight", weight.value);
+    if (category_id.value) formData.append("category_id", category_id.value);
+    if (sizes.value.length > 0) formData.append("size", JSON.stringify(sizes.value));
+    if (selected3D.value) formData.append("mesh_id", selected3D.value);
+
+    // Check for pictures that are new or updated
+    for (const upload of uploads.value) {
+      if (upload.file) {
+        formData.append(`picture_${upload.index}`, upload.file);
+      }
+    }
+
+    const response = await axios.put(
+      `${import.meta.env.VITE_API_URL}/api/product/update/${id.value}`,
       formData,
       {
         headers: {
@@ -452,15 +461,17 @@ async function submit() {
         },
       }
     );
-    if (response.status == 201) {
+
+    if (response.status === 200) {
       await submitPictures(response.data.data.id);
     } else {
-      // show modal
+      // Show modal
     }
   } catch (error) {
     console.error("Error storing product:", error);
   }
 }
+
 
 async function submitPictures(productId) {
   try {
