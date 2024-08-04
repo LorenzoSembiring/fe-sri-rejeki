@@ -44,7 +44,7 @@
     <div class="px-2 pe-3 my-3">
       <div class="d-flex ms-1 border-profile rounded-pill row mt-auto mb-2" style="height: 9vh; width: 100%;">
         <div class="col-3 align-items-center p-1">
-          <img class="rounded-circle" style="height: 7vh; width: 7vh;" src="@/assets/default_profile_picture.jpg">
+          <img class="rounded-circle" style="height: 7vh; width: 7vh;" :src="profilePicture">
         </div>
         <div class="text-brown fw-semibold d-flex align-items-center col" style="height: 100%">
           {{ username }}
@@ -56,13 +56,40 @@
 
 <script setup>
 import { Icon } from "@iconify/vue";
+import axios from 'axios';
+import { ref, computed } from "vue";
+import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
 
 defineProps({
   route: String
 });
 
 const username = localStorage.name ?? null;
+const picture = ref(null);
+const token = localStorage.getItem("token");
 
+const profilePicture = computed(() => {
+  return picture.value && picture.value.slice(-4) !== "null"
+    ? "http://" + picture.value
+    : defaultProfilePicture;
+});
+
+async function fetchUserPicture() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/user/get-picture",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    picture.value = response.data.data;
+  } catch (error) {
+    console.log("Error fetching picture:", error);
+  }
+}
+fetchUserPicture();
 </script>
 
 <style scoped>
