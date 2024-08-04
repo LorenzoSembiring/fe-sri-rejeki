@@ -10,9 +10,9 @@
           >
             <div class="col-3 align-items-center p-1">
               <img
-                class="rounded-circle"
+                class="rounded-circle profile-picture"
                 style="height: 7vh; width: 7vh"
-                src="@/assets/default_profile_picture.jpg"
+                :src="profilePicture"
               />
             </div>
             <div
@@ -184,10 +184,12 @@
 import ModalShipmentStatus from "@/components/ModalShipmentStatus.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref, reactive } from "vue";
+import { ref, reactive, computed } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
+import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
 
+const picture = ref([""]);
 const orderData = ref([]);
 const token = localStorage.getItem("token");
 const username = localStorage.name ?? null;
@@ -299,6 +301,30 @@ async function cancelOrder(id) {
     console.log("Error fetching user:", error);
   }
 }
+
+const profilePicture = computed(() => {
+  return picture.value.slice(-4) === 'null'
+    ? defaultProfilePicture
+    : "http://" + picture.value;
+});
+
+async function fetchUserPicture() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/user/get-picture",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    picture.value = response.data.data;
+  } catch (error) {
+    console.log("Error fetching picture:", error);
+  }
+}
+
+fetchUserPicture();
 fetchOrder();
 </script>
 
@@ -312,5 +338,10 @@ fetchOrder();
   background-color: #f7f5f0;
   border-radius: 1px;
   font-weight: 500;
+}
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

@@ -10,9 +10,9 @@
           >
             <div class="col-3 align-items-center p-1">
               <img
-                class="rounded-circle"
+                class="rounded-circle profile-picture"
                 style="height: 7vh; width: 7vh"
-                src="@/assets/default_profile_picture.jpg"
+                :src="profilePicture"
               />
             </div>
             <div
@@ -213,14 +213,16 @@
 <script setup>
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref, watch, onMounted } from "vue";
+import { ref, watch, onMounted,computed } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
+import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
 
 const token = localStorage.getItem("token");
 const users = ref([""]);
 const username = localStorage.name ?? null;
 var address = ref([]);
+const picture = ref([""]);
 
 const name = ref("");
 const jalan = ref("");
@@ -246,6 +248,28 @@ const selectedNames = ref({
 onMounted(() => {
   fetchAddress();
 });
+
+const profilePicture = computed(() => {
+  return picture.value.slice(-4) === 'null'
+    ? defaultProfilePicture
+    : "http://" + picture.value;
+});
+
+async function fetchUserPicture() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/user/get-picture",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    picture.value = response.data.data;
+  } catch (error) {
+    console.log("Error fetching picture:", error);
+  }
+}
 
 async function changeSelected(id) {
   try {
@@ -417,6 +441,7 @@ const addAddress = () => {
   modal.show();
 };
 
+fetchUserPicture();
 fetchProvince();
 </script>
 
@@ -484,5 +509,10 @@ input::-webkit-inner-spin-button {
 /* Firefox */
 input[type=number] {
   -moz-appearance: textfield;
+}
+.profile-picture {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 }
 </style>

@@ -175,7 +175,9 @@ const openModal = () => {
 
 // Ensure users.value.picture is a string URL or get the correct property from the object
 const profilePicture = computed(() => {
-  return "http://" + picture.value || defaultProfilePicture; // Adjust according to the structure of your object
+  return picture.value.slice(-4) === 'null'
+    ? defaultProfilePicture
+    : "http://" + picture.value;
 });
 
 async function fetchUser() {
