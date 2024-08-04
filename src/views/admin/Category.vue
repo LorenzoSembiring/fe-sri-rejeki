@@ -51,23 +51,7 @@
         </div>
       </div>
       <div class="pt-3 rounded-bottom border border-top-0 bg-tabel">
-        <div class="row mx-3 text-secondary">
-          <div class="col mt-1">Menampilkan 1-10 dari 20 Kategori</div>
-          <div class="col d-flex justify-content-end align-items-center">
-            <nav aria-label="Page navigation example">
-              <ul class="pagination">
-                <li class="page-item">
-                  <a class="page-link" href="#">←</a>
-                </li>
-                <li class="page-item"><a class="page-link" href="#">1</a></li>
-                <li class="page-item"><a class="page-link" href="#">2</a></li>
-                <li class="page-item"><a class="page-link" href="#">3</a></li>
-                <li class="page-item">
-                  <a class="page-link" href="#">→</a>
-                </li>
-              </ul>
-            </nav>
-          </div>
+        <div class="row p-3 text-secondary">
         </div>
       </div>
     </div>
