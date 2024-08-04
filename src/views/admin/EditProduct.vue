@@ -9,7 +9,13 @@
           <div class="h5 mt-2 border-bottom pb-3">Informasi Produk</div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Nama Produk</div>
-            <input type="text" class="form-control" id="name" v-model="name" :placeholder="fetchedData.name">
+            <input
+              type="text"
+              class="form-control"
+              id="name"
+              v-model="name"
+              :placeholder="fetchedData.name"
+            />
           </div>
           <div class="my-4 fw-semibold text-grey d-flex">
             <div class="col-4 p-0">Kategori</div>
@@ -19,7 +25,9 @@
               id="category"
               v-model="category_id"
             >
-            <option value="" selected disabled hidden>{{ fetchedData.category }}</option>
+              <option value="" selected disabled hidden>
+                {{ fetchedData.category }}
+              </option>
               <option
                 v-for="category in categories"
                 :id="category.id"
@@ -90,10 +98,18 @@
               >
                 <div @click="triggerPictureInput(index)">
                   <img
-                  v-if="item.preview || (isJsonString(fetchedData?.picture) && JSON.parse(fetchedData.picture)[index])"
-
+                    v-if="
+                      item.preview ||
+                      (isJsonString(fetchedData?.picture) &&
+                        JSON.parse(fetchedData.picture)[index])
+                    "
                     class="texture"
-                    :src="item.preview || getFullImageUrl(JSON.parse(fetchedData.picture)[index].path)"
+                    :src="
+                      item.preview ||
+                      getFullImageUrl(
+                        JSON.parse(fetchedData.picture)[index].path
+                      )
+                    "
                     alt="Selected Image"
                   />
                   <div v-else class="rounded product-picture p-3 pt-4">
@@ -147,8 +163,21 @@
           </div>
           <div class="my-4 d-flex fw-semibold text-grey">
             <div class="col-4 p-0">Tekstur</div>
-            <div v-if="textureUrl || fetchedData.texture" @click="triggerTextureInput">
-              <img class="texture" :src="texture ? (textureUrl ? textureUrl : getFullImageUrl(fetchedData.texture)) : ''" alt="Selected Image" />
+            <div
+              v-if="textureUrl || fetchedData.texture"
+              @click="triggerTextureInput"
+            >
+              <img
+                class="texture"
+                :src="
+                  texture
+                    ? textureUrl
+                      ? textureUrl
+                      : getFullImageUrl(fetchedData.texture)
+                    : ''
+                "
+                alt="Selected Image"
+              />
             </div>
             <div
               v-else
@@ -228,7 +257,12 @@
                 </button>
               </div>
               <div class="row">
-                <div v-for="(size, key) in sizes" class="my-1 fs-5 col-3">
+                {{ sizesMatch  }}
+                <div
+                  v-for="(size, key) in sizes"
+                  :key="key"
+                  class="my-1 fs-5 col-3"
+                >
                   <div
                     class="d-inline-flex badge rounded border text-bg-light mt-2"
                   >
@@ -288,7 +322,12 @@
               @click="select3D(item.id)"
             >
               <div class="m-2 justify-content-center d-flex">
-                <ModalView3D :width="200" :height="200" :mesh="item.path" :texture="texture"></ModalView3D>
+                <ModalView3D
+                  :width="200"
+                  :height="200"
+                  :mesh="item.path"
+                  :texture="texture"
+                ></ModalView3D>
               </div>
               <div class="my-2 text-center fw-semibold">{{ item.name }}</div>
             </div>
@@ -338,10 +377,10 @@ const fetchedData = reactive({
   mesh: "",
   texture: "",
   picture: [],
-  sizes: []
-})
+  sizes: [],
+});
 const route = useRoute();
-const id = ref("")
+const id = ref("");
 id.value = route.params.id;
 const URL = window.URL;
 const size = ref("");
@@ -361,7 +400,7 @@ const textureInput = ref(null);
 const textureUrl = ref(null);
 const selected3D = ref(null);
 const D3items = ref([]);
-const texture = "/uploads/texture/checker-default.png"
+const texture = "/uploads/texture/checker-default.png";
 // submited data
 const name = ref("");
 const description = ref("");
@@ -369,12 +408,16 @@ const price = ref("");
 const weight = ref("");
 const category_id = ref("");
 const productId = ref("");
+const fetchedSizes = ref([]);
 
 const getFullImageUrl = (path) => {
   return `${import.meta.env.VITE_API_URL}${path}`;
 };
+function isEqual(obj1, obj2) {
+  return JSON.stringify(obj1) === JSON.stringify(obj2);
+}
 const isJsonString = (str) => {
-  if (typeof str !== 'string') {
+  if (typeof str !== "string") {
     return false;
   }
   try {
@@ -384,6 +427,10 @@ const isJsonString = (str) => {
     return false;
   }
 };
+const sizesMatch = computed(() => {
+  // Or if using the custom function:
+  return isEqual(sizes.value, fetchedSizes.value);
+});
 async function submit() {
   try {
     const formData = new FormData();
@@ -435,10 +482,10 @@ async function submitPictures(productId) {
           }
         );
         console.log(response.data);
-        console.log(i)
-        console.log(smallestIndexWithoutFile.value)
-        if((i + 1) == smallestIndexWithoutFile.value && response.status == 201) {
-          router.push("/admin/product")
+        console.log(i);
+        console.log(smallestIndexWithoutFile.value);
+        if (i + 1 == smallestIndexWithoutFile.value && response.status == 201) {
+          router.push("/admin/product");
         }
       }
     }
@@ -461,16 +508,20 @@ async function fetchProduct() {
         },
       }
     );
-    console.log( response.data.data.name)
-      fetchedData.name = response.data.data.name;
-      fetchedData.category = response.data.data.category;
-      fetchedData.description = response.data.data.description;
-      fetchedData.price = response.data.data.price;
-      fetchedData.weight = response.data.data.weight;
-      fetchedData.mesh = response.data.data.mesh_id;
-      fetchedData.texture = response.data.data.texture;
-      fetchedData.picture = response.data.data.pictures;
-      fetchedData.size = response.data.data.size;
+    console.log(response.data.data.name);
+    fetchedData.name = response.data.data.name;
+    fetchedData.category = response.data.data.category;
+    fetchedData.description = response.data.data.description;
+    fetchedData.price = response.data.data.price;
+    fetchedData.weight = response.data.data.weight;
+    fetchedData.mesh = response.data.data.mesh_id;
+    fetchedData.texture = response.data.data.texture;
+    fetchedData.picture = response.data.data.pictures;
+    fetchedData.sizes = JSON.parse(response.data.data.sizes);
+    // sizes.value = JSON.parse(fetchProductData.value.sizes)
+    const parsedSizes = JSON.parse(response.data.data.sizes);
+    fetchedSizes.value = parsedSizes;
+    sizes.value = parsedSizes;
   } catch (error) {
     console.log("Error fetching product:", error);
   }
@@ -489,28 +540,28 @@ async function fetchCategory() {
 }
 async function fetchMesh() {
   try {
-      const response = await axios.get(
-        import.meta.env.VITE_API_URL + "/api/mesh/index",
-        {
-          headers: {
-            Authorization: `Bearer ${token}`,
-          },
-        }
-      );
-      D3items.value = response.data.data;
-    } catch (error) {
-      console.error("Error fetching mesh:", error);
-    }
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/mesh/index",
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    D3items.value = response.data.data;
+  } catch (error) {
+    console.error("Error fetching mesh:", error);
+  }
 }
 
 const smallestIndexWithoutFile = computed(() => {
-  return uploads.value.findIndex(item => !item.preview);
+  return uploads.value.findIndex((item) => !item.preview);
 });
 
 const triggerPictureInput = (index) => {
   if (index <= smallestIndexWithoutFile.value) {
     pictureInputs.value[index].click();
-    console.log(smallestIndexWithoutFile)
+    console.log(smallestIndexWithoutFile);
   }
 };
 
@@ -545,9 +596,9 @@ const handleTextureChange = () => {
   }
 };
 
-function deleteSize(key) {
-  sizes.value.splice(key, 1);
-}
+const deleteSize = (key) => {
+  sizes.value = sizes.value.filter((_, index) => index !== key);
+};
 
 function addSize(size, stock) {
   if (!size || !stock) {
