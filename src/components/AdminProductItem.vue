@@ -38,6 +38,7 @@
       </div>
       <input
       class="rounded-end input-item input-price"
+      disabled
       type="text"
       id="price"
       v-model="price"
