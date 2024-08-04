@@ -20,6 +20,7 @@ import AdminAddProduct from "@/views/admin/AddProduct.vue";
 import AdminEditProduct from "@/views/admin/EditProduct.vue";
 import AdminDetailProduct from "@/views/admin/DetailProduct.vue";
 import D3 from "@/views/admin/3D.vue";
+import Edit3D from "@/views/admin/Edit3D.vue";
 import AdminAdd3D from "@/views/admin/Add3D.vue";
 import AdminCategory from "@/views/admin/Category.vue";
 import AdminAddCategory from "@/views/admin/AddCategory.vue";
@@ -139,6 +140,13 @@ const router = createRouter({
 			path: "/admin/3d",
       name: "d3",
       component: D3,
+			meta: { requiresAuth: true, role: 'admin' }
+    },
+    {
+			path: "/admin/edit-3d/:id",
+      name: "Edit 3D",
+      component: Edit3D,
+      props: true,
 			meta: { requiresAuth: true, role: 'admin' }
     },
     {
