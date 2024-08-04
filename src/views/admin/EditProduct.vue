@@ -90,7 +90,7 @@
         <div class="col">
           <div class="h5 mt-2 border-bottom pb-3 px-3">Gambar Produk</div>
           <div class="ms-4 my-4">
-            {{ uploads }}
+            <!-- {{ uploads }} -->
             <div class="row">
               <div
                 class="col-lg-2 col-md-3 col-sm-4"
@@ -258,7 +258,7 @@
                 </button>
               </div>
               <div class="row">
-                {{ sizesMatch  }}
+                <!-- {{ sizesMatch  }} -->
                 <div
                   v-for="(size, key) in sizes"
                   :key="key"
@@ -444,7 +444,7 @@ async function submit() {
     if (category_id.value) formData.append("category_id", category_id.value);
     if (sizes.value.length > 0) formData.append("size", JSON.stringify(sizes.value));
     if (selected3D.value) formData.append("mesh_id", selected3D.value);
-
+    if (textureInput.value.files[0]) formData.append("file", textureInput.value.files[0]);
     // Check for pictures that are new or updated
     for (const upload of uploads.value) {
       if (upload.file) {
@@ -482,8 +482,8 @@ async function submitPictures(productId) {
         formData.append("product_id", productId);
         formData.append("index", uploads.value[i].index);
 
-        const response = await axios.post(
-          `${import.meta.env.VITE_API_URL}/api/product/picture/store/`,
+        const response = await axios.put(
+          `${import.meta.env.VITE_API_URL}/api/product/picture/update/`,
           formData,
           {
             headers: {
@@ -492,16 +492,16 @@ async function submitPictures(productId) {
             },
           }
         );
+        
         console.log(response.data);
-        console.log(i);
-        console.log(smallestIndexWithoutFile.value);
-        if (i + 1 == smallestIndexWithoutFile.value && response.status == 201) {
+        
+        if (i + 1 == smallestIndexWithoutFile.value && response.status == 200) {
           router.push("/admin/product");
         }
       }
     }
   } catch (error) {
-    console.error("Error storing pictures:", error);
+    console.error("Error updating pictures:", error);
   }
 }
 
@@ -570,10 +570,8 @@ const smallestIndexWithoutFile = computed(() => {
 });
 
 const triggerPictureInput = (index) => {
-  if (index <= smallestIndexWithoutFile.value) {
-    pictureInputs.value[index].click();
-    console.log(smallestIndexWithoutFile);
-  }
+  pictureInputs.value[index].click();
+  console.log(smallestIndexWithoutFile);
 };
 
 const triggerTextureInput = () => {
