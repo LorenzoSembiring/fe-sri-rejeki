@@ -95,14 +95,19 @@
                   </button>
                 </div>
                 <div class="ps-3">
-                  <button class="btn btn-outline-danger border">
+                  <button class="btn btn-outline-danger border" @click="cancelOrder(item.id)">
                     Batalkan
                   </button>
                 </div>
               </div>
               <div v-else-if="item.status == 'shipped'">
                 <div class="ps-3">
-                  <button class="btn btn-outline-success border" @click="openShipmentModal">Lacak</button>
+                  <button
+                    class="btn btn-outline-success border"
+                    @click="openShipmentModal(item)" clickedTrack.awb=item.resi clickedTrack.id=item.id clickedTrack.kurir=item.kurir
+                  >
+                    Lacak
+                  </button>
                   <button class="ms-2 btn btn-outline-secondary border">
                     Detail
                   </button>
@@ -121,7 +126,11 @@
       </div>
     </div>
   </div>
-  <ModalShipmentStatus ref="shipmentModal"></ModalShipmentStatus>
+  <ModalShipmentStatus
+  :kurir="clickedTrack.kurir"
+  :awb="clickedTrack.awb"
+  ref="shipmentModal"
+></ModalShipmentStatus>
   <div
     class="modal fade"
     id="modalCekBayar"
@@ -175,7 +184,7 @@
 import ModalShipmentStatus from "@/components/ModalShipmentStatus.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref } from "vue";
+import { ref, reactive } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
 
@@ -184,8 +193,18 @@ const token = localStorage.getItem("token");
 const username = localStorage.name ?? null;
 const midtransToken = ref("");
 const shipmentModal = ref(null);
+const clickedTrack = reactive({
+      id: "",
+      awb: "",
+      kurir: ""
+    });
 
-function openShipmentModal() {
+    function openShipmentModal(item) {
+  console.log("Opening modal with data:", item);
+  clickedTrack.awb = item.resi;
+  clickedTrack.id = item.id;
+  clickedTrack.kurir = item.kurir;
+  console.log("clickedTrack updated:", clickedTrack);
   shipmentModal.value.show();
 }
 
@@ -263,7 +282,23 @@ async function fetchOrder() {
     console.log("Error fetching user:", error);
   }
 }
-
+async function cancelOrder(id) {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/order/cancel/"+id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+      if (response.data.code == 200) {
+        location.reload()
+      }
+  } catch (error) {
+    console.log("Error fetching user:", error);
+  }
+}
 fetchOrder();
 </script>
 
