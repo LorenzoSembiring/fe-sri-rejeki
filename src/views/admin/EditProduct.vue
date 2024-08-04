@@ -380,6 +380,7 @@ const fetchedData = reactive({
   picture: [],
   sizes: [],
 });
+
 const route = useRoute();
 const id = ref("");
 id.value = route.params.id;
@@ -477,13 +478,17 @@ async function submitPictures(productId) {
   try {
     for (let i = 0; i < uploads.value.length; i++) {
       if (uploads.value[i].file) {
+        const existingPictures = JSON.parse(fetchedData.picture);
+        const existingPicture = existingPictures.find(picture => picture.index === uploads.index);
+        console.log(existingPicture)
         const formData = new FormData();
         formData.append("file", uploads.value[i].file);
         formData.append("product_id", productId);
         formData.append("index", uploads.value[i].index);
 
-        const response = await axios.put(
-          `${import.meta.env.VITE_API_URL}/api/product/picture/update/`,
+        if (existingPicture) {          
+          const response = await axios.put(
+            `${import.meta.env.VITE_API_URL}/api/product/picture/update/`,
           formData,
           {
             headers: {
@@ -492,8 +497,21 @@ async function submitPictures(productId) {
             },
           }
         );
-        
         console.log(response.data);
+      }
+        else {
+          const response = await axios.post(
+            `${import.meta.env.VITE_API_URL}/api/product/picture/store/`,
+          formData,
+          {
+            headers: {
+              Authorization: `Bearer ${token}`,
+              "Content-Type": "multipart/form-data",
+            },
+          }
+        );
+        console.log(response.data);
+        }
         
         if (i + 1 == smallestIndexWithoutFile.value && response.status == 200) {
           router.push("/admin/product");
@@ -533,6 +551,7 @@ async function fetchProduct() {
     const parsedSizes = JSON.parse(response.data.data.sizes);
     fetchedSizes.value = parsedSizes;
     sizes.value = parsedSizes;
+    console.log(fetchedData)
   } catch (error) {
     console.log("Error fetching product:", error);
   }
