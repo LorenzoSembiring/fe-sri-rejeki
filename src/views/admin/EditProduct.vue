@@ -443,7 +443,7 @@ async function submit() {
     if (price.value) formData.append("price", price.value);
     if (weight.value) formData.append("weight", weight.value);
     if (category_id.value) formData.append("category_id", category_id.value);
-    if (sizes.value.length > 0) formData.append("size", JSON.stringify(sizes.value));
+    if (sizes.value.length > 0) formData.append("sizes", JSON.stringify(sizes.value));
     if (selected3D.value) formData.append("mesh_id", selected3D.value);
     if (textureInput.value.files[0]) formData.append("file", textureInput.value.files[0]);
     // Check for pictures that are new or updated
