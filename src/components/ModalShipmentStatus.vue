@@ -110,7 +110,23 @@ async function fetchShipping() {
     console.error("Error fetching shipping status:", error);
   }
 }
+async function orderComplete() {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + "/api/order/delivered/" + props.id,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status == 200) {
+      location.reload()
     }
+  } catch (error) {
+    console.error("Error changing status:", error);
+  }
+}
 function show() {
   if (modal_shipment_status) {
     modal_shipment_status.show();
