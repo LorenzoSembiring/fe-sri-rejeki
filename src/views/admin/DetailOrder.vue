@@ -1,7 +1,7 @@
 <template>
   <LayoutDefault route="order">
     <div class="header">
-      <div class="col h2 text-header px-4 pt-4">Detail Order</div>
+      <div class="col h2 text-header px-4 pt-4">Detail Pesanan</div>
     </div>
     <div class="bg-light mt-4 p-4">
       <!-- Product Information -->
