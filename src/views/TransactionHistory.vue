@@ -95,7 +95,10 @@
                   </button>
                 </div>
                 <div class="ps-3">
-                  <button class="btn btn-outline-danger border" @click="cancelOrder(item.id)">
+                  <button
+                    class="btn btn-outline-danger border"
+                    @click="cancelOrder(item.id)"
+                  >
                     Batalkan
                   </button>
                 </div>
@@ -104,18 +107,31 @@
                 <div class="ps-3">
                   <button
                     class="btn btn-outline-success border"
-                    @click="openShipmentModal(item)" clickedTrack.awb=item.resi clickedTrack.id=item.id clickedTrack.kurir=item.kurir
+                    @click="openShipmentModal(item)"
+                    clickedTrack.awb="item.resi"
+                    clickedTrack.id="item.id"
+                    clickedTrack.kurir="item.kurir"
                   >
                     Lacak
                   </button>
-                  <button class="ms-2 btn btn-outline-secondary border">
+                  <button
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalDetail"
+                    class="ms-2 btn btn-outline-secondary border"
+                    @click="getOrderDetail(item.id)"
+                  >
                     Detail
                   </button>
                 </div>
               </div>
               <div v-else>
                 <div class="ps-3">
-                  <button class="btn btn-outline-secondary border">
+                  <button
+                    data-bs-toggle="modal"
+                    data-bs-target="#modalDetail"
+                    class="btn btn-outline-secondary border"
+                    @click="getOrderDetail(item.id)"
+                  >
                     Detail
                   </button>
                 </div>
@@ -127,10 +143,12 @@
     </div>
   </div>
   <ModalShipmentStatus
-  :kurir="clickedTrack.kurir"
-  :awb="clickedTrack.awb"
-  ref="shipmentModal"
-></ModalShipmentStatus>
+    :id="clickedTrack.id"
+    :kurir="clickedTrack.kurir"
+    :awb="clickedTrack.awb"
+    ref="shipmentModal"
+  ></ModalShipmentStatus>
+  <!-- modal cek bayar -->
   <div
     class="modal fade"
     id="modalCekBayar"
@@ -178,13 +196,70 @@
       </div>
     </div>
   </div>
+  <!-- modal detail -->
+  <div
+    class="modal fade"
+    id="modalDetail"
+    tabindex="-1"
+    aria-labelledby="orderModalLabel"
+    aria-hidden="true"
+  >
+    <div class="modal-dialog modal-lg">
+      <div class="modal-content">
+        <div class="modal-header">
+          <h5 class="modal-title" id="orderModalLabel">Order Details</h5>
+          <button
+            type="button"
+            class="btn-close"
+            data-bs-dismiss="modal"
+            aria-label="Close"
+          ></button>
+        </div>
+        <div class="modal-body">
+          <div class="row">
+            <div class="col">
+              <strong>Status:</strong> {{ orderDetailData.status }}
+            </div>
+            <div>
+              <strong>Tanggal:</strong> {{ orderDetailData.formatted_date }}
+            </div>
+          </div>
+          <div><strong>Total:</strong> {{ orderDetailData.total }}</div>
+          <div class="pt-5">
+            <h5>Detail Item:</h5>
+            <div>
+              <div v-for="data in orderDetailData.order_details" class="row my-3">
+                <div class="col">
+                  <div><strong>Nama : </strong>{{ data.product_name }}</div>
+                  <div><strong>Jumlah : </strong>{{ data.quantity }}</div>
+                  <div><strong>Harga : </strong>{{ data.price }}</div>
+                </div>
+                <div class="col pe-5 d-flex justify-content-end">
+                  <img style="height: 100px; width: 100px" :src="parsedImage(data.picture_path)" alt="">
+                </div>
+              </div>
+            </div>
+          </div>
+          <div class="modal-footer">
+            <button
+              type="button"
+              class="btn btn-secondary"
+              data-bs-dismiss="modal"
+            >
+              Close
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
 </template>
 
 <script setup>
 import ModalShipmentStatus from "@/components/ModalShipmentStatus.vue";
 import Navbar from "@/components/Navbar.vue";
 import { Icon } from "@iconify/vue";
-import { ref, reactive, computed } from "vue";
+import { ref, reactive, computed, onMounted } from "vue";
 import router from "../router/index.js";
 import axios from "axios";
 import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
@@ -196,12 +271,19 @@ const username = localStorage.name ?? null;
 const midtransToken = ref("");
 const shipmentModal = ref(null);
 const clickedTrack = reactive({
-      id: "",
-      awb: "",
-      kurir: ""
-    });
+  id: "",
+  awb: "",
+  kurir: "",
+});
+const orderDetailData = reactive({
+  status: "",
+  formatted_date: "",
+  path: "",
+  order_details: {},
+  total: "",
+});
 
-    function openShipmentModal(item) {
+function openShipmentModal(item) {
   console.log("Opening modal with data:", item);
   clickedTrack.awb = item.resi;
   clickedTrack.id = item.id;
@@ -225,6 +307,30 @@ async function makePayment(token) {
 function setMidtransToken(token) {
   midtransToken.value = token;
   console.log(midtransToken.value);
+}
+
+async function getOrderDetail(id) {
+  try {
+    const response = await axios.get(
+      import.meta.env.VITE_API_URL + `/api/order/detail/${id}`,
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    orderDetailData.status = response.data.data[0].status;
+    orderDetailData.formatted_date = response.data.data[0].formatted_date;
+    orderDetailData.path = response.data.data[0].path;
+    let jsonString = response.data.data[0].order_details;
+    jsonString = `[${jsonString}]`;
+    orderDetailData.order_details = JSON.parse(jsonString);
+    orderDetailData.total = response.data.data[0].total;
+
+    console.log(orderDetailData);
+  } catch (error) {
+    console.log("Error fetching payment status:", error);
+  }
 }
 
 async function getMidtransStatus(id) {
@@ -256,7 +362,7 @@ const getBadgeClass = (status) => {
     case "processed":
     case "shipped":
       return "badge text-bg-primary primary ms-3";
-    case "delivred":
+    case "delivered":
     case "completed":
       return "badge text-bg-success rounded ms-3";
     case "canceled":
@@ -284,26 +390,27 @@ async function fetchOrder() {
     console.log("Error fetching user:", error);
   }
 }
+
 async function cancelOrder(id) {
   try {
     const response = await axios.get(
-      import.meta.env.VITE_API_URL + "/api/order/cancel/"+id,
+      import.meta.env.VITE_API_URL + "/api/order/cancel/" + id,
       {
         headers: {
           Authorization: `Bearer ${token}`,
         },
       }
     );
-      if (response.data.code == 200) {
-        location.reload()
-      }
+    if (response.data.code == 200) {
+      location.reload();
+    }
   } catch (error) {
     console.log("Error fetching user:", error);
   }
 }
 
 const profilePicture = computed(() => {
-  return picture.value.slice(-4) === 'null'
+  return picture.value.slice(-4) === "null"
     ? defaultProfilePicture
     : "http://" + picture.value;
 });
@@ -325,7 +432,9 @@ async function fetchUserPicture() {
 }
 
 fetchUserPicture();
-fetchOrder();
+onMounted(() => {
+  fetchOrder();
+})
 </script>
 
 <style scoped>
