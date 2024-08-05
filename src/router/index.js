@@ -28,6 +28,7 @@ import AdminEditCategory from "@/views/admin/EditCategory.vue";
 import Order from "@/views/admin/Order.vue";
 import AdminDetailOrder from "@/views/admin/DetailOrder.vue";
 import Statistic from "@/views/admin/Statistic.vue";
+import test from "@/views/test.vue";
 
 const router = createRouter({
   history: createWebHistory(),
@@ -36,6 +37,11 @@ const router = createRouter({
       path: "/dashboard",
       name: "dashboard",
       component: Dashboard,
+    },
+    {
+      path: "/test",
+      name: "test",
+      component: test,
     },
     {
       path: "/register",
