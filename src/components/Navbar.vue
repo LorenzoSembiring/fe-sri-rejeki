@@ -127,7 +127,7 @@ async function logout() {
         });
         if (response.status === 200) {
           localStorage.removeItem('token'); 
-          window.location.reload();
+          router.push('/login')
         }
       } catch (error) {
         console.error('Logout failed', error);
