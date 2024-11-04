@@ -41,8 +41,17 @@
         </a>
       </div>
     </div>
-    <div class="px-2 pe-3 my-3">
-      <div class="d-flex ms-1 border-profile rounded-pill row mt-auto mb-2" style="height: 9vh; width: 100%;">
+    <div @click="logout()" class="py-2 mx-2 my-2 btn border-1 rounded-pill" style="border-style: solid; border-color: #865439">
+      <a class=" text-brown fw-semibold sidebar-button "
+        ><Icon style="font-size: 20" icon="material-symbols:logout" />
+        Logout
+      </a>
+    </div>
+    <div class="px-2 pe-3 my-3 ">
+      <div
+        class="d-flex ms-1 border-profile rounded-pill row mt-auto mb-2"
+        style="height: 9vh; width: 100%"
+      >
         <div class="col-3 align-items-center p-1">
           <img class="rounded-circle" style="height: 7vh; width: 7vh;" :src="profilePicture">
         </div>
@@ -58,6 +67,7 @@
 import { Icon } from "@iconify/vue";
 import axios from 'axios';
 import { ref, computed } from "vue";
+import router from "../router/index.js";
 import defaultProfilePicture from "@/assets/default_profile_picture.jpg";
 
 defineProps({
@@ -87,6 +97,26 @@ async function fetchUserPicture() {
     picture.value = response.data.data;
   } catch (error) {
     console.log("Error fetching picture:", error);
+  }
+}
+
+async function logout() {
+  try {
+    const response = await axios.get(
+      `${import.meta.env.VITE_API_URL}/api/user/logout`,
+      {},
+      {
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      }
+    );
+    if (response.status === 200) {
+      localStorage.removeItem("token");
+      router.push('/login')
+    }
+  } catch (error) {
+    console.error("Logout failed", error);
   }
 }
 fetchUserPicture();
